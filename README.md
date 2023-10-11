@@ -47,7 +47,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v0.0.0
+        uses: coatl-dev/actions/gpg-import@v0.1.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -97,7 +97,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.0.0
+        uses: coatl-dev/actions/simple-git-diff@v0.1.0
         with:
           file-or-path: 'README.md'
 
