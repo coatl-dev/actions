@@ -7,7 +7,8 @@ in projects to keep them DRY.
 
 ## Catalog
 
-PLACEHOLDER
+- [gpg-import](#gpg-import)
+- [simple-git-diff](#simple-git-diff)
 
 ### gpg-import
 
