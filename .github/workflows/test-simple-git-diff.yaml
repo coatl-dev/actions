@@ -1,0 +1,50 @@
+name: test-simple-git-diff
+
+on:
+  push:
+    branches:
+      - coatl
+    paths:
+      - 'simple-git-diff/action.yaml'
+  pull_request:
+    paths:
+      - 'simple-git-diff/action.yaml'
+  workflow_dispatch:
+
+jobs:
+  test-true:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Modify file in repo
+        run: |
+          echo "New line" >> README.md
+
+      - name: Detect changes
+        id: git-diff
+        uses: ./simple-git-diff
+        with:
+          file-or-path: 'README.md'
+
+      - name: Test true
+        if: ${{ steps.git-diff.outputs.diff == 'true' }}
+        run: |
+          echo "Changes were detected."
+
+  test-false:
+    runs-on: ubuntu-latest
+    needs: test-true
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Detect changes
+        id: git-diff
+        uses: ./simple-git-diff
+
+      - name: Test false
+        if: ${{ steps.git-diff.outputs.diff != 'true' }}
+        run: |
+          echo "Changes were not detected."

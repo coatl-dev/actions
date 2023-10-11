@@ -1,0 +1,71 @@
+name: coatl-dev-gpg-import
+description: GitHub Action to import GPG private key.
+
+inputs:
+  config-git:
+    description: >-
+      Whether to config Git to sign commits with the information obtained from GPG.
+    required: false
+    default: 'yes'
+  passphrase:
+    description: >-
+      GPG private key passphrase.
+  private-key:
+    description: >-
+      GPG private key exported as an ASCII armored version.
+    required: false
+outputs:
+  git-user-email:
+    description: >-
+      Email address used for setting up Git identity.
+    value: ${{ steps.git-user.outputs.email }}
+  git-user-name:
+    description: >-
+      Name used for setting up Git identity.
+    value: ${{ steps.git-user.outputs.name }}
+  gpg-key-id:
+    description: >-
+      The long form of the GPG key ID.
+    value: ${{ steps.gpg.outputs.keyid }}
+
+runs:
+  using: composite
+  steps:
+    - name: Import GPG key and prime passphrase
+      shell: bash
+      run: |
+        echo -e "${{ inputs.private-key }}" | gpg --import --batch --no-tty
+        echo "hello world" > temp.txt
+        gpg --detach-sig --yes -v --output=/dev/null --pinentry-mode loopback --passphrase "${{ inputs.passphrase }}" temp.txt
+        rm temp.txt
+
+    - name: Get the key ID of your signing key
+      id: gpg-key
+      shell: bash
+      run: |
+        keyid=$(gpg --with-colons --list-keys | awk -F: '/^pub/ { print $5 }')
+        echo "keyid=$keyid" >> "$GITHUB_OUTPUT"
+
+    - name: Get real name and email address
+      id: git-user
+      shell: bash
+      run: |
+        input=$(gpg --with-colons --list-keys | awk -F: '/^uid/ { print $10 }')
+        name=$(echo "$input" | awk -F'<' '{print $1}' | sed -e 's/[[:space:]]*$//')
+        email=$(echo "$input" | awk -F'<' '{print $2}' | tr -d '>')
+        echo "name=$name" >> "$GITHUB_OUTPUT"
+        echo "email=$email" >> "$GITHUB_OUTPUT"
+
+    - name: Configure Git user
+      if: ${{ inputs.config-git == 'yes' }}
+      shell: bash
+      run: |
+        git config --local user.email "${{ steps.git-user.outputs.email }}"
+        git config --local user.name "${{ steps.git-user.outputs.name }}"
+
+    - name: Tell Git about your signing key
+      if: ${{ inputs.config-git == 'yes' }}
+      shell: bash
+      run: |
+        git config --local user.signingkey "${{ steps.gpg-key.outputs.keyid }}"
+        git config --local commit.gpgsign true

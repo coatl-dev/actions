@@ -1,0 +1,25 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.27.0
+    hooks:
+      - id: check-github-workflows
+      - id: check-jsonschema
+        name: "Validate GitHub Actions"
+        files: ^.*/action\.(yaml|yml)$
+        types: [yaml]
+        args: ["--builtin-schema", "vendor.github-actions", "--verbose"]
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: 3.10.0
+    hooks:
+    - id: commitizen
+    - id: commitizen-branch
+      stages:
+        - push

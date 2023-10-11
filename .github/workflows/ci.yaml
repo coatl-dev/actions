@@ -1,0 +1,12 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - coatl
+  workflow_dispatch:
+
+jobs:
+  pre-commit:
+    uses: coatl-dev/workflows/.github/workflows/pre-commit.yml@v1

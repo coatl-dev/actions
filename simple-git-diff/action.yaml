@@ -1,0 +1,23 @@
+name: coatl-dev-simple-git-diff
+description: Run git diff on a file or path.
+
+inputs:
+  file-or-path:
+    description: >-
+      File or path to check for changes.
+    required: false
+    default: '.'
+outputs:
+  diff:
+    description: >-
+      Whether files were changed between commits.
+    value: ${{ steps.git-diff.outputs.diff == 'true' }}
+
+runs:
+  using: composite
+  steps:
+    - name: Detect changes
+      id: git-diff
+      shell: bash
+      run: |
+        git diff --quiet ${{ inputs.file-or-path }} || echo "diff=true" >> "$GITHUB_OUTPUT"

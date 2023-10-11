@@ -1,0 +1,31 @@
+name: test-gpg-import
+
+on:
+  push:
+    branches:
+      - coatl
+    paths:
+      - 'gpg-import/action.yaml'
+  pull_request:
+    paths:
+      - 'gpg-import/action.yaml'
+  workflow_dispatch:
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Import GPG
+        uses: ./gpg-import
+        id: gpg-import
+        with:
+          passphrase: ${{ secrets.COATL_BOT_GPG_PASSPHRASE }}
+          private-key: ${{ secrets.COATL_BOT_GPG_PRIVATE_KEY }}
+
+      - name: Show Output
+        run: |
+          echo "git user.email: ${{ steps.gpg-import.outputs.git-user-email }}"
+          echo "git user.name: ${{ steps.gpg-import.outputs.git-user-name }}"
