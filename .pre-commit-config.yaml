@@ -15,7 +15,7 @@ repos:
         name: "Validate GitHub Actions"
         files: ^.*/action\.(yaml|yml)$
         types: [yaml]
-        args: ["--builtin-schema", "vendor.github-actions", "--verbose"]
+        args: ["--builtin-schema", "vendor.github-actions"]
   - repo: https://github.com/commitizen-tools/commitizen
     rev: 3.10.0
     hooks:

@@ -53,12 +53,14 @@ jobs:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
 
-      - name: Sign commit and push changes
+      - name: Make changes
         run: |
-          echo foo > bar.txt
-          git add .
-          git commit -S -m "This commit is signed!"
-          git push
+            # Your changes go here
+
+      - name: Sign commit
+        run: |
+          # Creates a signed commit
+          git commit -m "YOUR_COMMIT_MESSAGE"
 ```
 
 ### simple-git-diff
@@ -67,8 +69,8 @@ Run git diff on a file or path.
 
 #### Inputs
 
-- `file-or-path` (`string`): File or path to check for changes. Defaults to
-  `'.'`. Optional.
+- `path` (`string`): File or path to check for changes. Defaults to `'.'`.
+  Optional.
 
 #### Outputs
 
@@ -100,7 +102,7 @@ jobs:
         id: git-diff
         uses: coatl-dev/actions/simple-git-diff@v0.1.0
         with:
-          file-or-path: 'README.md'
+          path: 'README.md'
 
       - name: Sign commit and push changes
         if: ${{ steps.git-diff.outputs.diff == 'true' }}

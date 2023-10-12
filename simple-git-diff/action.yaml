@@ -2,7 +2,7 @@ name: coatl-dev-simple-git-diff
 description: Run git diff on a file or path.
 
 inputs:
-  file-or-path:
+  path:
     description: >-
       File or path to check for changes.
     required: false
@@ -20,4 +20,4 @@ runs:
       id: git-diff
       shell: bash
       run: |
-        git diff --quiet ${{ inputs.file-or-path }} || echo "diff=true" >> "$GITHUB_OUTPUT"
+        git diff --quiet ${{ inputs.path }} && echo "diff=false" || echo "diff=true" >> "$GITHUB_OUTPUT"
