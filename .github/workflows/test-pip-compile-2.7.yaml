@@ -1,12 +1,12 @@
-name: test-pip-compile-3.11
+name: test-pip-compile-2.7
 
 on:
   pull_request:
     branches:
       - 'coatl'
     paths:
-      - '.github/workflows/test-pip-compile-3.11.yml'
-      - 'pip-compile/3.11/**'
+      - '.github/workflows/test-pip-compile-2.7.yaml'
+      - 'pip-compile/2.7/**'
 
 jobs:
   lint:
@@ -26,14 +26,14 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     env:
-      REQUIREMENTS_PATH: 'pip-compile/3.11/requirements'
+      REQUIREMENTS_PATH: 'pip-compile/2.7/requirements'
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: pip-compile
-        uses: ./pip-compile/3.11
+        uses: ./pip-compile/2.7
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
