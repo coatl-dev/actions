@@ -1,12 +1,13 @@
 name: test-simple-git-diff
 
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/test-simple-git-diff.yaml'
+      - 'simple-git-diff/action.yaml'
   push:
     branches:
       - coatl
-    paths:
-      - 'simple-git-diff/action.yaml'
-  pull_request:
     paths:
       - 'simple-git-diff/action.yaml'
   workflow_dispatch:
@@ -26,7 +27,7 @@ jobs:
         id: git-diff
         uses: ./simple-git-diff
         with:
-          file-or-path: 'README.md'
+          path: 'README.md'
 
       - name: Test true
         if: ${{ steps.git-diff.outputs.diff == 'true' }}
