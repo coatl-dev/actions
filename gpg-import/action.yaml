@@ -1,5 +1,6 @@
 name: coatl-dev-gpg-import
 description: GitHub Action to import GPG private key.
+author: thecesrom
 
 inputs:
   config-git:

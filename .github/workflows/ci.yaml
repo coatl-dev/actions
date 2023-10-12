@@ -10,3 +10,18 @@ on:
 jobs:
   pre-commit:
     uses: coatl-dev/workflows/.github/workflows/pre-commit.yml@v1
+    with:
+      skip-hooks: 'hadolint'
+
+  hadolint:
+    needs: pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Lint Dockerfiles
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          recursive: true
+          verbose: true

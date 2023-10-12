@@ -1,5 +1,6 @@
 name: coatl-dev-simple-git-diff
 description: Run git diff on a file or path.
+author: thecesrom
 
 inputs:
   path:

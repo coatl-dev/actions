@@ -1,0 +1,46 @@
+name: test-pip-compile
+
+on:
+  pull_request:
+    branches:
+      - 'coatl'
+    paths:
+      - '.github/workflows/test-pip-compile.yml'
+      - 'pip-compile/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          recursive: true
+          verbose: true
+
+  self-test:
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: pip-compile
+        uses: ./pip-compile
+        with:
+          path: 'pip-compile/requirements'
+
+      - name: Detect changes
+        id: git-diff
+        uses: ./simple-git-diff
+        with:
+          path: 'pip-compile/requirements'
+
+      - name: Show output
+        run: |
+          echo "Changes were detected: ${{ steps.git-diff.outputs.diff }}"
