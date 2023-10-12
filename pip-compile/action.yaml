@@ -1,5 +1,5 @@
 name: coatl-dev-pip-compile
-description: Build and upload Python 2 distribution packages.
+description: Run pip-compile to upgrade your Python 2 requirements.
 author: thecesrom
 
 inputs:

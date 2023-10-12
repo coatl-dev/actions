@@ -25,6 +25,8 @@ jobs:
   self-test:
     needs: lint
     runs-on: ubuntu-latest
+    env:
+      REQUIREMENTS_PATH: 'pip-compile/requirements'
 
     steps:
       - name: Checkout repo
@@ -33,13 +35,13 @@ jobs:
       - name: pip-compile
         uses: ./pip-compile
         with:
-          path: 'pip-compile/requirements'
+          path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
         uses: ./simple-git-diff
         with:
-          path: 'pip-compile/requirements'
+          path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Show output
         run: |
