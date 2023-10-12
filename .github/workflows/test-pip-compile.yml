@@ -28,6 +28,6 @@ jobs:
 
     steps:
       - name: pip-compile
-        uses: ./
+        uses: ./pip-compile
         with:
           path: 'pip-compile/requirements'
