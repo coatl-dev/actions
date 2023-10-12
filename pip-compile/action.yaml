@@ -1,4 +1,4 @@
-name: python2-pip-compile
+name: coatl-dev-pip-compile
 description: Build and upload Python 2 distribution packages.
 author: thecesrom
 
