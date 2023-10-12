@@ -17,6 +17,9 @@ jobs:
     needs: pre-commit
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Lint Dockerfiles
         uses: hadolint/hadolint-action@v3.1.0
         with:
