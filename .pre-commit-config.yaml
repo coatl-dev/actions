@@ -20,6 +20,8 @@ repos:
     rev: v2.12.1-beta
     hooks:
       - id: hadolint
+        files: ^.*/Dockerfile$
+        types: [file]
   - repo: https://github.com/commitizen-tools/commitizen
     rev: 3.10.0
     hooks:
