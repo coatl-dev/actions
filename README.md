@@ -49,7 +49,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v0.1.0
+        uses: coatl-dev/actions/gpg-import@v0.2.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -99,17 +99,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile
-        uses: coatl-dev/actions/pip-compile@v0.1.0
+        uses: coatl-dev/actions/pip-compile@v0.2.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.1.0
+        uses: coatl-dev/actions/simple-git-diff@v0.2.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
-      - name: Sign commit and push changes
+      - name: Do something if changes were made
         if: ${{ steps.git-diff.outputs.diff == 'true' }}
         run: |
           echo "Changes were detected."
@@ -152,7 +152,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.1.0
+        uses: coatl-dev/actions/simple-git-diff@v0.2.0
         with:
           path: 'README.md'
 
