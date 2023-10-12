@@ -3,7 +3,7 @@ name: test-simple-git-diff
 on:
   pull_request:
     paths:
-      - '.github/workflows/test-simple-git-diff.yml'
+      - '.github/workflows/test-simple-git-diff.yaml'
       - 'simple-git-diff/action.yaml'
   push:
     branches:

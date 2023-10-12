@@ -3,7 +3,7 @@ name: test-gpg-import
 on:
   pull_request:
     paths:
-      - '.github/workflows/test-gpg-import.yml'
+      - '.github/workflows/test-gpg-import.yaml'
       - 'gpg-import/action.yaml'
   push:
     branches:

@@ -1,0 +1,38 @@
+name: pr-build
+
+on:
+  pull_request:
+    branches:
+      - 'coatl'
+    paths:
+      - '.github/workflows/pr-build.yml'
+      - 'requirements/**'
+      - 'action.yml'
+      - 'Dockerfile'
+      - 'entrypoint.sh'
+
+env:
+  devpi-password: changeme
+  devpi-username: root
+  devpi-port: 3141
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+
+  self-test:
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: pip-compile
+        uses: ./
+        with:
+          path: requirements
