@@ -1,0 +1,15 @@
+name: python2-pip-compile
+description: Build and upload Python 2 distribution packages.
+author: thecesrom
+
+inputs:
+  path:
+    description: >-
+      A file ('setup.py' or 'requirements.txt') or location of the requirement files.
+    required: true
+
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.path }}
