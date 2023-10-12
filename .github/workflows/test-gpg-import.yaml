@@ -1,12 +1,13 @@
 name: test-gpg-import
 
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/test-gpg-import.yml'
+      - 'gpg-import/action.yaml'
   push:
     branches:
-      - coatl
-    paths:
-      - 'gpg-import/action.yaml'
-  pull_request:
+      - 'coatl'
     paths:
       - 'gpg-import/action.yaml'
   workflow_dispatch:
