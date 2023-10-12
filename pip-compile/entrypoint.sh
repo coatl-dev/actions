@@ -1,7 +1,7 @@
 #! /bin/bash
 # shellcheck source=/dev/null
 
-set -Eeuo pipefail
+set -Eeuxo pipefail
 
 export PATH="/usr/bin:${PATH}"  # To find `id`
 source /etc/profile  # Makes python and other executables findable
@@ -11,6 +11,8 @@ function process_file() {
   command=$(grep -m 1 "pip-compile" "$file" | sed 's/#    pip-compile/pip-compile --upgrade/')
   eval "$command"
 }
+
+ls -alF
 
 if [ -d "${INPUT_PATH}" ]; then
   cd "${INPUT_PATH}"

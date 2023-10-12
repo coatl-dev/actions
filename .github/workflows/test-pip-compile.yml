@@ -34,3 +34,13 @@ jobs:
         uses: ./pip-compile
         with:
           path: 'pip-compile/requirements'
+
+      - name: Detect changes
+        id: git-diff
+        uses: ./simple-git-diff
+        with:
+          path: 'pip-compile/requirements'
+
+      - name: Show output
+        run: |
+          echo "Changes were detected: ${{ steps.git-diff.outputs.diff }}"
