@@ -50,7 +50,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v0.2.0
+        uses: coatl-dev/actions/gpg-import@v0.3.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -102,13 +102,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile/2.7@v0.2.0
+        uses: coatl-dev/actions/pip-compile/2.7@v0.3.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.2.0
+        uses: coatl-dev/actions/simple-git-diff@v0.3.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -150,14 +150,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile/2.7@v0.2.0
+      - name: pip-compile-311
+        uses: coatl-dev/actions/pip-compile/3.11@v0.3.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.2.0
+        uses: coatl-dev/actions/simple-git-diff@v0.3.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -204,7 +204,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.2.0
+        uses: coatl-dev/actions/simple-git-diff@v0.3.0
         with:
           path: 'README.md'
 
