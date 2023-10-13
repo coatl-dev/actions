@@ -8,11 +8,9 @@ source /etc/profile  # Makes python and other executables findable
 
 function process_file() {
   local file="$1"
-  command=$(grep -m 1 "pip-compile" "$file" | sed 's/#    pip-compile/pip-compile --upgrade/')
+  command=$(grep -m 1 "#    pip-compile" "$file" | sed 's/#    pip-compile/pip-compile --upgrade/')
   eval "$command"
 }
-
-ls -alF
 
 if [ -d "${INPUT_PATH}" ]; then
   cd "${INPUT_PATH}"
