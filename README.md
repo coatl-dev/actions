@@ -8,7 +8,8 @@ in projects to keep them DRY.
 ## Catalog
 
 - [gpg-import](#gpg-import)
-- [pip-compile](#pip-compile)
+- [pip-compile/2.7](#pip-compile27)
+- [pip-compile/3.11](#pip-compile311)
 - [simple-git-diff](#simple-git-diff)
 
 ### gpg-import
@@ -64,9 +65,12 @@ jobs:
           git commit -m "YOUR_COMMIT_MESSAGE"
 ```
 
-### pip-compile
+### pip-compile/2.7
 
-Run pip-compile to upgrade your Python 2 requirements.
+Run `pip-compile` to upgrade your Python 2 requirements.
+
+> The `pip-compile` command lets you compile a `requirements.txt` file from your
+dependencies, specified in either `setup.py` or `requirements.in`.
 
 **Notes**:
 
@@ -75,13 +79,12 @@ Run pip-compile to upgrade your Python 2 requirements.
 
 **Inputs**:
 
-- `path` (`string`): A file (`'setup.py'` or `'requirements.txt'`) or location
-  of the requirement files.
+- `path` (`string`): A file or location of the requirement file(s).
 
 **Example**:
 
 ```yml
-name: pip-compile
+name: pip-compile-27
 
 on:
   schedule:
@@ -98,8 +101,57 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: pip-compile
-        uses: coatl-dev/actions/pip-compile@v0.2.0
+      - name: pip-compile-27
+        uses: coatl-dev/actions/pip-compile/2.7@v0.2.0
+        with:
+          path: "${{ env.REQUIREMENTS_PATH }}"
+
+      - name: Detect changes
+        id: git-diff
+        uses: coatl-dev/actions/simple-git-diff@v0.2.0
+        with:
+          path: "${{ env.REQUIREMENTS_PATH }}"
+
+      - name: Do something if changes were made
+        if: ${{ steps.git-diff.outputs.diff == 'true' }}
+        run: |
+          echo "Changes were detected."
+```
+
+### pip-compile/3.11
+
+Run pip-compile to upgrade your Python 3 requirements.
+
+> The `pip-compile` command lets you compile a `requirements.txt` file from your
+dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
+`requirements.in`.
+
+**Inputs**:
+
+- `path` (`string`): A file or location of the requirement file(s).
+
+**Example**:
+
+```yml
+name: pip-compile-311
+
+on:
+  schedule:
+    # Monthly at 12:00 PST (00:00 UTC)
+    - cron: '0 20 1 * *'
+
+jobs:
+  pip-compile:
+    runs-on: ubuntu-latest
+    env:
+      REQUIREMENTS_PATH: 'path/to/requirements'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: pip-compile-27
+        uses: coatl-dev/actions/pip-compile/2.7@v0.2.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
