@@ -208,7 +208,7 @@ jobs:
         with:
           path: 'README.md'
 
-      - name: Sign commit and push changes
+      - name: Do something if changes were detected
         if: ${{ steps.git-diff.outputs.diff == 'true' }}
         run: |
           echo "Changes were detected."
