@@ -8,13 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  pre-commit:
-    uses: coatl-dev/workflows/.github/workflows/pre-commit.yml@v1
-    with:
-      skip-hooks: 'hadolint'
-
   hadolint:
-    needs: pre-commit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
