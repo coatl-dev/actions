@@ -24,6 +24,10 @@ repos:
       - id: hadolint
         files: ^.*/Dockerfile$
         types: [file]
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.6
+    hooks:
+      - id: shellcheck
   - repo: https://github.com/commitizen-tools/commitizen
     rev: 3.10.0
     hooks:
