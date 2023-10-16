@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 LABEL \
   maintainer="César Román <cesar@coatl.dev>" \
-  repository="https://github.com/coatl-dev/actions/blob/coatl/pip-compile/3.11/Dockerfile" \
+  repository="https://github.com/coatl-dev/actions/blob/coatl/pip-compile-3.11/Dockerfile" \
   vendor="coatl.dev"
 
 ENV PIP_NO_CACHE_DIR 1
