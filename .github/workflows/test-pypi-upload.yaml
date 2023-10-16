@@ -1,4 +1,4 @@
-name: pr-build
+name: test-pypi-upload
 
 on:
   pull_request:
@@ -23,6 +23,9 @@ jobs:
 
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@v3.1.0
+        with:
+          recursive: true
+          verbose: true
 
   self-test:
     needs: lint
