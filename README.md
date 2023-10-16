@@ -10,6 +10,7 @@ in projects to keep them DRY.
 - [gpg-import](#gpg-import)
 - [pip-compile/2.7](#pip-compile27)
 - [pip-compile/3.11](#pip-compile311)
+- [pre-commit-autoupdate](#pre-commit-autoupdate)
 - [simple-git-diff](#simple-git-diff)
 
 ### gpg-import
@@ -50,7 +51,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v0.3.0
+        uses: coatl-dev/actions/gpg-import@v0.4.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -102,13 +103,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile/2.7@v0.3.0
+        uses: coatl-dev/actions/pip-compile/2.7@v0.4.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.3.0
+        uses: coatl-dev/actions/simple-git-diff@v0.4.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -151,13 +152,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-311
-        uses: coatl-dev/actions/pip-compile/3.11@v0.3.0
+        uses: coatl-dev/actions/pip-compile/3.11@v0.4.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.3.0
+        uses: coatl-dev/actions/simple-git-diff@v0.4.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -165,6 +166,63 @@ jobs:
         if: ${{ steps.git-diff.outputs.diff == 'true' }}
         run: |
           echo "Changes were detected."
+```
+
+### pre-commit-autoupdate
+
+GitHub action for running `pre-commit autoupdate` and allow to skip hooks.
+
+**Inputs**:
+
+- `cache` (`string`): Whether to enable caching. Options: `'yes'`, `'no'`.
+  Defaults to `'yes'`. Optional.
+- `gh-token` (`secret`): GitHub token. Required.
+- `gpg-sign-passphrase` (`secret`): GPG private key passphrase. Required when
+  signing commits, otherwise is optional.
+- `gpg-sign-private-key` (`secret`): GPG private key exported as an ASCII
+  armored version. Required when signing commits, otherwise is optional.
+- `pr-base-branch` (`string`): The branch into which you want your code merged.
+  Defaults to `'main'`. Required when `pr-create` is set to `'yes'`, otherwise
+  is optional.
+- `pr-create` (`string`): Whether to create a Pull Request. Options: `'yes'`,
+  `'no'`. Defaults to `'yes'`. Optional.
+- `skip-hooks` (`string`): A comma separated list of hook ids which will be
+  disabled. Useful when your `pre-commit-config.yaml` file contains
+  [`local hooks`]. Optional. See: [Temporarily disabling hooks].
+- `skip-repos` (`string`): A list of repos to exclude from autoupdate. The repos
+  must be separated by a "pipe" character `'|'`. Defaults to `''`. Optional.
+
+**Outputs**:
+
+- `update-hit` (`boolean`): A boolean value to indicate if one or more repos
+  were updated.
+
+**Example**:
+
+```yml
+name: pre-commit-autoupdate
+
+on:
+  schedule:
+    # Monday at 12:00 PST
+    - cron: '0 20 * * 1'
+  workflow_dispatch:
+
+jobs:
+  pre-commit-autoupdate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Update pre-commit hooks
+        uses: coatl-dev/actions/pre-commit-autoupdate@v0.4.0
+        with:
+          gh-token: ${{ secrets.GH_TOKEN }}
+          gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          gpg-sign-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          skip-hooks: 'pylint'
+          skip-repos: 'flake8'
 ```
 
 ### simple-git-diff
@@ -204,7 +262,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.3.0
+        uses: coatl-dev/actions/simple-git-diff@v0.4.0
         with:
           path: 'README.md'
 
@@ -215,4 +273,6 @@ jobs:
 ```
 
 [`git diff`]: https://git-scm.com/docs/git-diff
+[`local hooks`]: https://pre-commit.com/#repository-local-hooks
 [`pip-tools==5.5.0`]: https://pypi.org/project/pip-tools/5.5.0/
+[Temporarily disabling hooks]: https://pre-commit.com/#temporarily-disabling-hooks

@@ -1,3 +1,14 @@
+## v0.4.0 (2023-10-16)
+
+### Feat
+
+- add pre-commit-autoupdate (#13)
+- add create-pr action (#12)
+
+### Fix
+
+- **pre-commit-autoupdate**: use commit message as title (#14)
+
 ## v0.3.0 (2023-10-12)
 
 ### BREAKING CHANGE
