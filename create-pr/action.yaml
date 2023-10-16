@@ -1,0 +1,40 @@
+name: coatl-dev-create-pr
+description: GitHub Action to create Pull Request using gh.
+author: thecesrom
+
+inputs:
+  gh-token:
+    description: >-
+      GitHub token.
+    required: true
+  title:
+    description: >-
+      Title for the pull request.
+    required: false
+    default: ''
+  body:
+    description: >-
+      Body for the pull request.
+    required: false
+    default: ''
+  body-file:
+    description: >-
+      Read body text from file.
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+
+    - name: Create Pull Request
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.gh-token }}
+        INPUT_TITLE: ${{ inputs.title }}
+        INPUT_BODY: ${{ inputs.body }}
+        INPUT_BODY_FILE: ${{ inputs.body-file }}
+      run: |
+        create-pr.sh
