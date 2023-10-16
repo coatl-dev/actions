@@ -12,6 +12,7 @@ in projects to keep them DRY.
 - [pip-compile-2.7](#pip-compile-27)
 - [pip-compile-3.11](#pip-compile-311)
 - [pre-commit-autoupdate](#pre-commit-autoupdate)
+- [pypi-upload](#pypi-upload)
 - [simple-git-diff](#simple-git-diff)
 
 ### create-pr
@@ -36,7 +37,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/create-pr@v0.5.1
+        uses: coatl-dev/actions/create-pr@v0.6.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -79,7 +80,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v0.5.1
+        uses: coatl-dev/actions/gpg-import@v0.6.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -131,13 +132,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile-2.7@v0.5.1
+        uses: coatl-dev/actions/pip-compile-2.7@v0.6.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.5.1
+        uses: coatl-dev/actions/simple-git-diff@v0.6.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -180,13 +181,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-311
-        uses: coatl-dev/actions/pip-compile-3.11@v0.5.1
+        uses: coatl-dev/actions/pip-compile-3.11@v0.6.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.5.1
+        uses: coatl-dev/actions/simple-git-diff@v0.6.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -244,13 +245,88 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update pre-commit hooks
-        uses: coatl-dev/actions/pre-commit-autoupdate@v0.5.1
+        uses: coatl-dev/actions/pre-commit-autoupdate@v0.6.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
           gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           gpg-sign-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           skip-hooks: 'pylint'
           skip-repos: 'flake8'
+```
+
+### pypi-upload
+
+GitHub action for building and publishing your Python 2 distribution files to
+PyPI or any other repository using `build` and `twine`.
+
+**Inputs**:
+
+- `username` (`string`): Defaults to `'__token__'`. Optional.
+- `password`: (`string`). It can be a password or token. Required. Note: It is
+  recommended to keep your password as secrets.
+- `url` (`string`): The repository (package index) URL to upload the package to.
+  Defaults to `'https://upload.pypi.org/legacy/'`. Optional.
+- `check` (`string`): Checks whether your distribution’s long description will
+  render correctly on PyPI. Defaults to `'yes'`. Options: `'yes'`, `'no'`.
+  Optional.
+- `upload` (`string`): Uploads to a repository. Defaults to `'yes'`. Options:
+  `'yes'`, `'no'`. Optional.
+
+**Example**:
+
+To use this action, add the following step to your workflow file (e.g.
+`.github/workflows/publish.yaml`).
+
+```yml
+name: publish
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  pypi-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: python2-pypi-upload
+        uses: coatl-dev/actions/pypi-upload@v0.6.0
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN_IGNITION_API_PKG }}
+```
+
+**Uploading to TestPyPI**:
+
+```yml
+- name: Publish package to TestPyPI
+  uses: coatl-dev/actions/pypi-upload@v1
+  with:
+    username: ${{ secrets.TEST_PYPI_USER }}
+    password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+    url: "https://test.pypi.org/legacy/"
+```
+
+**Disabling metadata verification**:
+
+It is recommended that you run `twine check` before upload. You can also disable
+it with:
+
+```yml
+   with:
+     check: no
+```
+
+**Disabling automatically uploading the package**:
+
+If you would like to run additional checks before uploading, you can disable it
+with:
+
+```yml
+   with:
+     upload: no
 ```
 
 ### simple-git-diff
@@ -290,7 +366,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.5.1
+        uses: coatl-dev/actions/simple-git-diff@v0.6.0
         with:
           path: 'README.md'
 
