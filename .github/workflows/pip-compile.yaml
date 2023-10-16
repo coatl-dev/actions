@@ -36,8 +36,6 @@ jobs:
 
       - name: Commit changes
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
-        env:
-          GH_TOKEN: ${{ secrets.COATL_BOT_GH_TOKEN }}
         run: |
           git checkout -B pip-compile-autoupdate-2.7
           git add pip-compile-2.7/requirements
@@ -79,8 +77,6 @@ jobs:
 
       - name: Commit changes
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
-        env:
-          GH_TOKEN: ${{ secrets.COATL_BOT_GH_TOKEN }}
         run: |
           git checkout -B pip-compile-autoupdate-3.11
           git add pip-compile-3.11/requirements
