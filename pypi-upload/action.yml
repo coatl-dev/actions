@@ -1,5 +1,7 @@
-name: python2-pypi-upload
+name: coatl-dev-pypi-upload
 description: Build and upload Python 2 distribution packages.
+author: thecesrom
+
 inputs:
   username:
     description: >-
@@ -31,9 +33,7 @@ inputs:
       Internal use only.
     required: false
     default: no
-branding:
-  color: green
-  icon: upload-cloud
+
 runs:
   using: docker
   image: Dockerfile
