@@ -8,8 +8,8 @@ in projects to keep them DRY.
 ## Catalog
 
 - [gpg-import](#gpg-import)
-- [pip-compile/2.7](#pip-compile27)
-- [pip-compile/3.11](#pip-compile311)
+- [pip-compile-2.7](#pip-compile-27)
+- [pip-compile-3.11](#pip-compile-311)
 - [pre-commit-autoupdate](#pre-commit-autoupdate)
 - [simple-git-diff](#simple-git-diff)
 
@@ -51,7 +51,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v0.4.0
+        uses: coatl-dev/actions/gpg-import@v0.5.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -66,7 +66,7 @@ jobs:
           git commit -m "YOUR_COMMIT_MESSAGE"
 ```
 
-### pip-compile/2.7
+### pip-compile-2.7
 
 Run `pip-compile` to upgrade your Python 2 requirements.
 
@@ -103,13 +103,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile/2.7@v0.4.0
+        uses: coatl-dev/actions/pip-compile-2.7@v0.5.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.4.0
+        uses: coatl-dev/actions/simple-git-diff@v0.5.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -119,7 +119,7 @@ jobs:
           echo "Changes were detected."
 ```
 
-### pip-compile/3.11
+### pip-compile-3.11
 
 Run pip-compile to upgrade your Python 3 requirements.
 
@@ -152,13 +152,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-311
-        uses: coatl-dev/actions/pip-compile/3.11@v0.4.0
+        uses: coatl-dev/actions/pip-compile-3.11@v0.5.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.4.0
+        uses: coatl-dev/actions/simple-git-diff@v0.5.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -216,7 +216,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update pre-commit hooks
-        uses: coatl-dev/actions/pre-commit-autoupdate@v0.4.0
+        uses: coatl-dev/actions/pre-commit-autoupdate@v0.5.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
           gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
@@ -262,7 +262,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.4.0
+        uses: coatl-dev/actions/simple-git-diff@v0.5.0
         with:
           path: 'README.md'
 

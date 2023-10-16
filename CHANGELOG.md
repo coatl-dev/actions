@@ -1,3 +1,14 @@
+## v0.5.0 (2023-10-16)
+
+### BREAKING CHANGE
+
+- rename and move pip-compile 2.7 and 3.11 actions
+
+### Refactor
+
+- pip-compile 3.11 autoupdate (#16)
+- **pip-compile**: move actions to root directory (#15)
+
 ## v0.4.0 (2023-10-16)
 
 ### Feat
