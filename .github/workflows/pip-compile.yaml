@@ -42,7 +42,7 @@ jobs:
           git checkout -B pip-compile-autoupdate-2.7
           git add pip-compile-2.7/requirements
           git commit -m "refactor: pip-compile 2.7 autoupdate"
-          git push --force --set-upstream origin pip-compile-autoupdate
+          git push --force --set-upstream origin pip-compile-autoupdate-2.7
 
       - name: Create Pull Request
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
@@ -85,7 +85,7 @@ jobs:
           git checkout -B pip-compile-autoupdate-3.11
           git add pip-compile-3.11/requirements
           git commit -m "refactor: pip-compile 3.11 autoupdate"
-          git push --force --set-upstream origin pip-compile-autoupdate
+          git push --force --set-upstream origin pip-compile-autoupdate-3.11
 
       - name: Create Pull Request
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
