@@ -7,11 +7,39 @@ in projects to keep them DRY.
 
 ## Catalog
 
+- [create-pr](#create-pr)
 - [gpg-import](#gpg-import)
 - [pip-compile-2.7](#pip-compile-27)
 - [pip-compile-3.11](#pip-compile-311)
 - [pre-commit-autoupdate](#pre-commit-autoupdate)
 - [simple-git-diff](#simple-git-diff)
+
+### create-pr
+
+GitHub Action to create Pull Request using gh.
+
+**Inputs**:
+
+- `gh-token` (`secret`): GitHub token. Required.
+- `title` (`string`): Title for the pull request. Optional.
+- `body` (`string`): Body for the pull request. Optional.
+- `body-file` (`string`): Read body text from file. Optional.
+
+**Notes**:
+
+If all optional inputs are missing, `gh` will use the commit message and body
+and run `gh pr create --fill`.
+
+**Example**:
+
+Add this step to your workflow:
+
+```yml
+      - name: Create Pull Request
+        uses: coatl-dev/actions/create-pr@v0.5.1
+        with:
+          gh-token: ${{ secrets.GH_TOKEN }}
+```
 
 ### gpg-import
 
@@ -51,7 +79,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v0.5.0
+        uses: coatl-dev/actions/gpg-import@v0.5.1
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -103,13 +131,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile-2.7@v0.5.0
+        uses: coatl-dev/actions/pip-compile-2.7@v0.5.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.5.0
+        uses: coatl-dev/actions/simple-git-diff@v0.5.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -152,13 +180,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-311
-        uses: coatl-dev/actions/pip-compile-3.11@v0.5.0
+        uses: coatl-dev/actions/pip-compile-3.11@v0.5.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.5.0
+        uses: coatl-dev/actions/simple-git-diff@v0.5.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -216,7 +244,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update pre-commit hooks
-        uses: coatl-dev/actions/pre-commit-autoupdate@v0.5.0
+        uses: coatl-dev/actions/pre-commit-autoupdate@v0.5.1
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
           gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
@@ -262,7 +290,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.5.0
+        uses: coatl-dev/actions/simple-git-diff@v0.5.1
         with:
           path: 'README.md'
 

@@ -1,3 +1,9 @@
+## v0.5.1 (2023-10-16)
+
+### Fix
+
+- **pip-compile**: use INPUT_PATH when processing a file (#17)
+
 ## v0.5.0 (2023-10-16)
 
 ### BREAKING CHANGE
