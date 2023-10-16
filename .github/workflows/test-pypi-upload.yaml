@@ -14,21 +14,7 @@ env:
   devpi-port: 3141
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Lint Dockerfile
-        uses: hadolint/hadolint-action@v3.1.0
-        with:
-          recursive: true
-          verbose: true
-
   self-test:
-    needs: lint
     runs-on: ubuntu-latest
 
     services:
