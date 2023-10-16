@@ -21,6 +21,7 @@ jobs:
         id: pre-commit-autoupdate
         with:
           pr-create: 'no'
+          skip-hooks: 'hadolint'
 
       - name: Show Output
         run: |
