@@ -136,5 +136,5 @@ runs:
       uses: coatl-dev/actions/create-pr@coatl
       with:
         gh-token: ${{ inputs.gh-token }}
-        title: ${{ inputs.pr-title }}"
+        title: 'build(deps): coatl-dev pre-commit autoupdate'
         body-file: pr.body
