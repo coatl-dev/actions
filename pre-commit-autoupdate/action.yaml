@@ -1,0 +1,140 @@
+name: coatl-dev-pre-commit-autoupdate
+description: Allow skipping repos when invoking pre-commit autoupdate.
+author: thecesrom
+
+inputs:
+  cache:
+    description: >-
+      Whether to enable caching.
+    required: false
+    default: 'yes'
+  gh-token:
+    description: >-
+      GitHub token.
+    required: false
+  gpg-sign-passphrase:
+    description: >-
+      GPG private key passphrase.
+    required: false
+  gpg-sign-private-key:
+    description: >-
+      GPG private key exported as an ASCII armored version.
+    required: false
+  pr-create:
+    description: >-
+      Whether to create a Pull Request.
+    required: false
+    default: 'yes'
+  skip-hooks:
+    description: >-
+      A comma separated list of hook ids which will be disabled.
+    required: false
+    default: ''
+  skip-repos:
+    description: >-
+      A list of repos to exclude from autoupdate.
+outputs:
+  update-hit:
+    description: >-
+      Whether repos were updated in pre-commit config file.
+    value: ${{ steps.git-diff.outputs.diff == 'true' }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python 3.11
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Calculate requirements file hash
+      if: ${{ inputs.cache == 'yes' }}
+      id: requirements-hash
+      shell: bash
+      run: |
+        file_path="${{ github.action_path }}/requirements.txt"
+        file_hash=$(sha256sum "$file_path")
+        echo "hash=$file_hash" >> "$GITHUB_OUTPUT"
+
+    - name: Cache pip
+      if: ${{ inputs.cache == 'yes' }}
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: coatl-dev-pre-commit-${{ env.pythonLocation }}-${{ steps.requirements-hash.outputs.hash }}
+
+    - name: Install pre-commit
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install --requirement "${{ github.action_path }}/requirements.txt"
+
+    - name: Cache pre-commit
+      if: ${{ inputs.cache == 'yes' }}
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pre-commit
+        key: coatl-dev-action-pre-commit-autoupdate-${{ env.pythonLocation }}-${{ hashFiles('.pre-commit-config.yaml') }}
+
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+
+    - name: Update repos
+      shell: bash
+      run: |
+        pre-commit-autoupdate.sh
+      env:
+        INPUT_SKIP_REPOS: ${{ inputs.skip-repos }}
+
+    - name: Run pre-commit
+      shell: bash
+      env:
+        SKIP: ${{ inputs.skip-hooks }}
+      run: |
+        pre-commit install
+        pre-commit run --all-files
+
+    - name: Detect changes
+      id: git-diff
+      uses: coatl-dev/actions/simple-git-diff@coatl
+      with:
+        path: .pre-commit-config.yaml
+
+    - name: Get updated repos
+      if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
+      id: updated
+      shell: bash
+      run: |
+        echo "updates:" > pr.body
+        git diff .pre-commit-config.yaml | grep 'https://[a-zA-Z0-9./?=_%:-]*' | sed -e 's/ \{2,\}/  /g' >> pr.body
+
+    - name: Import GPG key
+      if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
+      id: gpg-import
+      uses: coatl-dev/actions/gpg-import@coatl
+      with:
+        passphrase: ${{ inputs.gpg-sign-passphrase }}
+        private-key: ${{ inputs.gpg-sign-private-key }}
+
+    - name: Commit changes
+      if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
+      shell: bash
+      run: |
+        git checkout -B 'coatl-dev-pre-commit-autoupdate'
+        git add .pre-commit-config.yaml
+        git commit -m 'build(deps): coatl-dev pre-commit autoupdate'
+
+    - name: Push changes
+      if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
+      shell: bash
+      run: |
+        git push --force --set-upstream origin coatl-dev-pre-commit-autoupdate
+
+    - name: Create Pull Request
+      if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
+      uses: coatl-dev/actions/create-pr@coatl
+      with:
+        gh-token: ${{ inputs.gh-token }}
+        title: ${{ inputs.pr-title }}"
+        body-file: pr.body
