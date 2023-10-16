@@ -13,14 +13,14 @@ function process_file() {
 }
 
 if [ -d "${INPUT_PATH}" ]; then
-  cd "${INPUT_PATH}"
+  cd "${INPUT_PATH}" || exit
   for file in *.txt; do
     if [ -f "$file" ]; then
       process_file "$file"
     fi
   done
-elif [ -f "$file" ]; then
-  process_file "$file"
+elif [ -f "${INPUT_PATH}" ]; then
+  process_file "${INPUT_PATH}"
 else
   exit 1
 fi
