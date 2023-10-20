@@ -215,9 +215,6 @@ GitHub action for running `pre-commit autoupdate` and allow to skip hooks.
   is optional.
 - `pr-create` (`string`): Whether to create a Pull Request. Options: `'yes'`,
   `'no'`. Defaults to `'yes'`. Optional.
-- `skip-hooks` (`string`): A comma separated list of hook ids which will be
-  disabled. Useful when your `pre-commit-config.yaml` file contains
-  [`local hooks`]. Optional. See: [Temporarily disabling hooks].
 - `skip-repos` (`string`): A list of repos to exclude from autoupdate. The repos
   must be separated by a "pipe" character `'|'`. Defaults to `''`. Optional.
 
@@ -250,7 +247,6 @@ jobs:
           gh-token: ${{ secrets.GH_TOKEN }}
           gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           gpg-sign-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          skip-hooks: 'pylint'
           skip-repos: 'flake8'
 ```
 

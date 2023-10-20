@@ -25,11 +25,6 @@ inputs:
       Whether to create a Pull Request.
     required: false
     default: 'yes'
-  skip-hooks:
-    description: >-
-      A comma separated list of hook ids which will be disabled.
-    required: false
-    default: ''
   skip-repos:
     description: >-
       A list of repos to exclude from autoupdate.
@@ -70,13 +65,6 @@ runs:
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install --requirement "${{ github.action_path }}/requirements.txt"
 
-    - name: Cache pre-commit
-      if: ${{ inputs.cache == 'yes' }}
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pre-commit
-        key: coatl-dev-action-pre-commit-autoupdate-${{ env.pythonLocation }}-${{ hashFiles('.pre-commit-config.yaml') }}
-
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
 
@@ -86,14 +74,6 @@ runs:
         pre-commit-autoupdate.sh
       env:
         INPUT_SKIP_REPOS: ${{ inputs.skip-repos }}
-
-    - name: Run pre-commit
-      shell: bash
-      env:
-        SKIP: ${{ inputs.skip-hooks }}
-      run: |
-        pre-commit install
-        pre-commit run --all-files
 
     - name: Detect changes
       id: git-diff
