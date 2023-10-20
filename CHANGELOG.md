@@ -1,3 +1,13 @@
+## v0.8.0 (2023-10-20)
+
+### BREAKING CHANGE
+
+- create-pr is now pr-create
+
+### Refactor
+
+- **pr-create**: rename action (#20)
+
 ## v0.7.0 (2023-10-20)
 
 ### BREAKING CHANGE
