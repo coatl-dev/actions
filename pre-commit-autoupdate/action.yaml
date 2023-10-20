@@ -65,13 +65,6 @@ runs:
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install --requirement "${{ github.action_path }}/requirements.txt"
 
-    - name: Cache pre-commit
-      if: ${{ inputs.cache == 'yes' }}
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pre-commit
-        key: coatl-dev-action-pre-commit-autoupdate-${{ env.pythonLocation }}-${{ hashFiles('.pre-commit-config.yaml') }}
-
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
 
