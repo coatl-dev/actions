@@ -7,40 +7,13 @@ in projects to keep them DRY.
 
 ## Catalog
 
-- [create-pr](#create-pr)
 - [gpg-import](#gpg-import)
 - [pip-compile-2.7](#pip-compile-27)
 - [pip-compile-3.11](#pip-compile-311)
+- [pr-create](#pr-create)
 - [pre-commit-autoupdate](#pre-commit-autoupdate)
 - [pypi-upload](#pypi-upload)
 - [simple-git-diff](#simple-git-diff)
-
-### create-pr
-
-GitHub Action to create Pull Request using gh.
-
-**Inputs**:
-
-- `gh-token` (`secret`): GitHub token. Required.
-- `title` (`string`): Title for the pull request. Optional.
-- `body` (`string`): Body for the pull request. Optional.
-- `body-file` (`string`): Read body text from file. Optional.
-
-**Notes**:
-
-If all optional inputs are missing, `gh` will use the commit message and body
-and run `gh pr create --fill`.
-
-**Example**:
-
-Add this step to your workflow:
-
-```yml
-      - name: Create Pull Request
-        uses: coatl-dev/actions/create-pr@v0.7.0
-        with:
-          gh-token: ${{ secrets.GH_TOKEN }}
-```
 
 ### gpg-import
 
@@ -195,6 +168,33 @@ jobs:
         if: ${{ steps.git-diff.outputs.diff == 'true' }}
         run: |
           echo "Changes were detected."
+```
+
+### pr-create
+
+GitHub Action to create Pull Request using gh.
+
+**Inputs**:
+
+- `gh-token` (`secret`): GitHub token. Required.
+- `title` (`string`): Title for the pull request. Optional.
+- `body` (`string`): Body for the pull request. Optional.
+- `body-file` (`string`): Read body text from file. Optional.
+
+**Notes**:
+
+If all optional inputs are missing, `gh` will use the commit message and body
+and run `gh pr create --fill`.
+
+**Example**:
+
+Add this step to your workflow:
+
+```yml
+      - name: Create Pull Request
+        uses: coatl-dev/actions/pr-create@v0.7.0
+        with:
+          gh-token: ${{ secrets.GH_TOKEN }}
 ```
 
 ### pre-commit-autoupdate

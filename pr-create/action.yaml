@@ -1,4 +1,4 @@
-name: coatl-dev-create-pr
+name: coatl-dev-pr-create
 description: GitHub Action to create Pull Request using gh.
 author: thecesrom
 
@@ -37,4 +37,4 @@ runs:
         INPUT_BODY: ${{ inputs.body }}
         INPUT_BODY_FILE: ${{ inputs.body-file }}
       run: |
-        create-pr.sh
+        create.sh
