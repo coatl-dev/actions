@@ -46,7 +46,7 @@ jobs:
 
       - name: Create Pull Request
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
-        uses: coatl-dev/actions/create-pr@coatl
+        uses: coatl-dev/actions/pr-create@coatl
         with:
           gh-token: ${{ secrets.COATL_BOT_GH_TOKEN }}
 
@@ -89,7 +89,7 @@ jobs:
 
       - name: Create Pull Request
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
-        uses: coatl-dev/actions/create-pr@coatl
+        uses: coatl-dev/actions/pr-create@coatl
         with:
           gh-token: ${{ secrets.COATL_BOT_GH_TOKEN }}
 
@@ -131,6 +131,6 @@ jobs:
 
       - name: Create Pull Request
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
-        uses: coatl-dev/actions/create-pr@coatl
+        uses: coatl-dev/actions/pr-create@coatl
         with:
           gh-token: ${{ secrets.COATL_BOT_GH_TOKEN }}

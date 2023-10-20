@@ -113,7 +113,7 @@ runs:
 
     - name: Create Pull Request
       if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
-      uses: coatl-dev/actions/create-pr@coatl
+      uses: coatl-dev/actions/pr-create@coatl
       with:
         gh-token: ${{ inputs.gh-token }}
         title: 'build(deps): coatl-dev pre-commit autoupdate'
