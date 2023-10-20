@@ -1,3 +1,13 @@
+## v0.7.0 (2023-10-20)
+
+### BREAKING CHANGE
+
+- remove skip-hooks input
+
+### Refactor
+
+- **pre-commit-autoupdate**: delete pre-commit run step (#19)
+
 ## v0.6.0 (2023-10-16)
 
 ### Feat
