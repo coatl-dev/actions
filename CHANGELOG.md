@@ -1,3 +1,13 @@
+## v0.9.0 (2023-10-23)
+
+### BREAKING CHANGE
+
+- delete pip-compile-2.7 and 3.11
+
+### Refactor
+
+- merge pip-compile 2.7 and 3.11 (#21)
+
 ## v0.8.0 (2023-10-20)
 
 ### BREAKING CHANGE
