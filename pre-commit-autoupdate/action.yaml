@@ -69,7 +69,7 @@ runs:
       shell: bash
       run: |
         echo "updates:" > pr.body
-        if [ -z "${{ parameters.skipRepos }}" ]; then
+        if [ -z "${{ inputs.skip-repos }}" ]; then
         while IFS='' read -r repo || [ -n "${repo}" ]; do
           echo "$repo" >> pr.body
           pre-commit autoupdate --repo "$repo"
@@ -82,7 +82,7 @@ runs:
             pre-commit autoupdate --repo "$repo"
           done < <(
             grep -Eo 'https://[a-zA-Z0-9./?=_%:-]*' .pre-commit-config.yaml |
-            grep -iEwv "${{ parameters.skipRepos }}"
+            grep -iEwv "${{ inputs.skip-repos }}"
           )
         fi
       env:
