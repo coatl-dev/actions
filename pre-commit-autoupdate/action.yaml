@@ -99,7 +99,6 @@ runs:
       run: |
         echo "updates:" > pr.body
         git diff --unified=1 .pre-commit-config.yaml | grep 'https://[a-zA-Z0-9./?=_%:-]*' | sed -e 's/ \{2,\}/  /g' >> pr.body
-        cat pr.body
 
     - name: Import GPG key
       if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
