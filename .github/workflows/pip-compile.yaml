@@ -7,20 +7,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  pip-compile-27:
-    name: pip-compile 2.7
+  pip-compile:
+    name: pip-compile-${{ matrix.python-version }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['2.7', '3.11']
     env:
-      REQUIREMENTS_PATH: pip-compile-2.7/requirements
+      REQUIREMENTS_PATH: pip-compile/test/${{ matrix.python-version }}/requirements
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: coatl-dev-pip-compile
-        uses: ./pip-compile-2.7
+        uses: ./pip-compile
         with:
           path: ${{ env.REQUIREMENTS_PATH }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Detect changes
         id: git-diff
@@ -39,53 +43,10 @@ jobs:
       - name: Commit changes
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
         run: |
-          git checkout -B pip-compile-autoupdate-2.7
+          git checkout -B pip-compile-autoupdate-${{ matrix.python-version }}
           git add ${{ env.REQUIREMENTS_PATH }}
-          git commit -m "refactor: pip-compile 2.7 autoupdate"
-          git push --force --set-upstream origin pip-compile-autoupdate-2.7
-
-      - name: Create Pull Request
-        if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
-        uses: coatl-dev/actions/pr-create@coatl
-        with:
-          gh-token: ${{ secrets.COATL_BOT_GH_TOKEN }}
-
-  pip-compile-311:
-    name: pip-compile 3.11
-    runs-on: ubuntu-latest
-    env:
-      REQUIREMENTS_PATH: pip-compile-3.11/requirements
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: coatl-dev-pip-compile
-        uses: ./pip-compile-3.11
-        with:
-          path: ${{ env.REQUIREMENTS_PATH }}
-
-      - name: Detect changes
-        id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@coatl
-        with:
-          path: ${{ env.REQUIREMENTS_PATH }}
-
-      - name: Import GPG key
-        if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
-        id: gpg-import
-        uses: coatl-dev/actions/gpg-import@coatl
-        with:
-          passphrase: ${{ secrets.COATL_BOT_GPG_PASSPHRASE }}
-          private-key: ${{ secrets.COATL_BOT_GPG_PRIVATE_KEY }}
-
-      - name: Commit changes
-        if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
-        run: |
-          git checkout -B pip-compile-autoupdate-3.11
-          git add ${{ env.REQUIREMENTS_PATH }}
-          git commit -m "refactor: pip-compile 3.11 autoupdate"
-          git push --force --set-upstream origin pip-compile-autoupdate-3.11
+          git commit -m "refactor: pip-compile ${{ matrix.python-version }} autoupdate"
+          git push --force --set-upstream origin pip-compile-autoupdate-${{ matrix.python-version }}
 
       - name: Create Pull Request
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
@@ -103,9 +64,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: coatl-dev-pip-compile
-        uses: ./pip-compile-2.7
+        uses: ./pip-compile
         with:
           path: ${{ env.REQUIREMENTS_PATH }}
+          python-version: '2.7'
 
       - name: Detect changes
         id: git-diff

@@ -1,0 +1,40 @@
+name: test-pip-compile
+
+on:
+  push:
+  pull_request:
+    branches:
+      - 'coatl'
+    paths:
+      - '.github/workflows/test-pip-compile.yaml'
+      - 'pip-compile/**'
+  workflow_dispatch:
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['2.7', '3.11']
+    env:
+      REQUIREMENTS_PATH: pip-compile/test/${{ matrix.python-version }}/requirements
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: pip-compile
+        uses: ./pip-compile
+        with:
+          path: ${{ env.REQUIREMENTS_PATH }}
+          python-version: ${{ matrix.python-version }}
+
+      - name: Detect changes
+        id: git-diff
+        uses: ./simple-git-diff
+        with:
+          path: ${{ env.REQUIREMENTS_PATH }}
+
+      - name: Show output
+        run: |
+          echo "Changes were detected: ${{ steps.git-diff.outputs.diff }}"

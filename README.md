@@ -8,8 +8,7 @@ in projects to keep them DRY.
 ## Catalog
 
 - [gpg-import](#gpg-import)
-- [pip-compile-2.7](#pip-compile-27)
-- [pip-compile-3.11](#pip-compile-311)
+- [pip-compile](#pip-compile)
 - [pr-create](#pr-create)
 - [pre-commit-autoupdate](#pre-commit-autoupdate)
 - [pypi-upload](#pypi-upload)
@@ -68,21 +67,32 @@ jobs:
           git commit -m "YOUR_COMMIT_MESSAGE"
 ```
 
-### pip-compile-2.7
+### pip-compile
 
-Run `pip-compile` to upgrade your Python 2 requirements.
+Run `pip-compile` to upgrade your Python 2/3 requirements.
+
+For Python 2:
 
 > The `pip-compile` command lets you compile a `requirements.txt` file from your
 dependencies, specified in either `setup.py` or `requirements.in`.
 
+For Python 3:
+
+> The `pip-compile` command lets you compile a `requirements.txt` file from your
+dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
+`requirements.in`.
+
 **Notes**:
 
-- :information_source: This essentially installs [`pip-tools==5.5.0`], which was
-  the last release supporting Python 2.
+- :information_source: This action will install the latest release for
+  `pip-tools` supporting your choice for `python-version`. E.g., for Python
+  `'2.7'`, it will install [`pip-tools==5.5.0`].
 
 **Inputs**:
 
 - `path` (`string`): A file or location of the requirement file(s).
+- `python-version` (`string`): Python version to use for installing `pip-tools`.
+  You may use MAJOR.MINOR or exact version. Defaults to `'2.7'`. Optional.
 
 **Example**:
 
@@ -105,58 +115,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile-2.7@v0.8.0
+        uses: coatl-dev/actions/pip-compile@v0.8.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
-
-      - name: Detect changes
-        id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.8.0
-        with:
-          path: "${{ env.REQUIREMENTS_PATH }}"
-
-      - name: Do something if changes were made
-        if: ${{ steps.git-diff.outputs.diff == 'true' }}
-        run: |
-          echo "Changes were detected."
-```
-
-### pip-compile-3.11
-
-Run pip-compile to upgrade your Python 3 requirements.
-
-> The `pip-compile` command lets you compile a `requirements.txt` file from your
-dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
-`requirements.in`.
-
-**Inputs**:
-
-- `path` (`string`): A file or location of the requirement file(s).
-
-**Example**:
-
-```yml
-name: pip-compile-311
-
-on:
-  schedule:
-    # Monthly at 12:00 PST (00:00 UTC)
-    - cron: '0 20 1 * *'
-
-jobs:
-  pip-compile:
-    runs-on: ubuntu-latest
-    env:
-      REQUIREMENTS_PATH: 'path/to/requirements'
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: pip-compile-311
-        uses: coatl-dev/actions/pip-compile-3.11@v0.8.0
-        with:
-          path: "${{ env.REQUIREMENTS_PATH }}"
+          python-version: '2.7.18'
 
       - name: Detect changes
         id: git-diff
