@@ -8,7 +8,6 @@ on:
       - '.github/workflows/test-pre-commit-autoupdate.yaml'
       - 'pre-commit-autoupdate/**'
   workflow_dispatch:
-  push:
 
 jobs:
   self-test:
@@ -20,6 +19,8 @@ jobs:
       - name: Update pre-commit hooks
         uses: ./pre-commit-autoupdate
         id: pre-commit-autoupdate
+        with:
+          pr-create: 'no'
 
       - name: Show Output
         run: |
