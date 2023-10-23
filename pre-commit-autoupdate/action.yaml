@@ -68,7 +68,6 @@ runs:
     - name: Update repos
       shell: bash
       run: |
-        echo "updates:" > pr.body
         if [ -z "${{ inputs.skip-repos }}" ]; then
         while IFS='' read -r repo || [ -n "${repo}" ]; do
           echo "$repo" >> pr.body
@@ -96,9 +95,10 @@ runs:
 
     - name: Get updated repos
       if: ${{ steps.git-diff.outputs.diff == 'true' }}
-      id: updated
       shell: bash
       run: |
+        echo "updates:" > pr.body
+        git diff --unified=1 .pre-commit-config.yaml | grep 'https://[a-zA-Z0-9./?=_%:-]*' | sed -e 's/ \{2,\}/  /g' >> pr.body
         cat pr.body
 
     - name: Import GPG key
