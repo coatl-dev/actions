@@ -1,3 +1,9 @@
+## v0.9.1 (2023-10-23)
+
+### Fix
+
+- **pre-commit-autoupdate**: prevent false positives (#23)
+
 ## v0.9.0 (2023-10-23)
 
 ### BREAKING CHANGE
