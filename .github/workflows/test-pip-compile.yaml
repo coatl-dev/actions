@@ -1,7 +1,6 @@
 name: test-pip-compile
 
 on:
-  push:
   pull_request:
     branches:
       - 'coatl'
