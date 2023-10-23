@@ -65,13 +65,26 @@ runs:
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install --requirement "${{ github.action_path }}/requirements.txt"
 
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
-      shell: bash
-
     - name: Update repos
       shell: bash
       run: |
-        pre-commit-autoupdate.sh
+        echo "updates:" > pr.body
+        if [ -z "${{ parameters.skipRepos }}" ]; then
+        while IFS='' read -r repo || [ -n "${repo}" ]; do
+          echo "$repo" >> pr.body
+          pre-commit autoupdate --repo "$repo"
+        done < <(
+          grep -Eo 'https://[a-zA-Z0-9./?=_%:-]*' .pre-commit-config.yaml
+        )
+        else
+          while IFS='' read -r repo || [ -n "${repo}" ]; do
+            echo "$repo" >> pr.body
+            pre-commit autoupdate --repo "$repo"
+          done < <(
+            grep -Eo 'https://[a-zA-Z0-9./?=_%:-]*' .pre-commit-config.yaml |
+            grep -iEwv "${{ parameters.skipRepos }}"
+          )
+        fi
       env:
         INPUT_SKIP_REPOS: ${{ inputs.skip-repos }}
 
@@ -82,12 +95,11 @@ runs:
         path: .pre-commit-config.yaml
 
     - name: Get updated repos
-      if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
+      if: ${{ steps.git-diff.outputs.diff == 'true' }}
       id: updated
       shell: bash
       run: |
-        echo "updates:" > pr.body
-        git diff .pre-commit-config.yaml | grep 'https://[a-zA-Z0-9./?=_%:-]*' | sed -e 's/ \{2,\}/  /g' >> pr.body
+        cat pr.body
 
     - name: Import GPG key
       if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
