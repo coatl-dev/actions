@@ -1,8 +1,6 @@
 #! /bin/bash
 # shellcheck source=/dev/null
 
-set -Eeuxo pipefail
-
 export PATH="/usr/bin:${PATH}"  # To find `id`
 source /etc/profile  # Makes python and other executables findable
 
