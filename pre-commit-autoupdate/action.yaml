@@ -94,7 +94,6 @@ runs:
       shell: bash
       run: |
         generate-commit-file.sh
-        cat "${RUNNER_TEMP}/commit.txt"
 
     - name: Commit and push changes
       if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
