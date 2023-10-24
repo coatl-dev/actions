@@ -1,3 +1,9 @@
+## v0.9.3 (2023-10-24)
+
+### Refactor
+
+- **pre-commit-autoupdate**: remove leading white spaces (#25)
+
 ## v0.9.2 (2023-10-24)
 
 ### Refactor
