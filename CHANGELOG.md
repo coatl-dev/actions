@@ -1,3 +1,9 @@
+## v0.9.2 (2023-10-24)
+
+### Refactor
+
+- **pre-commir-autoupdate**: generate commit message (#24)
+
 ## v0.9.1 (2023-10-23)
 
 ### Fix
