@@ -65,25 +65,13 @@ runs:
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install --requirement "${{ github.action_path }}/requirements.txt"
 
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+
     - name: Update repos
       shell: bash
       run: |
-        if [ -z "${{ inputs.skip-repos }}" ]; then
-        while IFS='' read -r repo || [ -n "${repo}" ]; do
-          echo "$repo" >> pr.body
-          pre-commit autoupdate --repo "$repo"
-        done < <(
-          grep -Eo 'https://[a-zA-Z0-9./?=_%:-]*' .pre-commit-config.yaml
-        )
-        else
-          while IFS='' read -r repo || [ -n "${repo}" ]; do
-            echo "$repo" >> pr.body
-            pre-commit autoupdate --repo "$repo"
-          done < <(
-            grep -Eo 'https://[a-zA-Z0-9./?=_%:-]*' .pre-commit-config.yaml |
-            grep -iEwv "${{ inputs.skip-repos }}"
-          )
-        fi
+        pre-commit-autoupdate.sh
       env:
         INPUT_SKIP_REPOS: ${{ inputs.skip-repos }}
 
@@ -93,13 +81,6 @@ runs:
       with:
         path: .pre-commit-config.yaml
 
-    - name: Get updated repos
-      if: ${{ steps.git-diff.outputs.diff == 'true' }}
-      shell: bash
-      run: |
-        echo "updates:" > pr.body
-        git diff --unified=1 .pre-commit-config.yaml | grep 'https://[a-zA-Z0-9./?=_%:-]*' | sed -e 's/ \{2,\}/  /g' >> pr.body
-
     - name: Import GPG key
       if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
       id: gpg-import
@@ -108,18 +89,19 @@ runs:
         passphrase: ${{ inputs.gpg-sign-passphrase }}
         private-key: ${{ inputs.gpg-sign-private-key }}
 
-    - name: Commit changes
+    - name: Build commit message
+      if: ${{ steps.git-diff.outputs.diff == 'true' }}
+      shell: bash
+      run: |
+        generate-commit-file.sh
+
+    - name: Commit and push changes
       if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
       shell: bash
       run: |
         git checkout -B 'coatl-dev-pre-commit-autoupdate'
         git add .pre-commit-config.yaml
-        git commit -m 'build(deps): coatl-dev pre-commit autoupdate'
-
-    - name: Push changes
-      if: ${{ steps.git-diff.outputs.diff == 'true' && inputs.pr-create == 'yes' }}
-      shell: bash
-      run: |
+        git commit --file="${RUNNER_TEMP}/commit.txt"
         git push --force --set-upstream origin coatl-dev-pre-commit-autoupdate
 
     - name: Create Pull Request
@@ -127,5 +109,3 @@ runs:
       uses: coatl-dev/actions/pr-create@coatl
       with:
         gh-token: ${{ inputs.gh-token }}
-        title: 'build(deps): coatl-dev pre-commit autoupdate'
-        body-file: pr.body
