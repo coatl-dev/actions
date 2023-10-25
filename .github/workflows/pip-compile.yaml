@@ -45,7 +45,7 @@ jobs:
         run: |
           git checkout -B pip-compile-autoupdate-${{ matrix.python-version }}
           git add ${{ env.REQUIREMENTS_PATH }}
-          git commit -m "refactor: pip-compile ${{ matrix.python-version }} autoupdate"
+          git commit -m "chore: pip-compile ${{ matrix.python-version }} autoupdate"
           git push --force --set-upstream origin pip-compile-autoupdate-${{ matrix.python-version }}
 
       - name: Create Pull Request
