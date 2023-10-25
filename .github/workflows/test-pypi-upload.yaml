@@ -51,6 +51,7 @@ jobs:
 
       - name: Switch directories
         run: |
+          cd "test/pypi-upload/test/${{ matrix.python-version }}"
           ls -alF
 
       - name: Test action
