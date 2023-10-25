@@ -39,7 +39,7 @@ jobs:
           cd "pypi-upload/test/${{ matrix.python-version }}"
 
       - name: Test action
-        uses: pypi-upload
+        uses: ./pypi-upload
         env:
           DEBUG: true
           PATH: utter-nonsense
