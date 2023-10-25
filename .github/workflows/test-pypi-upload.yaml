@@ -33,13 +33,20 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          path: test
+
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
 
       - name: Switch directories
         run: |
           cd "pypi-upload/test/${{ matrix.python-version }}"
 
       - name: Test action
-        uses: ./pypi-upload
+        uses: ./test/pypi-upload
         env:
           DEBUG: true
           PATH: utter-nonsense
