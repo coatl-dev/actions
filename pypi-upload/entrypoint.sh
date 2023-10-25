@@ -4,6 +4,8 @@
 export PATH="/usr/bin:${PATH}"  # To find `id`
 source /etc/profile  # Makes python and other executables findable
 
+echo "$PWD"
+
 python -m build
 
 if [[ ${INPUT_CHECK,,} != "no" ]] ; then

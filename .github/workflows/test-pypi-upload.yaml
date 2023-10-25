@@ -31,3 +31,4 @@ jobs:
         with:
           check: 'yes'
           python-version: ${{ matrix.python-version }}
+          upload: 'no'
