@@ -1,13 +1,18 @@
 name: coatl-dev-pypi-upload
-description: Build and upload Python 2 distribution packages.
+description: Build and upload Python 2/3 distribution packages.
 author: thecesrom
 
 inputs:
+  python-version:
+    description: >-
+      Python version to use for building the package.
+    required: false
+    default: '2.7'
   username:
     description: >-
       The username to authenticate to the repository (package index) as.
     required: false
-    default: __token__
+    default: '__token__'
   password:
     description:  >-
       The password to authenticate to the repository (package index) with.
@@ -16,31 +21,41 @@ inputs:
     description: >-
       The repository (package index) URL to upload the package to.
     required: false
-    default: https://upload.pypi.org/legacy/
+    default: 'https://upload.pypi.org/legacy/'
   check:
     description: Check metadata with twine before uploading.
     required: false
-    default: yes
+    default: 'yes'
   upload:
     description: >-
       Upload automatically.
       Set it to "no" if you would like to upload manually.
     required: false
-    default: yes
+    default: 'yes'
   register:
     description: >-
       [DO NOT USE]
       Internal use only.
     required: false
-    default: no
+    default: 'no'
 
 runs:
-  using: docker
-  image: Dockerfile
-  args:
-    - ${{ inputs.username }}
-    - ${{ inputs.password }}
-    - ${{ inputs.url }}
-    - ${{ inputs.check }}
-    - ${{ inputs.upload }}
-    - ${{ inputs.register }}
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        docker build ${{ github.action_path }} \
+          --build-arg VERSION=${{ inputs.python-version }} \
+          --file ${{ github.action_path }}/Dockerfile \
+          --tag coatl-dev-pypi-upload:${{ inputs.python-version }}
+
+    - shell: bash
+      run: |
+        docker run --rm \
+          --env "INPUT_USERNAME=${{ inputs.username }}" \
+          --env "INPUT_PASSWORD=${{ inputs.password }}" \
+          --env "INPUT_URL=${{ inputs.url }}" \
+          --env "INPUT_CHECK=${{ inputs.check }}" \
+          --env "INPUT_UPLOAD=${{ inputs.upload }}" \
+          --env "INPUT_REGISTER=${{ inputs.register }}" \
+          coatl-dev-pypi-upload:${{ inputs.python-version }}

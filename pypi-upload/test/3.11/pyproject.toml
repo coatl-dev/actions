@@ -1,0 +1,26 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools>=61",
+]
+
+[project]
+name = "pypi-upload-test-3-11"
+version = "0.0.1a0"
+description = "Test package"
+readme = "README.md"
+authors = [
+  { name="César Román", email="cesar@coatl.dev" },
+]
+requires-python = "<3.12, >=3.11"
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: The Unlicense (Unlicense)",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+]
+[project.urls]
+"Bug Tracker" = "https://github.com/coatl-dev/actions"
+"Homepage" = "https://github.com/coatl-dev/actions/blob/coatl/pypi-upload/test/3.11"

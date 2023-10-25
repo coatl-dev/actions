@@ -1,4 +1,5 @@
-FROM python:2.7-slim
+ARG VERSION=2.7
+FROM python:$VERSION-slim
 
 LABEL \
   maintainer="César Román <cesar@coatl.dev>" \
