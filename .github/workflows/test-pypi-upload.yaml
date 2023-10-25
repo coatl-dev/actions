@@ -33,29 +33,13 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          path: test
-
-      - name: Install Docker
-        run: |
-          # Check if Docker is installed
-          if ! command -v docker &> /dev/null
-          then
-            # Install Docker
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            sh get-docker.sh
-            sudo usermod -aG docker $USER
-            sudo systemctl start docker
-            sudo systemctl enable docker
-          fi
 
       - name: Switch directories
         run: |
-          cd "test/pypi-upload/test/${{ matrix.python-version }}"
-          ls -alF
+          cd "pypi-upload/test/${{ matrix.python-version }}"
 
       - name: Test action
-        uses: ./test/pypi-upload
+        uses: pypi-upload
         env:
           DEBUG: true
           PATH: utter-nonsense
