@@ -9,22 +9,10 @@ on:
       - 'pypi-upload/**'
   workflow_dispatch:
 
-env:
-  devpi-password: 'changeme'
-  devpi-username: 'root'
-  devpi-port: '3141'
-
 jobs:
   self-test:
     name: pypi-upload-${{ matrix.python-version }}
     runs-on: ubuntu-latest
-    services:
-      devpi:
-        image: coatldev/devpi:latest
-        env:
-          DEVPI_PASSWORD: ${{ env.devpi-password }}
-        ports:
-          - 3141
     strategy:
       matrix:
         python-version: ['2.7', '3.11']
@@ -40,11 +28,6 @@ jobs:
 
       - name: Test action
         uses: ./pypi-upload
-        env:
-          DEBUG: true
-          PATH: utter-nonsense
         with:
-          username: "${{ env.devpi-username }}"
-          password: "${{ env.devpi-password }}"
-          register: 'yes'
-          url: "http://devpi:${{ env.devpi-port }}/${{ env.devpi-username }}/public/"
+          check: 'yes'
+          python-version: ${{ matrix.python-version }}
