@@ -1,3 +1,9 @@
+## v0.9.4 (2023-10-25)
+
+### Refactor
+
+- **pypi-upload**: remove requirement files (#27)
+
 ## v0.9.3 (2023-10-24)
 
 ### Refactor
