@@ -52,7 +52,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v0.9.4
+        uses: coatl-dev/actions/gpg-import@v0.9.5
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -115,14 +115,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v0.9.4
+        uses: coatl-dev/actions/pip-compile@v0.9.5
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.9.4
+        uses: coatl-dev/actions/simple-git-diff@v0.9.5
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -154,7 +154,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v0.9.4
+        uses: coatl-dev/actions/pr-create@v0.9.5
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -204,7 +204,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update pre-commit hooks
-        uses: coatl-dev/actions/pre-commit-autoupdate@v0.9.4
+        uses: coatl-dev/actions/pre-commit-autoupdate@v0.9.5
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
           gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
@@ -214,11 +214,14 @@ jobs:
 
 ### pypi-upload
 
-GitHub action for building and publishing your Python 2 distribution files to
+GitHub action for building and publishing your Python 2/2 distribution files to
 PyPI or any other repository using `build` and `twine`.
 
 **Inputs**:
 
+- `python-version` (`string`): Python version to use for building your
+  distribution package. You may use MAJOR.MINOR or exact version. Defaults to
+  `'2.7'`. Optional.
 - `username` (`string`): Defaults to `'__token__'`. Optional.
 - `password`: (`string`). It can be a password or token. Required. Note: It is
   recommended to keep your password as secrets.
@@ -250,10 +253,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: python2-pypi-upload
-        uses: coatl-dev/actions/pypi-upload@v0.9.4
+      - name: python-pypi-upload
+        uses: coatl-dev/actions/pypi-upload@v0.9.5
         with:
-          password: ${{ secrets.PYPI_API_TOKEN_IGNITION_API_PKG }}
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          python-version: '3.11'
 ```
 
 **Uploading to TestPyPI**:
@@ -324,7 +328,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v0.9.4
+        uses: coatl-dev/actions/simple-git-diff@v0.9.5
         with:
           path: 'README.md'
 
