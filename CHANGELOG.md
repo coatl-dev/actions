@@ -1,3 +1,9 @@
+## v0.10.0 (2023-10-28)
+
+### Refactor
+
+- **pypi-upload**: remove action (#31)
+
 ## v0.9.5 (2023-10-27)
 
 ### Refactor
