@@ -11,7 +11,6 @@ in projects to keep them DRY.
 - [pip-compile](#pip-compile)
 - [pr-create](#pr-create)
 - [pre-commit-autoupdate](#pre-commit-autoupdate)
-- [pypi-upload](#pypi-upload)
 - [simple-git-diff](#simple-git-diff)
 
 ### gpg-import
@@ -212,85 +211,6 @@ jobs:
           skip-repos: 'flake8'
 ```
 
-### pypi-upload
-
-GitHub action for building and publishing your Python 2/2 distribution files to
-PyPI or any other repository using `build` and `twine`.
-
-**Inputs**:
-
-- `python-version` (`string`): Python version to use for building your
-  distribution package. You may use MAJOR.MINOR or exact version. Defaults to
-  `'2.7'`. Optional.
-- `username` (`string`): Defaults to `'__token__'`. Optional.
-- `password`: (`string`). It can be a password or token. Required. Note: It is
-  recommended to keep your password as secrets.
-- `url` (`string`): The repository (package index) URL to upload the package to.
-  Defaults to `'https://upload.pypi.org/legacy/'`. Optional.
-- `check` (`string`): Checks whether your distribution’s long description will
-  render correctly on PyPI. Defaults to `'yes'`. Options: `'yes'`, `'no'`.
-  Optional.
-- `upload` (`string`): Uploads to a repository. Defaults to `'yes'`. Options:
-  `'yes'`, `'no'`. Optional.
-
-**Example**:
-
-To use this action, add the following step to your workflow file (e.g.
-`.github/workflows/publish.yaml`).
-
-```yml
-name: publish
-
-on:
-  release:
-    types:
-      - published
-
-jobs:
-  pypi-publish:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: python-pypi-upload
-        uses: coatl-dev/actions/pypi-upload@v0.9.5
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
-          python-version: '3.11'
-```
-
-**Uploading to TestPyPI**:
-
-```yml
-- name: Publish package to TestPyPI
-  uses: coatl-dev/actions/pypi-upload@v1
-  with:
-    username: ${{ secrets.TEST_PYPI_USER }}
-    password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-    url: "https://test.pypi.org/legacy/"
-```
-
-**Disabling metadata verification**:
-
-It is recommended that you run `twine check` before upload. You can also disable
-it with:
-
-```yml
-   with:
-     check: no
-```
-
-**Disabling automatically uploading the package**:
-
-If you would like to run additional checks before uploading, you can disable it
-with:
-
-```yml
-   with:
-     upload: no
-```
-
 ### simple-git-diff
 
 Run [`git diff`] on a file or path.
@@ -339,6 +259,4 @@ jobs:
 ```
 
 [`git diff`]: https://git-scm.com/docs/git-diff
-[`local hooks`]: https://pre-commit.com/#repository-local-hooks
 [`pip-tools==5.5.0`]: https://pypi.org/project/pip-tools/5.5.0/
-[Temporarily disabling hooks]: https://pre-commit.com/#temporarily-disabling-hooks
