@@ -24,10 +24,3 @@ repos:
       - id: hadolint
         files: ^.*/Dockerfile$
         types: [file]
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: 3.12.0
-    hooks:
-    - id: commitizen
-    - id: commitizen-branch
-      stages:
-        - push
