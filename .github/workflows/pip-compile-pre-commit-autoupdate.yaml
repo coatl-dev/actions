@@ -1,20 +1,15 @@
-name: pip-compile
+name: pip-compile-pre-commit-autoupdate
 
 on:
   schedule:
-    # Days 14 and 28 at 12:00 PST
-    - cron: '0 20 14,28 * *'
+    - cron: '0 20 * * 5'
   workflow_dispatch:
 
 jobs:
-  pip-compile:
-    name: pip-compile-${{ matrix.python-version }}
+  pip-compile-pre-commit-autoupdate:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['2.7', '3.11']
     env:
-      REQUIREMENTS_PATH: pip-compile/test/${{ matrix.python-version }}/requirements
+      REQUIREMENTS_PATH: pre-commit-autoupdate/requirements.txt
 
     steps:
       - name: Checkout repository
@@ -24,18 +19,18 @@ jobs:
         uses: ./pip-compile
         with:
           path: ${{ env.REQUIREMENTS_PATH }}
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@coatl
+        uses: ./simple-git-diff
         with:
           path: ${{ env.REQUIREMENTS_PATH }}
 
       - name: Import GPG key
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@coatl
+        uses: ./gpg-import
         with:
           passphrase: ${{ secrets.COATL_BOT_GPG_PASSPHRASE }}
           private-key: ${{ secrets.COATL_BOT_GPG_PRIVATE_KEY }}
@@ -43,13 +38,13 @@ jobs:
       - name: Commit changes
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
         run: |
-          git checkout -B pip-compile-autoupdate-${{ matrix.python-version }}
+          git checkout -B pip-compile-autoupdate
           git add ${{ env.REQUIREMENTS_PATH }}
-          git commit -m "chore: pip-compile ${{ matrix.python-version }} autoupdate"
-          git push --force --set-upstream origin pip-compile-autoupdate-${{ matrix.python-version }}
+          git commit -m "refactor(pre-commit-autpupdate): pip-compile autoupdate"
+          git push --force --set-upstream origin pip-compile-autoupdate
 
       - name: Create Pull Request
         if: ${{ success() && steps.git-diff.outputs.diff == 'true' }}
-        uses: coatl-dev/actions/pr-create@coatl
+        uses: ./pr-create
         with:
           gh-token: ${{ secrets.COATL_BOT_GH_TOKEN }}
