@@ -9,7 +9,7 @@ jobs:
   pip-compile-pre-commit-autoupdate:
     runs-on: ubuntu-latest
     env:
-      REQUIREMENTS_PATH: pre-commit-autoupdate/requirements.txt
+      REQUIREMENTS_PATH: pre-commit-autoupdate
 
     steps:
       - name: Checkout repository
