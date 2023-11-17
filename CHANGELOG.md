@@ -1,3 +1,9 @@
+## v0.10.1 (2023-11-17)
+
+### Refactor
+
+- **pre-commit-autpupdate**: pip-compile autoupdate (#36)
+
 ## v0.10.0 (2023-10-28)
 
 ### Refactor
