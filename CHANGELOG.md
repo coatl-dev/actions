@@ -1,3 +1,9 @@
+## v1.0.0 (2023-11-21)
+
+### Refactor
+
+- **pre-commit-autoupdate**: use coatl-dev/workflow-requirements (#37)
+
 ## v0.10.1 (2023-11-17)
 
 ### Refactor
