@@ -38,32 +38,29 @@ runs:
   using: composite
   steps:
     - name: Set up Python 3.11
-      id: setup-python
       uses: actions/setup-python@v4
+      id: setup-python
       with:
         python-version: '3.11'
 
-    - name: Calculate requirements file hash
-      if: ${{ inputs.cache == 'yes' }}
-      id: requirements-hash
-      shell: bash
-      run: |
-        file_path="${{ github.action_path }}/requirements.txt"
-        file_hash=$(sha256sum "$file_path")
-        echo "hash=$file_hash" >> "$GITHUB_OUTPUT"
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        repository: coatl-dev/workflow-requirements
+        path: deps
 
     - name: Cache pip
       if: ${{ inputs.cache == 'yes' }}
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: coatl-dev-pre-commit-${{ env.pythonLocation }}-${{ steps.requirements-hash.outputs.hash }}
+        key: coatl-dev-pre-commit-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('deps/requirements/base.txt', 'deps/requirements/pre-commit.txt') }}
 
     - name: Install pre-commit
       shell: bash
       run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip install --requirement "${{ github.action_path }}/requirements.txt"
+        python -m pip install --requirement deps/requirements/base.txt
+        python -m pip install --requirement deps/requirements/pre-commit.txt
 
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
