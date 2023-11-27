@@ -25,6 +25,11 @@ inputs:
       Whether to create a Pull Request.
     required: false
     default: 'yes'
+  pr-auto-merge:
+    description: >-
+      Automatically merge only after necessary requirements are met.
+    required: false
+    default: 'yes'
   skip-repos:
     description: >-
       A list of repos to exclude from autoupdate.
@@ -106,3 +111,4 @@ runs:
       uses: coatl-dev/actions/pr-create@coatl
       with:
         gh-token: ${{ inputs.gh-token }}
+        auto-merge: ${{ inputs.pr-auto-merge }}

@@ -22,6 +22,11 @@ inputs:
       Read body text from file.
     required: false
     default: ''
+  auto-merge:
+    description: >-
+      Automatically merge only after necessary requirements are met.
+    required: false
+    default: 'yes'
 
 runs:
   using: composite
@@ -36,5 +41,6 @@ runs:
         INPUT_TITLE: ${{ inputs.title }}
         INPUT_BODY: ${{ inputs.body }}
         INPUT_BODY_FILE: ${{ inputs.body-file }}
+        INPUT_AUTO_MERGE: ${{ inputs.auto-merge }}
       run: |
         create.sh

@@ -14,3 +14,11 @@ else
     # Use commit info for title and body
     gh pr create --fill
 fi
+
+if [ "$INPUT_AUTO_MERGE" == "yes" ]; then
+    # Merge pull request
+    gh pr merge \
+        --auto \
+        --delete-branch \
+        --squash
+fi
