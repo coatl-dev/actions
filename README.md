@@ -183,6 +183,7 @@ jobs:
       - name: Upgrade pip requirements
         uses: coatl-dev/actions/pip-compile-upgrade@v1.2.0
         with:
+          path: requirements
           gh-token: ${{ secrets.GH_TOKEN }}
           gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           gpg-sign-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
