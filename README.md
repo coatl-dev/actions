@@ -9,6 +9,7 @@ in projects to keep them DRY.
 
 - [gpg-import](#gpg-import)
 - [pip-compile](#pip-compile)
+- [pip-compile-upgrade](#pip-compile-upgrade)
 - [pr-create](#pr-create)
 - [pre-commit-autoupdate](#pre-commit-autoupdate)
 - [simple-git-diff](#simple-git-diff)
@@ -51,7 +52,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v1.1.0
+        uses: coatl-dev/actions/gpg-import@v1.2.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -114,14 +115,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v1.1.0
+        uses: coatl-dev/actions/pip-compile@v1.2.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v1.1.0
+        uses: coatl-dev/actions/simple-git-diff@v1.2.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -129,6 +130,62 @@ jobs:
         if: ${{ steps.git-diff.outputs.diff == 'true' }}
         run: |
           echo "Changes were detected."
+```
+
+### pip-compile-upgrade
+
+GitHub action for running `pip-compile upgrade` on your Python 2 and 3
+requirements.
+
+**Inputs**:
+
+- `path` (`string`): A file or location of the requirement file(s).
+- `python-version` (`string`): Python version to use for installing `pip-tools`.
+  You may use MAJOR.MINOR or exact version. Defaults to `'2.7'`. Optional.
+- `gh-token` (`secret`): GitHub token. Required.
+- `gpg-sign-passphrase` (`secret`): GPG private key passphrase. Required when
+  signing commits, otherwise is optional.
+- `gpg-sign-private-key` (`secret`): GPG private key exported as an ASCII
+  armored version. Required when signing commits, otherwise is optional.
+- `pr-base-branch` (`string`): The branch into which you want your code merged.
+  Defaults to `'main'`. Required when `pr-create` is set to `'yes'`, otherwise
+  is optional.
+- `pr-create` (`string`): Whether to create a Pull Request. Options: `'yes'`,
+  `'no'`. Defaults to `'yes'`. Optional.
+- `pr-commit-message` (`string`): Use the given message as the commit message.
+  Defaults to `'chore(requirements): pip-compile upgrade'`. Optional.
+- `pr-auto-merge` (`string`): Automatically merge only after necessary
+  requirements are met. Options: `'yes'`, `'no'`. Defaults to `'yes'`. Optional.
+
+**Outputs**:
+
+- `update-hit` (`boolean`): A boolean value to indicate if one or more repos
+  were updated.
+
+**Example**:
+
+```yml
+name: pip-compile-upgrade
+
+on:
+  schedule:
+    # Monday at 12:00 PST
+    - cron: '0 20 * * 1'
+  workflow_dispatch:
+
+jobs:
+  pip-compile-upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Upgrade pip requirements
+        uses: coatl-dev/actions/pip-compile-upgrade@v1.2.0
+        with:
+          gh-token: ${{ secrets.GH_TOKEN }}
+          gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          gpg-sign-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
 ```
 
 ### pr-create
@@ -155,7 +212,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v1.1.0
+        uses: coatl-dev/actions/pr-create@v1.2.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -178,6 +235,8 @@ GitHub action for running `pre-commit autoupdate` and allow to skip hooks.
   is optional.
 - `pr-create` (`string`): Whether to create a Pull Request. Options: `'yes'`,
   `'no'`. Defaults to `'yes'`. Optional.
+- `pr-auto-merge` (`string`): Automatically merge only after necessary
+  requirements are met. Options: `'yes'`, `'no'`. Defaults to `'yes'`. Optional.
 - `skip-repos` (`string`): A list of repos to exclude from autoupdate. The repos
   must be separated by a "pipe" character `'|'`. Defaults to `''`. Optional.
 
@@ -205,7 +264,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update pre-commit hooks
-        uses: coatl-dev/actions/pre-commit-autoupdate@v1.1.0
+        uses: coatl-dev/actions/pre-commit-autoupdate@v1.2.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
           gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
@@ -250,7 +309,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v1.1.0
+        uses: coatl-dev/actions/simple-git-diff@v1.2.0
         with:
           path: 'README.md'
 
