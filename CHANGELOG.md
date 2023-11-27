@@ -1,3 +1,9 @@
+## v1.1.0 (2023-11-27)
+
+### Feat
+
+- **pr-create**: add ability to automatically merge PRs (#38)
+
 ## v1.0.0 (2023-11-21)
 
 ### Refactor

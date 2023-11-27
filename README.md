@@ -51,7 +51,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v1.0.0
+        uses: coatl-dev/actions/gpg-import@v1.1.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -114,14 +114,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v1.0.0
+        uses: coatl-dev/actions/pip-compile@v1.1.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v1.0.0
+        uses: coatl-dev/actions/simple-git-diff@v1.1.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -141,6 +141,8 @@ GitHub Action to create Pull Request using gh.
 - `title` (`string`): Title for the pull request. Optional.
 - `body` (`string`): Body for the pull request. Optional.
 - `body-file` (`string`): Read body text from file. Optional.
+- `auto-merge` (`string`): Automatically merge only after necessary requirements
+  are met. Options: `'yes'`, `'no'`. Defaults to `'yes'`. Optional.
 
 **Notes**:
 
@@ -153,7 +155,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v1.0.0
+        uses: coatl-dev/actions/pr-create@v1.1.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -203,7 +205,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update pre-commit hooks
-        uses: coatl-dev/actions/pre-commit-autoupdate@v1.0.0
+        uses: coatl-dev/actions/pre-commit-autoupdate@v1.1.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
           gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
@@ -248,7 +250,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v1.0.0
+        uses: coatl-dev/actions/simple-git-diff@v1.1.0
         with:
           path: 'README.md'
 
