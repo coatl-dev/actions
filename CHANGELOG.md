@@ -1,3 +1,9 @@
+## v1.2.1 (2023-12-11)
+
+### Refactor
+
+- **deps**: update actions/setup-python to version 5 (#42)
+
 ## v1.2.0 (2023-11-27)
 
 ### Feat

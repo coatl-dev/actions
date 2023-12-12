@@ -52,7 +52,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v1.2.0
+        uses: coatl-dev/actions/gpg-import@v1.2.1
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -115,14 +115,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v1.2.0
+        uses: coatl-dev/actions/pip-compile@v1.2.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v1.2.0
+        uses: coatl-dev/actions/simple-git-diff@v1.2.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -181,7 +181,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Upgrade pip requirements
-        uses: coatl-dev/actions/pip-compile-upgrade@v1.2.0
+        uses: coatl-dev/actions/pip-compile-upgrade@v1.2.1
         with:
           path: requirements
           gh-token: ${{ secrets.GH_TOKEN }}
@@ -213,7 +213,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v1.2.0
+        uses: coatl-dev/actions/pr-create@v1.2.1
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -265,7 +265,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update pre-commit hooks
-        uses: coatl-dev/actions/pre-commit-autoupdate@v1.2.0
+        uses: coatl-dev/actions/pre-commit-autoupdate@v1.2.1
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
           gpg-sign-passphrase: ${{ secrets.GPG_PASSPHRASE }}
@@ -310,7 +310,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v1.2.0
+        uses: coatl-dev/actions/simple-git-diff@v1.2.1
         with:
           path: 'README.md'
 
