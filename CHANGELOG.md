@@ -1,3 +1,9 @@
+## v2.0.0 (2024-01-09)
+
+### Refactor
+
+- drop pip-compile-upgrade and pre-commit-autoupdate (#44)
+
 ## v1.2.1 (2023-12-11)
 
 ### Refactor

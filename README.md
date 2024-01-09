@@ -50,7 +50,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v1.2.1
+        uses: coatl-dev/actions/gpg-import@v2.0.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -113,14 +113,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v1.2.1
+        uses: coatl-dev/actions/pip-compile@v2.0.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v1.2.1
+        uses: coatl-dev/actions/simple-git-diff@v2.0.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -154,7 +154,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v1.2.1
+        uses: coatl-dev/actions/pr-create@v2.0.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -196,7 +196,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v1.2.1
+        uses: coatl-dev/actions/simple-git-diff@v2.0.0
         with:
           path: 'README.md'
 
