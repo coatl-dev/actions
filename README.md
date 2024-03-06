@@ -71,26 +71,25 @@ Run `pip-compile` to upgrade your Python 2/3 requirements.
 
 For Python 2:
 
-> The `pip-compile` command lets you compile a `requirements.txt` file from your
+The `pip-compile` command lets you compile a `requirements.txt` file from your
 dependencies, specified in either `setup.py` or `requirements.in`.
 
 For Python 3:
 
-> The `pip-compile` command lets you compile a `requirements.txt` file from your
+The `pip-compile` command lets you compile a `requirements.txt` file from your
 dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
 `requirements.in`.
-
-**Notes**:
-
-- :information_source: This action will install the latest release for
-  `pip-tools` supporting your choice for `python-version`. E.g., for Python
-  `'2.7'`, it will install [`pip-tools==5.5.0`].
 
 **Inputs**:
 
 - `path` (`string`): A file or location of the requirement file(s).
 - `python-version` (`string`): Python version to use for installing `pip-tools`.
-  You may use MAJOR.MINOR or exact version. Defaults to `'2.7'`. Optional.
+  You may use MAJOR.MINOR or exact version. Defaults to `'3.12'`. Optional.
+
+> [!NOTE]
+> This action will install the latest release for `pip-tools` supporting your
+> choice for `python-version`. E.g., for Python `'2.7'`, it will install
+> [`pip-tools==5.5.0`].
 
 **Example**:
 
@@ -143,10 +142,9 @@ GitHub Action to create Pull Request using gh.
 - `auto-merge` (`string`): Automatically merge only after necessary requirements
   are met. Options: `'yes'`, `'no'`. Defaults to `'yes'`. Optional.
 
-**Notes**:
-
-If all optional inputs are missing, `gh` will use the commit message and body
-and run `gh pr create --fill`.
+> [!IMPORTANT]
+> If all optional inputs are missing, `gh` will use the commit message and body
+> and run `gh pr create --fill`.
 
 **Example**:
 
