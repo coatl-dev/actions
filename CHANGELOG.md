@@ -1,3 +1,13 @@
+## v3.0.0 (2024-03-06)
+
+### BREAKING CHANGE
+
+- default to Python 3.12
+
+### Refactor
+
+- **pip-compile**: default to Python 3.12 (#47)
+
 ## v2.0.0 (2024-01-09)
 
 ### Refactor
