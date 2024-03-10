@@ -11,7 +11,7 @@ inputs:
     description: >-
       Python version to use for installing pip-tools.
     required: false
-    default: '2.7'
+    default: '3.12'
 
 runs:
   using: composite
