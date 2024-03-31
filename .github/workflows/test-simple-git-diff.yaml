@@ -2,13 +2,10 @@ name: test-simple-git-diff
 
 on:
   pull_request:
+    branches:
+      - 'coatl'
     paths:
       - '.github/workflows/test-simple-git-diff.yaml'
-      - 'simple-git-diff/action.yaml'
-  push:
-    branches:
-      - coatl
-    paths:
       - 'simple-git-diff/action.yaml'
   workflow_dispatch:
 
