@@ -17,7 +17,7 @@ inputs:
     description: >-
       Java distribution.
     required: false
-    default: 'azul'
+    default: 'zulu'
   java-version:
     description: >-
       The Java version to set up.
