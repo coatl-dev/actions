@@ -1,6 +1,6 @@
 # coatl-dev GitHub Actions
 
-[![ci](https://github.com/coatl-dev/actions/actions/workflows/ci.yaml/badge.svg)](https://github.com/coatl-dev/actions/actions/workflows/ci.yaml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/coatl-dev/actions/coatl.svg)](https://results.pre-commit.ci/latest/github/coatl-dev/actions/coatl)
 
 A collection of custom GitHub Actions that are used to simplify our pipelines
 in projects to keep them DRY.
