@@ -10,6 +10,7 @@ in projects to keep them DRY.
 - [gpg-import](#gpg-import)
 - [pip-compile](#pip-compile)
 - [pr-create](#pr-create)
+- [setup-jython](#setup-jython)
 - [simple-git-diff](#simple-git-diff)
 
 ### gpg-import
@@ -50,7 +51,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v3.0.1
+        uses: coatl-dev/actions/gpg-import@v3.1.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -112,14 +113,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v3.0.1
+        uses: coatl-dev/actions/pip-compile@v3.1.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v3.0.1
+        uses: coatl-dev/actions/simple-git-diff@v3.1.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -152,9 +153,42 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v3.0.1
+        uses: coatl-dev/actions/pr-create@v3.1.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
+```
+
+### setup-jython
+
+Set up a specific version of Jython and add the command-line tools to the PATH.
+
+> [!TIP]
+> This action also sets the `JYTHON_HOME` environment variable.
+
+**Inputs**:
+
+- `jython-version` (`string`): The Jython version to install. Defaults to
+  `'2.7.3'`. Optional. See [supported Jython versions].
+- `target-directory` (`string`): Target directory to install to. Defaults
+  to `'/opt/jython'`. Optional.
+- `java-distribution` (`string`): Java distribution to use for installing
+  Jython. Defaults to `'zulu'`. Optional. See [supported Java distributions].
+- `java-version` (`string`): The Java version to set up. Defaults to `'11'`.
+  Optional.
+
+**Outputs**:
+
+- `jython-version` (`string`): The installed Jython version.
+- `jython-path` (`string`): The absolute path to the Jython executable.
+
+**Example**:
+
+```yml
+    - name: Set up Jython
+      uses: coatl-dev/actions/setup-jython@v3.1.0
+      with:
+        jython-version: '2.7.3'
+    - run: jython my_script.py
 ```
 
 ### simple-git-diff
@@ -194,7 +228,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v3.0.1
+        uses: coatl-dev/actions/simple-git-diff@v3.1.0
         with:
           path: 'README.md'
 
@@ -206,3 +240,5 @@ jobs:
 
 [`git diff`]: https://git-scm.com/docs/git-diff
 [`pip-tools==5.5.0`]: https://pypi.org/project/pip-tools/5.5.0/
+[supported Java distributions]: https://github.com/actions/setup-java#supported-distributions
+[supported Jython versions]: https://repo1.maven.org/maven2/org/python/jython-installer/
