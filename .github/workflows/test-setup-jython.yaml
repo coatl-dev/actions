@@ -16,7 +16,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - uses: ./setup-jython
+      - name: Set up Jython
+        id: jy
+        uses: ./setup-jython
+
+      - name: Test jython-path output
+        run: |
+          echo "${{ steps.jy.outputs.jython-path }}"
+
+      - name: Test jython-version output
+        run: |
+          echo "${{ steps.jy.outputs.jython-version }}"
 
       - name: Test
         run: |
