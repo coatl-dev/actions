@@ -45,13 +45,13 @@ runs:
     - name: Install Jython
       shell: bash
       run: |
-        wget "https://repo1.maven.org/maven2/org/python/jython-installer/${{ inputs.jython-version }}/jython-installer-${{ inputs.jython-version }}.jar"
+        wget -q "https://repo1.maven.org/maven2/org/python/jython-installer/${{ inputs.jython-version }}/jython-installer-${{ inputs.jython-version }}.jar"
         java -jar "jython-installer-${{ inputs.jython-version }}.jar" \
           --silent \
           --type standard \
           --directory "${{ inputs.target-directory }}"
         rm -f "jython-installer-${{ inputs.jython-version }}.jar"
-        echo "$${{ inputs.target-directory }}/bin" >> $GITHUB_PATH
+        echo "${{ inputs.target-directory }}/bin" >> $GITHUB_PATH
 
     - name: Get Jython version
       id: get-version
