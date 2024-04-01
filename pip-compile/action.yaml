@@ -1,6 +1,6 @@
 name: coatl-dev-pip-compile
 description: Run pip-compile to upgrade your Python 2/3 requirements.
-author: thecesrom
+author: cesarcoatl
 
 inputs:
   path:

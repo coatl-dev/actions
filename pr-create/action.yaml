@@ -1,6 +1,6 @@
 name: coatl-dev-pr-create
 description: GitHub Action to create Pull Request using gh.
-author: thecesrom
+author: cesarcoatl
 
 inputs:
   gh-token:

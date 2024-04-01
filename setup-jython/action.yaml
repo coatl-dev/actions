@@ -1,0 +1,71 @@
+name: coatl-dev-setup-jython
+description: Set up a specific version of Jython and add the command-line tools to the PATH.
+author: cesarcoatl
+
+inputs:
+  jython-version:
+    description: >-
+      The Jython version to install.
+    required: false
+    default: '2.7.3'
+  target-directory:
+    description: >-
+      Target directory to install to.
+    required: false
+    default: '/opt/jython'
+  java-distribution:
+    description: >-
+      Java distribution.
+    required: false
+    default: 'zulu'
+  java-version:
+    description: >-
+      The Java version to set up.
+    required: false
+    default: '11'
+
+outputs:
+  jython-version:
+    description: >-
+      The installed Jython version.
+    value: ${{ steps.get-version.outputs.version }}
+  jython-path:
+    description: >-
+      The absolute path to the Jython executable.
+    value: ${{ steps.get-path.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@v4
+      with:
+        distribution: ${{ inputs.java-distribution }}
+        java-version: ${{ inputs.java-version }}
+
+    - name: Install Jython
+      shell: bash
+      run: |
+        wget -q "https://repo1.maven.org/maven2/org/python/jython-installer/${{ inputs.jython-version }}/jython-installer-${{ inputs.jython-version }}.jar"
+        java -jar "jython-installer-${{ inputs.jython-version }}.jar" \
+          --silent \
+          --type standard \
+          --directory "${{ inputs.target-directory }}"
+        rm -f "jython-installer-${{ inputs.jython-version }}.jar"
+        echo "${{ inputs.target-directory }}/bin" >> $GITHUB_PATH
+
+    - name: Get Jython version
+      id: get-version
+      shell: bash
+      run: |
+        echo "version=$(jython --version)" >> "$GITHUB_OUTPUT"
+
+    - name: Get installation path
+      id: get-path
+      shell: bash
+      run: |
+        echo "path=$(jython --version)" >> "$GITHUB_OUTPUT"
+
+    - name: Set JYTHON_HOME
+      shell: bash
+      run: |
+        echo "JYTHON_HOME=$(dirname $(dirname $(which jython)))" >> "$GITHUB_ENV"

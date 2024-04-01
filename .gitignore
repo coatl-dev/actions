@@ -1,3 +1,6 @@
+### Jython ###
+.jython_cache/
+
 ### macOS ###
 # General
 .DS_Store

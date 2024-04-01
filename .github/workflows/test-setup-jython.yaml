@@ -1,0 +1,30 @@
+name: test-setup-jython
+
+on:
+  pull_request:
+    branches:
+      - 'coatl'
+    paths:
+      - '.github/workflows/test-setup-jython.yaml'
+      - 'setup-jython/**'
+  workflow_dispatch:
+
+jobs:
+  test-true:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - uses: ./setup-jython
+
+      - name: Test
+        run: |
+          jython_date="$(jython -c 'from java.util import Calendar; now = Calendar.getInstance(); print now.get(Calendar.YEAR)')"
+          bin_date="$(/bin/date +%Y)"
+
+          if [ "$jython_date" == "$bin_date" ]; then
+            echo "Dates are equal"
+          else
+            echo "Dates are not equal"
+          fi
