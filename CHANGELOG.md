@@ -1,3 +1,9 @@
+## v3.1.1 (2024-03-31)
+
+### Fix
+
+- **setup-jython**: properly set jython-path (#52)
+
 ## v3.1.0 (2024-03-31)
 
 ### Feat
