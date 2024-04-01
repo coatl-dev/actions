@@ -24,10 +24,6 @@ inputs:
     required: false
     default: '11'
 outputs:
-  jython-version:
-    description: >-
-      The installed Jython version.
-    value: ${{ steps.get-version.outputs.version }}
   jython-path:
     description: >-
       The absolute path to the Jython executable.
@@ -52,13 +48,7 @@ runs:
         rm -f "jython-installer-${{ inputs.jython-version }}.jar"
         echo "${{ inputs.target-directory }}/bin" >> $GITHUB_PATH
 
-    - name: Get Jython version
-      id: get-version
-      shell: bash
-      run: |
-        echo "version=$(jython --version)" >> "$GITHUB_OUTPUT"
-
-    - name: Get installation path
+    - name: Get absolute path
       id: get-path
       shell: bash
       run: |

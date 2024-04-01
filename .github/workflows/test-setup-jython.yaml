@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-true:
+  self-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -23,10 +23,6 @@ jobs:
       - name: Test jython-path output
         run: |
           echo "${{ steps.jy.outputs.jython-path }}"
-
-      - name: Test jython-version output
-        run: |
-          echo "${{ steps.jy.outputs.jython-version }}"
 
       - name: Test
         run: |
