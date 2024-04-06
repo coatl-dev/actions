@@ -173,7 +173,7 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
   to `'/opt/jython'`. Optional.
 - `java-distribution` (`string`): Java distribution to use for installing
   Jython. Defaults to `'zulu'`. Optional. See [supported Java distributions].
-- `java-version` (`string`): The Java version to set up. Defaults to `'11'`.
+- `java-version` (`string`): The Java version to set up. Defaults to `'17'`.
   Optional.
 
 **Outputs**:
