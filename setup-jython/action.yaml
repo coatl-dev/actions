@@ -22,7 +22,7 @@ inputs:
     description: >-
       The Java version to set up.
     required: false
-    default: '11'
+    default: '17'
 outputs:
   jython-path:
     description: >-

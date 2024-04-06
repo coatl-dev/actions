@@ -1,3 +1,9 @@
+## v3.1.2 (2024-04-06)
+
+### Refactor
+
+- **setup-jython**: use Java 17 as default (#54)
+
 ## v3.1.1 (2024-03-31)
 
 ### Fix
