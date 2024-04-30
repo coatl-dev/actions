@@ -76,16 +76,16 @@ runs:
       id: get-java-distribution
       shell: bash
       run: |
-        echo "echo java-distribution=${{ steps.setup-java.outputs.distribution }}" >> "$GITHUB_OUTPUT"
+        echo "java-distribution=${{ steps.setup-java.outputs.distribution }}" >> "$GITHUB_OUTPUT"
 
     - name: Get Java path
       id: get-java-path
       shell: bash
       run: |
-        echo "echo java-path=${{ steps.setup-java.outputs.path }}" >> "$GITHUB_OUTPUT"
+        echo "java-path=${{ steps.setup-java.outputs.path }}" >> "$GITHUB_OUTPUT"
 
     - name: Get Java version
       id: get-java-version
       shell: bash
       run: |
-        echo "echo java-distribution=${{ steps.setup-java.outputs.version }}" >> "$GITHUB_OUTPUT"
+        echo "java-version=${{ steps.setup-java.outputs.version }}" >> "$GITHUB_OUTPUT"
