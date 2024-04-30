@@ -20,9 +20,12 @@ jobs:
         id: jy
         uses: ./setup-jython
 
-      - name: Test jython-path output
+      - name: Test action output
         run: |
-          echo "${{ steps.jy.outputs.jython-path }}"
+          echo "JYTHON_BINARY=${{ steps.jy.outputs.jython-path }}"
+          echo "JAVA_DISTRIBUTION=${{ steps.jy.outputs.java-distribution }}"
+          echo "JAVA_PATH=${{ steps.jy.outputs.java-path }}"
+          echo "JAVA_VERSION=${{ steps.jy.outputs.java-version }}"
 
       - name: Test
         run: |
