@@ -1,3 +1,9 @@
+## v3.3.0 (2024-04-30)
+
+### Feat
+
+- **jython**: add jython-version output (#60)
+
 ## v3.2.1 (2024-04-30)
 
 ### Perf
