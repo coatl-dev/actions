@@ -169,8 +169,6 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 
 - `jython-version` (`string`): The Jython version to install. Defaults to
   `'2.7.3'`. Optional. See [supported Jython versions].
-- `target-directory` (`string`): Target directory to install to. Defaults
-  to `'/opt/jython'`. Optional.
 - `java-distribution` (`string`): Java distribution to use for installing
   Jython. Defaults to `'zulu'`. Optional. See [supported Java distributions].
 - `java-version` (`string`): The Java version to set up. Defaults to `'17'`.

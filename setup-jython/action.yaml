@@ -8,11 +8,6 @@ inputs:
       The Jython version to install.
     required: false
     default: '2.7.3'
-  target-directory:
-    description: >-
-      Target directory to install to.
-    required: false
-    default: '/opt/jython'
   java-distribution:
     description: >-
       Java distribution.
@@ -44,22 +39,39 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Set Jython installation path
+      shell: bash
+      run: |
+        echo "JYTHON_PATH=/opt/jython/${{ inputs.jython-version }}" >> "$GITHUB_ENV"
+
     - uses: actions/setup-java@v4
       id: setup-java
       with:
         distribution: ${{ inputs.java-distribution }}
         java-version: ${{ inputs.java-version }}
 
+    - name: Cache Jython
+      id: cache-jython
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.JYTHON_PATH }}
+        key: jython-${{ inputs.jython-version }}-${{ runner.os }}-${{ steps.setup-java.outputs.distribution }}-${{ steps.setup-java.outputs.version }}
+
     - name: Install Jython
+      if: steps.cache-jython.outputs.cache-hit != 'true'
       shell: bash
       run: |
         wget -q "https://repo1.maven.org/maven2/org/python/jython-installer/${{ inputs.jython-version }}/jython-installer-${{ inputs.jython-version }}.jar"
         java -jar "jython-installer-${{ inputs.jython-version }}.jar" \
           --silent \
           --type standard \
-          --directory "${{ inputs.target-directory }}"
+          --directory "$JYTHON_PATH"
         rm -f "jython-installer-${{ inputs.jython-version }}.jar"
-        echo "${{ inputs.target-directory }}/bin" >> $GITHUB_PATH
+
+    - name: Add Jython to PATH
+      shell: bash
+      run: |
+        echo "$JYTHON_PATH/bin" >> $GITHUB_PATH
 
     - name: Get absolute path
       id: get-path
