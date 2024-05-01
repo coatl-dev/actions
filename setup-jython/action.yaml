@@ -28,11 +28,24 @@ outputs:
     description: >-
       The absolute path to the Jython executable.
     value: ${{ steps.get-path.outputs.path }}
+  java-distribution:
+    description: >-
+      Distribution of Java that has been installed.
+    value: ${{ steps.get-java-distribution.outputs.java-distribution }}
+  java-version:
+    description: >-
+      Actual version of the java environment that has been installed.
+    value: ${{ steps.get-java-version.outputs.java-version }}
+  java-path:
+    description: >-
+      Path to where the java environment has been installed (same as $JAVA_HOME).
+    value: ${{ steps.get-java-path.outputs.java-path }}
 
 runs:
   using: composite
   steps:
     - uses: actions/setup-java@v4
+      id: setup-java
       with:
         distribution: ${{ inputs.java-distribution }}
         java-version: ${{ inputs.java-version }}
@@ -58,3 +71,21 @@ runs:
       shell: bash
       run: |
         echo "JYTHON_HOME=$(dirname $(dirname $(which jython)))" >> "$GITHUB_ENV"
+
+    - name: Get Java distribution
+      id: get-java-distribution
+      shell: bash
+      run: |
+        echo "java-distribution=${{ steps.setup-java.outputs.distribution }}" >> "$GITHUB_OUTPUT"
+
+    - name: Get Java path
+      id: get-java-path
+      shell: bash
+      run: |
+        echo "java-path=${{ steps.setup-java.outputs.path }}" >> "$GITHUB_OUTPUT"
+
+    - name: Get Java version
+      id: get-java-version
+      shell: bash
+      run: |
+        echo "java-version=${{ steps.setup-java.outputs.version }}" >> "$GITHUB_OUTPUT"
