@@ -178,9 +178,9 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 
 - `jython-path` (`string`): The absolute path to the Jython executable.
 - `java-distribution` (`string`):Distribution of Java that has been installed.
-- `java-version`: Actual version of the java environment that has been
-  installed.
-- `java-path`: Path to where the java environment has been installed
+- `java-version` (`string`): Actual version of the java environment that has
+  been installed.
+- `java-path` (`string`): Path to where the java environment has been installed
   (same as $JAVA_HOME).
 
 **Example**:
