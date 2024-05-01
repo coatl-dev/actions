@@ -55,7 +55,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: ${{ env.JYTHON_PATH }}
-        key: jython-${{ runner.os }}-${{ steps.setup-java.outputs.distribution }}-${{ steps.setup-java.outputs.version }}-${{ env.JYTHON_VERSION }}
+        key: jython-${{ inputs.jython-version }}-${{ runner.os }}-${{ steps.setup-java.outputs.distribution }}-${{ steps.setup-java.outputs.version }}
 
     - name: Install Jython
       if: steps.cache-jython.outputs.cache-hit != 'true'
