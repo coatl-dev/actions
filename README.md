@@ -51,7 +51,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v3.1.2
+        uses: coatl-dev/actions/gpg-import@v3.2.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -113,14 +113,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v3.1.2
+        uses: coatl-dev/actions/pip-compile@v3.2.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v3.1.2
+        uses: coatl-dev/actions/simple-git-diff@v3.2.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -153,7 +153,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v3.1.2
+        uses: coatl-dev/actions/pr-create@v3.2.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -179,12 +179,17 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 **Outputs**:
 
 - `jython-path` (`string`): The absolute path to the Jython executable.
+- `java-distribution` (`string`):Distribution of Java that has been installed.
+- `java-version`: Actual version of the java environment that has been
+  installed.
+- `java-path`: Path to where the java environment has been installed
+  (same as $JAVA_HOME).
 
 **Example**:
 
 ```yml
     - name: Set up Jython
-      uses: coatl-dev/actions/setup-jython@v3.1.2
+      uses: coatl-dev/actions/setup-jython@v3.2.0
       with:
         jython-version: '2.7.3'
     - run: jython my_script.py
@@ -227,7 +232,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v3.1.2
+        uses: coatl-dev/actions/simple-git-diff@v3.2.0
         with:
           path: 'README.md'
 

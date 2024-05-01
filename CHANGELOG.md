@@ -1,3 +1,9 @@
+## v3.2.0 (2024-04-30)
+
+### Feat
+
+- **jython**: output Java distribution, version and path (#58)
+
 ## v3.1.2 (2024-04-06)
 
 ### Refactor
