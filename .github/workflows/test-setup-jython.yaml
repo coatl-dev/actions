@@ -22,6 +22,7 @@ jobs:
 
       - name: Test action output
         run: |
+          echo "JYTHON_VERSION=${{ steps.jy.outputs.jython-version }}"
           echo "JYTHON_BINARY=${{ steps.jy.outputs.jython-path }}"
           echo "JAVA_DISTRIBUTION=${{ steps.jy.outputs.java-distribution }}"
           echo "JAVA_PATH=${{ steps.jy.outputs.java-path }}"
