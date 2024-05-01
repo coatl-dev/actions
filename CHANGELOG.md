@@ -1,3 +1,9 @@
+## v3.2.1 (2024-04-30)
+
+### Perf
+
+- **jython**: cache Jython installation (#59)
+
 ## v3.2.0 (2024-04-30)
 
 ### Feat

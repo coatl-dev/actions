@@ -4,7 +4,7 @@ commitizen:
   name: cz_conventional_commits
   tag_format: v$version
   update_changelog_on_bump: true
-  version: 3.2.0
+  version: 3.2.1
   version_files:
   - README.md
   version_scheme: semver
