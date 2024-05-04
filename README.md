@@ -84,6 +84,8 @@ dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
 **Inputs**:
 
 - `path` (`string`): A file or location of the requirement file(s).
+- `working-directory` (`string`): Useful when the path input is a file inside a
+  directory.
 - `python-version` (`string`): Python version to use for installing `pip-tools`.
   You may use MAJOR.MINOR or exact version. Defaults to `'3.12'`. Optional.
 

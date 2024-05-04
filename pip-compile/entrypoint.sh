@@ -10,6 +10,12 @@ function process_file() {
   eval "$command"
 }
 
+if [ -d "{INPUT_WORKING_DIRECTORY}" ]; then
+  cd "${INPUT_WORKING_DIRECTORY}" || exit
+else
+  exit 1
+fi
+
 if [ -d "${INPUT_PATH}" ]; then
   cd "${INPUT_PATH}" || exit
   for file in *.txt; do
