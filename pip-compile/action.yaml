@@ -29,9 +29,18 @@ runs:
           --tag coatl-pip-compile:${{ inputs.python-version }}
 
     - shell: bash
+      id: check-working-directory
+      run: |
+        if [ "${{ inputs.working-directory }}" = '.' ]; then
+          echo "cwd=$(pwd)" >> "$GITHUB_OUTPUT"
+        else
+          echo "cwd=${{ inputs.working-directory }}" >> "$GITHUB_OUTPUT"
+        fi
+
+    - shell: bash
       run: |
         docker run --rm \
           --env "INPUT_PATH=${{ inputs.path }}" \
-          --env "INPUT_WORKING_DIRECTORY=${{ inputs.working-directory }}" \
+          --env "INPUT_WORKING_DIRECTORY=${{ steps.check-working-directory.outputs.cwd }}" \
           --volume ${{ github.workspace }}://github/workspace \
           coatl-pip-compile:${{ inputs.python-version }}
