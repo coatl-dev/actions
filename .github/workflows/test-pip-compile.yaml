@@ -11,7 +11,7 @@ on:
 
 jobs:
   self-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python-version: ['2.7', '3.12']

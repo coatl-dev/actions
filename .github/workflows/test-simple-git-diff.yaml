@@ -11,7 +11,7 @@ on:
 
 jobs:
   test-true:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
           echo "Changes were detected."
 
   test-false:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: test-true
     steps:
       - name: Checkout repo
