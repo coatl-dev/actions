@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -n "$INPUT_TITLE" ] && [ -n "$INPUT_BODY_FILE" ]; then
     # Use title and body-file (if provided)
