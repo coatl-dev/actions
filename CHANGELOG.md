@@ -1,3 +1,9 @@
+## v3.3.1 (2024-08-26)
+
+### Refactor
+
+- update shebang on shell scripts (#70)
+
 ## v3.3.0 (2024-04-30)
 
 ### Feat
