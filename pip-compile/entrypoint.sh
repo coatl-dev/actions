@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # shellcheck source=/dev/null
 
 export PATH="/usr/bin:${PATH}"  # To find `id`
