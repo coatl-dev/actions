@@ -31,7 +31,7 @@ inputs:
     description: >-
       Delete the local and remote branch after merge.
     required: false
-    default: 'yes'
+    default: 'no'
 
 runs:
   using: composite
