@@ -1,3 +1,9 @@
+## v3.3.3 (2024-09-10)
+
+### Refactor
+
+- **pr-create**: set default value to 'no' for delete-branch (#72)
+
 ## v3.3.2 (2024-09-09)
 
 ### Refactor
