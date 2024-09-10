@@ -27,6 +27,11 @@ inputs:
       Automatically merge only after necessary requirements are met.
     required: false
     default: 'yes'
+  delete-branch:
+    description: >-
+      Delete the local and remote branch after merge.
+    required: false
+    default: 'yes'
 
 runs:
   using: composite
@@ -42,5 +47,6 @@ runs:
         INPUT_BODY: ${{ inputs.body }}
         INPUT_BODY_FILE: ${{ inputs.body-file }}
         INPUT_AUTO_MERGE: ${{ inputs.auto-merge }}
+        INPUT_DELETE_BRANCH: ${{ inputs:delete-branch }}
       run: |
         create.sh

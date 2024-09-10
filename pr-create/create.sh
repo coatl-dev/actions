@@ -15,10 +15,15 @@ else
     gh pr create --fill
 fi
 
-if [ "$INPUT_AUTO_MERGE" == "yes" ]; then
-    # Merge pull request
+if [ "$INPUT_AUTO_MERGE" == "yes" ] && [ "$INPUT_DELETE_BRANCH" == "yes" ]; then
+    # Merge pull request and delete branch
     gh pr merge \
         --auto \
         --delete-branch \
+        --squash
+elif [ "$INPUT_AUTO_MERGE" == "yes" ]; then
+    # Merge pull request
+    gh pr merge \
+        --auto \
         --squash
 fi
