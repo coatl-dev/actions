@@ -1,3 +1,9 @@
+## v3.3.2 (2024-09-09)
+
+### Refactor
+
+- **pr-create**: add delete-branch input (#71)
+
 ## v3.3.1 (2024-08-26)
 
 ### Refactor
