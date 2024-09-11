@@ -47,6 +47,6 @@ runs:
         INPUT_BODY: ${{ inputs.body }}
         INPUT_BODY_FILE: ${{ inputs.body-file }}
         INPUT_AUTO_MERGE: ${{ inputs.auto-merge }}
-        INPUT_DELETE_BRANCH: ${{ inputs:delete-branch }}
+        INPUT_DELETE_BRANCH: ${{ inputs.delete-branch }}
       run: |
         create.sh
