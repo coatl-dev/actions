@@ -1,3 +1,9 @@
+## v3.3.5 (2024-10-02)
+
+### Refactor
+
+- **pip-compile**: use coatldev/python as base image (#75)
+
 ## v3.3.4 (2024-09-11)
 
 ### Fix
