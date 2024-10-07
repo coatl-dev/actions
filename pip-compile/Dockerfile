@@ -1,4 +1,4 @@
-ARG VERSION=3.12
+ARG VERSION=3.13
 FROM coatldev/python:$VERSION-slim
 
 LABEL \

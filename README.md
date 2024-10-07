@@ -86,7 +86,8 @@ dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
 
 - `path` (`string`): A file or location of the requirement file(s).
 - `python-version` (`string`): Python version to use for installing `pip-tools`.
-  You may use MAJOR.MINOR or exact version. Defaults to `'3.12'`. Optional.
+  You may use MAJOR.MINOR or exact version. Options: `2.7`, `3.12` and `3.13`.
+  Defaults to `'3.13'`. Optional.
 
 > [!NOTE]
 > This action will install the latest release for `pip-tools` supporting your
