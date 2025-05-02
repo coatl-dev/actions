@@ -49,4 +49,4 @@ runs:
         INPUT_AUTO_MERGE: ${{ inputs.auto-merge }}
         INPUT_DELETE_BRANCH: ${{ inputs.delete-branch }}
       run: |
-        create.sh
+        action.sh
