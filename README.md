@@ -87,8 +87,8 @@ dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
 
 - `path` (`string`): The location of the requirement file(s).
 - `python-version` (`string`): Python version to use for installing `pip-tools`.
-  You may use MAJOR.MINOR or exact version. Options: `2.7`, `3.12` and `3.13`.
-  Defaults to `'3.13'`. Optional.
+  You may use MAJOR.MINOR or exact version. Options: `'2.7'`, `'3.12'` and
+  `'3.13'`. Defaults to `'3.13'`. Optional.
 
 > [!NOTE]
 > This action will install the latest release for `pip-tools` supporting your
@@ -258,8 +258,8 @@ your dependencies, specified in either `pyproject.toml`, `setup.cfg`,
 
 - `path` (`string`): The location of the requirement file(s).
 - `python-version` (`string`): The version of Python to set `UV_PYTHON` to. You
-  may use MAJOR.MINOR or exact version. Options: `3.8` to `3.14`. Defaults to
-  `'3.13'`. Optional.
+  may use MAJOR.MINOR or exact version. Options: `'3.8`' to `'3.14'`. Defaults
+  to `'3.13'`. Optional.
 - `uv-version` (`string`): The version of uv to install. Defaults to `'latest'`.
   Optional.
 
