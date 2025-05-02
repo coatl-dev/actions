@@ -11,8 +11,8 @@ RUN set -eux; \
     python -m pip install \
         pip-tools
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY action.sh /action.sh
+RUN chmod +x /action.sh
 
 WORKDIR "/github/workspace"
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/action.sh"]
