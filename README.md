@@ -258,7 +258,7 @@ your dependencies, specified in either `pyproject.toml`, `setup.cfg`,
 
 - `path` (`string`): The location of the requirement file(s).
 - `python-version` (`string`): The version of Python to set `UV_PYTHON` to. You
-  may use MAJOR.MINOR or exact version. Options: `'3.8`' to `'3.14'`. Defaults
+  may use MAJOR.MINOR or exact version. Options: `'3.8'` to `'3.14'`. Defaults
   to `'3.13'`. Optional.
 - `uv-version` (`string`): The version of uv to install. Defaults to `'latest'`.
   Optional.
