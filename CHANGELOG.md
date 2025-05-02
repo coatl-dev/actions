@@ -1,3 +1,9 @@
+## v3.5.2 (2025-05-02)
+
+### Refactor
+
+- **uv-pip-compile**: add single quotes before passing python-version (#89)
+
 ## v3.5.1 (2025-05-02)
 
 ## v3.5.0 (2025-05-02)
