@@ -12,6 +12,7 @@ in projects to keep them DRY.
 - [pr-create](#pr-create)
 - [setup-jython](#setup-jython)
 - [simple-git-diff](#simple-git-diff)
+- [uv-pip-compile](#uv-pip-compile)
 
 ### gpg-import
 
@@ -51,7 +52,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v3.4.0
+        uses: coatl-dev/actions/gpg-import@v3.5.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -84,7 +85,7 @@ dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
 
 **Inputs**:
 
-- `path` (`string`): A file or location of the requirement file(s).
+- `path` (`string`): The location of the requirement file(s).
 - `python-version` (`string`): Python version to use for installing `pip-tools`.
   You may use MAJOR.MINOR or exact version. Options: `2.7`, `3.12` and `3.13`.
   Defaults to `'3.13'`. Optional.
@@ -115,14 +116,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v3.4.0
+        uses: coatl-dev/actions/pip-compile@v3.5.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v3.4.0
+        uses: coatl-dev/actions/simple-git-diff@v3.5.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -157,7 +158,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v3.4.0
+        uses: coatl-dev/actions/pr-create@v3.5.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -192,7 +193,7 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 
 ```yml
     - name: Set up Jython
-      uses: coatl-dev/actions/setup-jython@v3.4.0
+      uses: coatl-dev/actions/setup-jython@v3.5.0
       with:
         jython-version: '2.7.3'
     - run: jython my_script.py
@@ -235,11 +236,66 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v3.4.0
+        uses: coatl-dev/actions/simple-git-diff@v3.5.0
         with:
           path: 'README.md'
 
       - name: Do something if changes were detected
+        if: ${{ steps.git-diff.outputs.diff == 'true' }}
+        run: |
+          echo "Changes were detected."
+```
+
+### uv-pip-compile
+
+Run `uv pip compile` to upgrade your Python requirements.
+
+The `uv pip compile` command lets you compile a `requirements.txt` file from
+your dependencies, specified in either `pyproject.toml`, `setup.cfg`,
+`setup.py`, or `requirements.in`.
+
+**Inputs**:
+
+- `path` (`string`): The location of the requirement file(s).
+- `python-version` (`string`): The version of Python to set `UV_PYTHON` to. You
+  may use MAJOR.MINOR or exact version. Options: `3.8` to `3.14`. Defaults to
+  `'3.13'`. Optional.
+- `uv-version` (`string`): The version of uv to install. Defaults to `'latest'`.
+  Optional.
+
+**Example**:
+
+```yml
+name: uv-pip-compile
+
+on:
+  schedule:
+    # Monthly at 12:00 PST (00:00 UTC)
+    - cron: '0 20 1 * *'
+
+jobs:
+  pip-compile:
+    runs-on: ubuntu-latest
+    env:
+      REQUIREMENTS_PATH: 'path/to/requirements'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: pip-compile-312
+        uses: coatl-dev/actions/uv-pip-compile@v3.5.0
+        with:
+          path: "${{ env.REQUIREMENTS_PATH }}"
+          python-version: '3.12'
+
+      - name: Detect changes
+        id: git-diff
+        uses: coatl-dev/actions/simple-git-diff@v3.5.0
+        with:
+          path: "${{ env.REQUIREMENTS_PATH }}"
+
+      - name: Do something if changes were made
         if: ${{ steps.git-diff.outputs.diff == 'true' }}
         run: |
           echo "Changes were detected."

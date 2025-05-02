@@ -1,3 +1,14 @@
+## v3.5.0 (2025-05-02)
+
+### Feat
+
+- add uv-pip-compile action (#86)
+
+### Refactor
+
+- **pip-compile**: rename shell script (#88)
+- **pr-create**: rename shell script (#87)
+
 ## v3.4.0 (2024-10-07)
 
 ### Feat
