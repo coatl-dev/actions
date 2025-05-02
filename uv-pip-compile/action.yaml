@@ -27,7 +27,7 @@ runs:
     - uses: astral-sh/setup-uv@v6
       with:
         enable-cache: 'false'
-        python-version: ${{ inputs.python-version }}
+        python-version: '${{ inputs.python-version }}'
         version: ${{ inputs.uv-version }}
 
     - name: Create Pull Request
