@@ -13,7 +13,7 @@ jobs:
   self-test:
     runs-on: ubuntu-latest
     env:
-      REQUIREMENTS_PATH: pip-compile/test/requirements
+      REQUIREMENTS_PATH: uv-pip-compile/test/requirements
 
     steps:
       - name: Checkout repo
