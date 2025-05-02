@@ -1,0 +1,37 @@
+name: coatl-dev-uv-pip-compile
+description: Run uv pip compile to upgrade your Python requirements.
+author: cesarcoatl
+
+inputs:
+  path:
+    description: >-
+      The location of the requirement file(s).
+    required: true
+  python-version:
+    description: >-
+      The version of Python to set UV_PYTHON to.
+    required: false
+    default: '3.13'
+  uv-version:
+    description: >-
+      The version of uv to install.
+    required: false
+    default: 'latest'
+
+runs:
+  using: composite
+  steps:
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+
+    - uses: astral-sh/setup-uv@v6
+      with:
+        python-version: ${{ inputs.python-version }}
+        version: ${{ inputs.uv-version }}
+
+    - name: Create Pull Request
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+      run: |
+        action.sh

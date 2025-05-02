@@ -1,0 +1,35 @@
+name: test-uv-pip-compile
+
+on:
+  pull_request:
+    branches:
+      - 'coatl'
+    paths:
+      - '.github/workflows/test-uv-pip-compile.yaml'
+      - 'uv-pip-compile/**'
+  workflow_dispatch:
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    env:
+      REQUIREMENTS_PATH: pip-compile/test/requirements
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: uv-pip-compile
+        uses: ./uv-pip-compile
+        with:
+          path: ${{ env.REQUIREMENTS_PATH }}
+
+      - name: Detect changes
+        id: git-diff
+        uses: ./simple-git-diff
+        with:
+          path: ${{ env.REQUIREMENTS_PATH }}
+
+      - name: Show output
+        run: |
+          echo "Changes were detected: ${{ steps.git-diff.outputs.diff }}"
