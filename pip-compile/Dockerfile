@@ -6,11 +6,11 @@ LABEL \
   repository="https://github.com/coatl-dev/actions/blob/coatl/pip-compile" \
   vendor="coatl.dev"
 
+# https://github.com/jazzband/pip-tools/issues/2176
 # hadolint ignore=DL3013,DL3042
 RUN set -eux; \
     python -m pip install \
         pip-tools \
-        # https://github.com/jazzband/pip-tools/issues/2176
         pip<25.1
 
 COPY action.sh /action.sh
