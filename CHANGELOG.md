@@ -1,3 +1,9 @@
+## v3.5.3 (2025-05-02)
+
+### Fix
+
+- **pip-compile**: patch jazzband/pip-tools#2176 (#90)
+
 ## v3.5.2 (2025-05-02)
 
 ### Refactor
