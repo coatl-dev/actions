@@ -11,7 +11,7 @@ LABEL \
 RUN set -eux; \
     python -m pip install \
         pip-tools \
-        pip<25.1
+        'pip<25.1'
 
 COPY action.sh /action.sh
 RUN chmod +x /action.sh
