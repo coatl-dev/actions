@@ -1,3 +1,9 @@
+## v4.1.0 (2025-05-06)
+
+### Feat
+
+- **pip-compile**: add ability to process all files (#95)
+
 ## v4.0.0 (2025-05-05)
 
 ### BREAKING CHANGE
