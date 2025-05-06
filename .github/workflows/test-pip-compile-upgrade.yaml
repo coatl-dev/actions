@@ -1,12 +1,12 @@
-name: test-pip-compile
+name: test-pip-compile-upgrade
 
 on:
   pull_request:
     branches:
       - 'coatl'
     paths:
-      - '.github/workflows/test-pip-compile.yaml'
-      - 'pip-compile/**'
+      - '.github/workflows/test-pip-compile-upgrade.yaml'
+      - 'pip-compile-upgrade/**'
   workflow_dispatch:
 
 jobs:
@@ -15,13 +15,13 @@ jobs:
     strategy:
       matrix:
         include:
-          - path: pip-compile/test/2.7/requirements
+          - path: pip-compile-upgrade/test/2.7/requirements
             python-version: '2.7'
             use-config: 'no'
-          - path: pip-compile/test/3.12/requirements
+          - path: pip-compile-upgrade/test/3.12/requirements
             python-version: '3.12'
             use-config: 'yes'
-          - path: pip-compile/test/3.13/requirements
+          - path: pip-compile-upgrade/test/3.13/requirements
             python-version: '3.13'
             use-config: 'no'
 
@@ -29,8 +29,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: pip-compile
-        uses: ./pip-compile
+      - name: pip-compile-upgrade
+        uses: ./pip-compile-upgrade
         with:
           path: ${{ matrix.path }}
           python-version: ${{ matrix.python-version }}
