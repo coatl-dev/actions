@@ -7,14 +7,13 @@ source /etc/profile  # Makes python and other executables findable
 function process_file() {
   local file="$1"
   local use_config="$INPUT_USE_CONFIG"
+  local config_file="$INPUT_CONFIG_FILE"
 
   if [ "$use_config" == "yes" ]; then
-    local config_file="$INPUT_CONFIG_FILE"
     if [ -f "$config_file" ]; then
-      echo "Using config file: $config_file"
-      pip-compile --upgrade --config "$config_file" "$file"
+      in_file="${file%.txt}.in"
+      pip-compile --upgrade --config "$config_file" "$in_file"
     else
-      echo "Config file not found: $config_file"
       exit 1
     fi
   else
