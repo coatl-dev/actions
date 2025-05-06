@@ -13,7 +13,7 @@ function process_file() {
     local config_file="${file%.txt}.in"
     if [ -f "$config_file" ]; then
       echo "Using config file: $config_file"
-      pip-compile --upgrade "$file" --config-file "$config_file"
+      pip-compile --upgrade "$file" --config "$config_file"
     else
       echo "Config file not found: $config_file"
       exit 1
