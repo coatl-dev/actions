@@ -1,3 +1,15 @@
+## v4.0.0 (2025-05-05)
+
+### BREAKING CHANGE
+
+- rename [uv-]pip-compile to [uv-]pip-compile-upgrade
+
+### Refactor
+
+- rename [uv-]pip-compile to [uv-]pip-compile-upgrade (#94)
+- **pip-compile**: add case for other than .in files (#93)
+- **pip-compile**: add ability to use config file (#91)
+
 ## v3.5.3 (2025-05-02)
 
 ### Fix
