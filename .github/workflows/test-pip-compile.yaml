@@ -14,7 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['2.7', '3.13']
+        include:
+          - python-version: '2.7'
+            use-config: 'no'
+          - python-version: '3.12'
+            use-config: 'yes'
+          - python-version: '3.13'
+            use-config: 'no'
     env:
       REQUIREMENTS_PATH: pip-compile/test/${{ matrix.python-version }}/requirements
 
@@ -27,6 +33,7 @@ jobs:
         with:
           path: ${{ env.REQUIREMENTS_PATH }}
           python-version: ${{ matrix.python-version }}
+          use-config: ${{ matrix.use-config }}
 
       - name: Detect changes
         id: git-diff
