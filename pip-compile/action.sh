@@ -24,7 +24,15 @@ function process_file() {
       eval "$upgrade_command"
     fi
   else
-    pip-compile "$file"
+    if [ "$use_config" == "yes" ]; then
+      if [ -f "$config_file" ]; then
+        pip-compile --upgrade --config "$config_file" "$file"
+      else
+        exit 1
+      fi
+    else
+      pip-compile --upgrade "$file"
+    fi
   fi
 }
 
