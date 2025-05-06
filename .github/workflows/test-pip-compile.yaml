@@ -15,14 +15,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - python-version: '2.7'
+          - path: pip-compile/test/2.7/requirements
+            python-version: '2.7'
             use-config: 'no'
-          - python-version: '3.12'
+          - path: pip-compile/test/3.12/requirements.txt
+            python-version: '3.12'
             use-config: 'yes'
-          - python-version: '3.13'
+          - path: pip-compile/test/3.13/requirements
+            python-version: '3.13'
             use-config: 'no'
-    env:
-      REQUIREMENTS_PATH: pip-compile/test/${{ matrix.python-version }}/requirements
 
     steps:
       - name: Checkout repo
@@ -31,7 +32,7 @@ jobs:
       - name: pip-compile
         uses: ./pip-compile
         with:
-          path: ${{ env.REQUIREMENTS_PATH }}
+          path: ${{ matrix.path }}
           python-version: ${{ matrix.python-version }}
           use-config: ${{ matrix.use-config }}
 
@@ -39,7 +40,7 @@ jobs:
         id: git-diff
         uses: ./simple-git-diff
         with:
-          path: ${{ env.REQUIREMENTS_PATH }}
+          path: ${{ matrix.path }}
 
       - name: Show output
         run: |
