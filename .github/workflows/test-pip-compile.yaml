@@ -5,8 +5,8 @@ on:
     branches:
       - 'coatl'
     paths:
-      - '.github/workflows/test-pip-compile.yaml'
       - 'pip-compile/**'
+      - '.github/workflows/test-pip-compile.yaml'
   workflow_dispatch:
 
 jobs:
@@ -44,4 +44,4 @@ jobs:
 
       - name: Show output
         run: |
-          echo "Changes were detected? ${{ steps.git-diff.outputs.diff }}"
+          echo "Changes were detected: ${{ steps.git-diff.outputs.diff }}"
