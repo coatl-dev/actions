@@ -12,6 +12,16 @@ inputs:
       Python version to use for installing pip-tools.
     required: false
     default: '3.13'
+  use-config:
+    description: >-
+      Whether to read configuration from TOML file.
+    required: false
+    default: 'no'
+  config-file:
+    description: >-
+      The location of the configuration file for pip-compile.
+    required: false
+    default: '.pip-tools.toml'
 
 runs:
   using: composite
@@ -27,5 +37,7 @@ runs:
       run: |
         docker run --rm \
           --env "INPUT_PATH=${{ inputs.path }}" \
+          --env "INPUT_USE_CONFIG=${{ inputs.use-config }}" \
+          --env "INPUT_CONFIG_FILE=${{ inputs.config-file }}" \
           --volume ${{ github.workspace }}://github/workspace \
           coatl-pip-compile:${{ inputs.python-version }}
