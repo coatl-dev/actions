@@ -1,26 +1,26 @@
-name: test-uv-pip-compile
+name: test-uv-pip-compile-upgrade
 
 on:
   pull_request:
     branches:
       - 'coatl'
     paths:
-      - '.github/workflows/test-uv-pip-compile.yaml'
-      - 'uv-pip-compile/**'
+      - '.github/workflows/test-uv-pip-compile-upgrade.yaml'
+      - 'uv-pip-compile-upgrade/**'
   workflow_dispatch:
 
 jobs:
   self-test:
     runs-on: ubuntu-latest
     env:
-      REQUIREMENTS_PATH: uv-pip-compile/test/requirements
+      REQUIREMENTS_PATH: uv-pip-compile-upgrade/test/requirements
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: uv-pip-compile
-        uses: ./uv-pip-compile
+      - name: uv-pip-compile-upgrade
+        uses: ./uv-pip-compile-upgrade
         with:
           path: ${{ env.REQUIREMENTS_PATH }}
 
