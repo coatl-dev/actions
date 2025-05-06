@@ -6,25 +6,25 @@ source /etc/profile  # Makes python and other executables findable
 
 function process_file() {
   local file="$1"
-  local config_file="$INPUT_CONFIG_FILE"
   local use_config="$INPUT_USE_CONFIG"
+  local config_file="$INPUT_CONFIG_FILE"
 
-  if [ "$use_config" == "yes" ]; then
-    local config_file="${file%.txt}.in"
-    if [ -f "$config_file" ]; then
-      echo "Using config file: $config_file"
-      pip-compile --upgrade "$file" --config-file "$config_file"
+  command=$(grep -m 1 "#    pip-compile" "$file")
+  if [ -n "$command" ]; then
+    if [ "$use_config" == "yes" ]; then
+      if [ -f "$config_file" ]; then
+        in_file="${file%.txt}.in"
+        upgrade_command="pip-compile --upgrade --config $config_file $in_file"
+        eval "$upgrade_command"
+      else
+        exit 1
+      fi
     else
-      echo "Config file not found: $config_file"
-      exit 1
+      upgrade_command=$(command | sed 's/#    pip-compile/pip-compile --upgrade/')
+      eval "$upgrade_command"
     fi
   else
-    command=$(grep -m 1 "#    pip-compile" "$file" | sed 's/#    pip-compile/pip-compile --upgrade/')
-    if [ -n "$command" ]; then
-      eval "$command"
-    else
-      pip-compile "$file"
-    fi
+    pip-compile "$file"
   fi
 }
 

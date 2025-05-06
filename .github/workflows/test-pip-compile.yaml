@@ -14,9 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['2.7', '3.13']
-    env:
-      REQUIREMENTS_PATH: pip-compile/test/${{ matrix.python-version }}/requirements
+        include:
+          - path: pip-compile/test/2.7/requirements
+            python-version: '2.7'
+            use-config: 'no'
+          - path: pip-compile/test/3.12/requirements
+            python-version: '3.12'
+            use-config: 'yes'
+          - path: pip-compile/test/3.13/requirements
+            python-version: '3.13'
+            use-config: 'no'
 
     steps:
       - name: Checkout repo
@@ -25,14 +32,15 @@ jobs:
       - name: pip-compile
         uses: ./pip-compile
         with:
-          path: ${{ env.REQUIREMENTS_PATH }}
+          path: ${{ matrix.path }}
           python-version: ${{ matrix.python-version }}
+          use-config: ${{ matrix.use-config }}
 
       - name: Detect changes
         id: git-diff
         uses: ./simple-git-diff
         with:
-          path: ${{ env.REQUIREMENTS_PATH }}
+          path: ${{ matrix.path }}
 
       - name: Show output
         run: |

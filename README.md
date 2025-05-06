@@ -89,13 +89,17 @@ dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
 - `python-version` (`string`): Python version to use for installing `pip-tools`.
   You may use MAJOR.MINOR or exact version. Options: `'2.7'`, `'3.12'` and
   `'3.13'`. Defaults to `'3.13'`. Optional.
+- `use-config` (`string`): Whether to read configuration from TOML file.
+  Options: `'yes'`, `'no'`. Defaults to `'no'`. Optional.
+- `config-file` (`string`): The location of the configuration file for
+  pip-compile. Optional. Defaults to `'.pip-tools.toml`.
 
 > [!NOTE]
 > This action will install the latest release for `pip-tools` supporting your
 > choice for `python-version`. E.g., for Python `'2.7'`, it will install
 > [`pip-tools==5.5.0`].
 
-**Example**:
+**Examples**:
 
 ```yml
 name: pip-compile-27
@@ -120,6 +124,44 @@ jobs:
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
+
+      - name: Detect changes
+        id: git-diff
+        uses: coatl-dev/actions/simple-git-diff@v3.5.3
+        with:
+          path: "${{ env.REQUIREMENTS_PATH }}"
+
+      - name: Do something if changes were made
+        if: ${{ steps.git-diff.outputs.diff == 'true' }}
+        run: |
+          echo "Changes were detected."
+```
+
+```yml
+name: pip-compile-312-with-config
+
+on:
+  schedule:
+    # Monthly at 12:00 PST (00:00 UTC)
+    - cron: '0 20 1 * *'
+
+jobs:
+  pip-compile:
+    runs-on: ubuntu-latest
+    env:
+      REQUIREMENTS_PATH: 'path/to/requirements'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: pip-compile-312-with-config
+        uses: coatl-dev/actions/pip-compile@v3.5.3
+        with:
+          path: "${{ env.REQUIREMENTS_PATH }}"
+          python-version: '3.12'
+          use-config: 'yes'
+          config-file: 'pyproject.toml'
 
       - name: Detect changes
         id: git-diff
