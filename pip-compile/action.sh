@@ -9,20 +9,22 @@ function process_file() {
   local use_config="$INPUT_USE_CONFIG"
   local config_file="$INPUT_CONFIG_FILE"
 
-  if [ "$use_config" == "yes" ]; then
-    if [ -f "$config_file" ]; then
-      in_file="${file%.txt}.in"
-      pip-compile --upgrade --config "$config_file" "$in_file"
+  command=$(grep -m 1 "#    pip-compile" "$file")
+  if [ -n "$command" ]; then
+    if [ "$use_config" == "yes" ]; then
+      if [ -f "$config_file" ]; then
+        in_file="${file%.txt}.in"
+        upgrade_command="pip-compile --upgrade --config $config_file $in_file"
+        eval "$upgrade_command"
+      else
+        exit 1
+      fi
     else
-      exit 1
+      upgrade_command=$(command | sed 's/#    pip-compile/pip-compile --upgrade/')
+      eval "$upgrade_command"
     fi
   else
-    command=$(grep -m 1 "#    pip-compile" "$file" | sed 's/#    pip-compile/pip-compile --upgrade/')
-    if [ -n "$command" ]; then
-      eval "$command"
-    else
-      pip-compile "$file"
-    fi
+    pip-compile "$file"
   fi
 }
 
