@@ -18,7 +18,7 @@ jobs:
           - path: pip-compile/test/2.7/requirements
             python-version: '2.7'
             use-config: 'no'
-          - path: pip-compile/test/3.12/requirements.txt
+          - path: pip-compile/test/3.12/requirements
             python-version: '3.12'
             use-config: 'yes'
           - path: pip-compile/test/3.13/requirements
