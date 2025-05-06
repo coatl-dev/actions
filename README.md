@@ -8,11 +8,11 @@ in projects to keep them DRY.
 ## Catalog
 
 - [gpg-import](#gpg-import)
-- [pip-compile](#pip-compile)
+- [pip-compile-upgrade](#pip-compile-upgrade)
 - [pr-create](#pr-create)
 - [setup-jython](#setup-jython)
 - [simple-git-diff](#simple-git-diff)
-- [uv-pip-compile](#uv-pip-compile)
+- [uv-pip-compile-upgrade](#uv-pip-compile-upgrade)
 
 ### gpg-import
 
@@ -67,9 +67,9 @@ jobs:
           git commit -m "YOUR_COMMIT_MESSAGE"
 ```
 
-### pip-compile
+### pip-compile-upgrade
 
-Run `pip-compile` to upgrade your Python 2/3 requirements using
+Run `pip-compile upgrade` to upgrade your Python 2/3 requirements using
 [`coatldev/python`] Docker image.
 
 For Python 2:
@@ -288,9 +288,9 @@ jobs:
           echo "Changes were detected."
 ```
 
-### uv-pip-compile
+### uv-pip-compile-upgrade
 
-Run `uv pip compile` to upgrade your Python requirements.
+Run `uv pip compile-upgrade` to upgrade your Python requirements.
 
 The `uv pip compile` command lets you compile a `requirements.txt` file from
 your dependencies, specified in either `pyproject.toml`, `setup.cfg`,
