@@ -5,8 +5,8 @@ on:
     branches:
       - 'coatl'
     paths:
-      - 'pip-compile/**'
       - '.github/workflows/test-pip-compile.yaml'
+      - 'pip-compile/**'
   workflow_dispatch:
 
 jobs:
