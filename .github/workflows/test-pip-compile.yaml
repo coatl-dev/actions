@@ -44,4 +44,4 @@ jobs:
 
       - name: Show output
         run: |
-          echo "Were changes detected? ${{ steps.git-diff.outputs.diff }}"
+          echo "Changes were detected: ${{ steps.git-diff.outputs.diff }}"
