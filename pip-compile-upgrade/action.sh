@@ -13,25 +13,18 @@ function process_file() {
   if [ -n "$command" ]; then
     if [ "$use_config" == "yes" ]; then
       if [ -f "$config_file" ]; then
-        upgrade_command=$(command | sed -E "s/^[[:space:]]*#?[[:space:]]*pip-compile([^;]* )(pyproject\.toml|[^ ]+\.in|setup\.py|setup\.cfg)/pip-compile --upgrade --config $config_file \2/")
+        file_name=$(grep -m 1 -E "#    pip-compile.*(pyproject\.toml|setup\.cfg|setup\.py|[^ ]+\.in)" "$file" | sed -E "s/.*(#    pip-compile.* (pyproject\.toml|setup\.cfg|setup\.py|[^ ]+\.in)).*/\2/")
+        upgrade_command="pip-compile --upgrade --config $config_file $file_name"
         eval "$upgrade_command"
       else
         exit 1
       fi
     else
-      upgrade_command=$(command | sed "s/#    pip-compile/pip-compile --upgrade/")
+      upgrade_command=$(grep -m 1 "#    pip-compile" "$file" | sed "s/#    pip-compile/pip-compile --upgrade/")
       eval "$upgrade_command"
     fi
   else
-    if [ "$use_config" == "yes" ]; then
-      if [ -f "$config_file" ]; then
-        pip-compile --upgrade --config "$config_file" "$file"
-      else
-        exit 1
-      fi
-    else
-      pip-compile --upgrade "$file"
-    fi
+    exit 1
   fi
 }
 
