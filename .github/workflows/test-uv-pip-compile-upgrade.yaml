@@ -3,10 +3,10 @@ name: test-uv-pip-compile-upgrade
 on:
   pull_request:
     branches:
-      - 'coatl'
+      - coatl
     paths:
-      - '.github/workflows/test-uv-pip-compile-upgrade.yaml'
-      - 'uv-pip-compile-upgrade/**'
+      - .github/workflows/test-uv-pip-compile-upgrade.yaml
+      - uv-pip-compile-upgrade/**
   workflow_dispatch:
 
 jobs:
