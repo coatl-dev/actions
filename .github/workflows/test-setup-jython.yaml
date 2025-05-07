@@ -3,10 +3,10 @@ name: test-setup-jython
 on:
   pull_request:
     branches:
-      - 'coatl'
+      - coatl
     paths:
-      - '.github/workflows/test-setup-jython.yaml'
-      - 'setup-jython/**'
+      - .github/workflows/test-setup-jython.yaml
+      - setup-jython/**
   workflow_dispatch:
 
 jobs:

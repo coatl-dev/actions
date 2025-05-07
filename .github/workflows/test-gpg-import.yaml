@@ -3,10 +3,10 @@ name: test-gpg-import
 on:
   pull_request:
     branches:
-      - 'coatl'
+      - coatl
     paths:
-      - '.github/workflows/test-gpg-import.yaml'
-      - 'gpg-import/**'
+      - .github/workflows/test-gpg-import.yaml
+      - gpg-import/**
   workflow_dispatch:
 
 jobs:
