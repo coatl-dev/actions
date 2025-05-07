@@ -36,13 +36,3 @@ jobs:
           python-version: ${{ matrix.python-version }}
           use-config: ${{ matrix.use-config }}
           extra-args: '--dry-run --reuse-hashes --verbose'
-
-      - name: Detect changes
-        id: git-diff
-        uses: ./simple-git-diff
-        with:
-          path: ${{ matrix.path }}
-
-      - name: Show output
-        run: |
-          echo "Changes were detected: ${{ steps.git-diff.outputs.diff }}"
