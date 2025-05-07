@@ -22,6 +22,11 @@ inputs:
       The location of the configuration file for pip-compile.
     required: false
     default: '.pip-tools.toml'
+  extra-args:
+    description: >-
+      Extra arguments to pass to pip-compile.
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -39,5 +44,6 @@ runs:
           --env "INPUT_PATH=${{ inputs.path }}" \
           --env "INPUT_USE_CONFIG=${{ inputs.use-config }}" \
           --env "INPUT_CONFIG_FILE=${{ inputs.config-file }}" \
+          --env "INPUT_EXTRA_ARGS=${{ inputs.extra-args }}" \
           --volume ${{ github.workspace }}://github/workspace \
           coatl-pip-compile:${{ inputs.python-version }}

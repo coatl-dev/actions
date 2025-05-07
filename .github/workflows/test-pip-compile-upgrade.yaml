@@ -35,6 +35,7 @@ jobs:
           path: ${{ matrix.path }}
           python-version: ${{ matrix.python-version }}
           use-config: ${{ matrix.use-config }}
+          extra-args: '--dry-run --reuse-hashes --verbose'
 
       - name: Detect changes
         id: git-diff
