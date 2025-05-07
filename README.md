@@ -52,7 +52,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v4.1.1
+        uses: coatl-dev/actions/gpg-import@v4.1.2
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -92,12 +92,19 @@ dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
 - `use-config` (`string`): Whether to read configuration from TOML file.
   Options: `'yes'`, `'no'`. Defaults to `'no'`. Optional.
 - `config-file` (`string`): The location of the configuration file for
-  pip-compile. Optional. Defaults to `'.pip-tools.toml`.
+  `pip-compile`. Optional. Defaults to `'.pip-tools.toml`.
+- `extra-args` (`string`): Extra arguments to pass to `pip-compile`. Optional.
+  Defaults to `''`.
 
 > [!NOTE]
 > This action will install the latest release for `pip-tools` supporting your
 > choice for `python-version`. E.g., for Python `'2.7'`, it will install
 > [`pip-tools==5.5.0`].
+
+> [!WARNING]
+> `use-config` and `config-file` should not be used with Python 2, as only
+> recent versions of `pip-tools` support them.
+> Ensure compatibility with your Python version before using these options.
 
 **Examples**:
 
@@ -120,14 +127,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v4.1.1
+        uses: coatl-dev/actions/pip-compile@v4.1.2
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
+          extra-args: '--reuse-hashes'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.1
+        uses: coatl-dev/actions/simple-git-diff@v4.1.2
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -156,7 +164,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-312-with-config
-        uses: coatl-dev/actions/pip-compile@v4.1.1
+        uses: coatl-dev/actions/pip-compile@v4.1.2
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '3.12'
@@ -165,7 +173,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.1
+        uses: coatl-dev/actions/simple-git-diff@v4.1.2
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -200,7 +208,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v4.1.1
+        uses: coatl-dev/actions/pr-create@v4.1.2
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -235,7 +243,7 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 
 ```yml
     - name: Set up Jython
-      uses: coatl-dev/actions/setup-jython@v4.1.1
+      uses: coatl-dev/actions/setup-jython@v4.1.2
       with:
         jython-version: '2.7.3'
     - run: jython my_script.py
@@ -278,7 +286,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.1
+        uses: coatl-dev/actions/simple-git-diff@v4.1.2
         with:
           path: 'README.md'
 
@@ -326,14 +334,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-312
-        uses: coatl-dev/actions/uv-pip-compile@v4.1.1
+        uses: coatl-dev/actions/uv-pip-compile@v4.1.2
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '3.12'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.1
+        uses: coatl-dev/actions/simple-git-diff@v4.1.2
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
