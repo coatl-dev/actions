@@ -1,3 +1,9 @@
+## v4.1.3 (2025-05-08)
+
+### Refactor
+
+- **uv-pip-compile-upgrade**: add step for installing the desired Python version (#99)
+
 ## v4.1.2 (2025-05-07)
 
 ### Refactor
