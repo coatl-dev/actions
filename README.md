@@ -127,7 +127,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile@v4.1.3
+        uses: coatl-dev/actions/pip-compile-upgrade@v4.1.3
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
@@ -164,7 +164,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-312-with-config
-        uses: coatl-dev/actions/pip-compile@v4.1.3
+        uses: coatl-dev/actions/pip-compile-upgrade@v4.1.3
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '3.12'
@@ -334,7 +334,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-312
-        uses: coatl-dev/actions/uv-pip-compile@v4.1.3
+        uses: coatl-dev/actions/uv-pip-compile-upgrade@v4.1.3
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '3.12'
