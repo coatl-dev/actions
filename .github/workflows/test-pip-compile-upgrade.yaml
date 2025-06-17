@@ -18,12 +18,19 @@ jobs:
           - path: pip-compile-upgrade/test/2.7/requirements
             python-version: '2.7'
             use-config: 'no'
+            working-directory: ${{ github.workspace }}
+          - path: tools.txt
+            python-version: '2.7'
+            use-config: 'no'
+            working-directory: pip-compile-upgrade/test/2.7/requirements/tools
           - path: pip-compile-upgrade/test/3.12/requirements
             python-version: '3.12'
             use-config: 'yes'
+            working-directory: ${{ github.workspace }}
           - path: pip-compile-upgrade/test/3.13/requirements
             python-version: '3.13'
             use-config: 'no'
+            working-directory: ${{ github.workspace }}
 
     steps:
       - name: Checkout repo
@@ -36,3 +43,4 @@ jobs:
           python-version: ${{ matrix.python-version }}
           use-config: ${{ matrix.use-config }}
           extra-args: '--dry-run --reuse-hashes --verbose'
+          working-directory: ${{ matrix.working-directory }}

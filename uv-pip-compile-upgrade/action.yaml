@@ -17,6 +17,11 @@ inputs:
       The version of uv to install.
     required: false
     default: 'latest'
+  working-directory:
+    description: >-
+      The working directory to run the action in.
+    required: false
+    default: '.'
 
 runs:
   using: composite
@@ -39,5 +44,6 @@ runs:
       shell: bash
       env:
         INPUT_PATH: ${{ inputs.path }}
+        INPUT_WORKING_DIRECTORY: ${{ inputs.working-directory }}
       run: |
         action.sh

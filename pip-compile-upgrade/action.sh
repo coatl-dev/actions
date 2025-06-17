@@ -29,6 +29,8 @@ function process_file() {
   fi
 }
 
+cd "${INPUT_WORKING_DIRECTORY}" || exit 1
+
 if [ -d "${INPUT_PATH}" ]; then
   cd "${INPUT_PATH}" || exit
   for file in *.txt; do
