@@ -52,7 +52,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v4.1.4
+        uses: coatl-dev/actions/gpg-import@v4.1.5
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -129,7 +129,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile-upgrade@v4.1.4
+        uses: coatl-dev/actions/pip-compile-upgrade@v4.1.5
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '2.7.18'
@@ -137,7 +137,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.4
+        uses: coatl-dev/actions/simple-git-diff@v4.1.5
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -166,7 +166,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-312-with-config
-        uses: coatl-dev/actions/pip-compile-upgrade@v4.1.4
+        uses: coatl-dev/actions/pip-compile-upgrade@v4.1.5
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '3.12'
@@ -175,7 +175,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.4
+        uses: coatl-dev/actions/simple-git-diff@v4.1.5
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -210,7 +210,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v4.1.4
+        uses: coatl-dev/actions/pr-create@v4.1.5
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -225,9 +225,9 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 **Inputs**:
 
 - `jython-version` (`string`): The Jython version to install. Defaults to
-  `'2.7.3'`. Optional. See [supported Jython versions].
+  `'2.7.4'`. Optional. See [supported Jython versions].
 - `java-distribution` (`string`): Java distribution to use for installing
-  Jython. Defaults to `'zulu'`. Optional. See [supported Java distributions].
+  Jython. Defaults to `'temurin'`. Optional. See [supported Java distributions].
 - `java-version` (`string`): The Java version to set up. Defaults to `'17'`.
   Optional.
 
@@ -245,7 +245,7 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 
 ```yml
     - name: Set up Jython
-      uses: coatl-dev/actions/setup-jython@v4.1.4
+      uses: coatl-dev/actions/setup-jython@v4.1.5
       with:
         jython-version: '2.7.3'
     - run: jython my_script.py
@@ -288,7 +288,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.4
+        uses: coatl-dev/actions/simple-git-diff@v4.1.5
         with:
           path: 'README.md'
 
@@ -338,14 +338,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-312
-        uses: coatl-dev/actions/uv-pip-compile-upgrade@v4.1.4
+        uses: coatl-dev/actions/uv-pip-compile-upgrade@v4.1.5
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '3.12'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.4
+        uses: coatl-dev/actions/simple-git-diff@v4.1.5
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 

@@ -1,3 +1,9 @@
+## v4.1.5 (2025-06-27)
+
+### Refactor
+
+- **setup-jython**: change default values (#102)
+
 ## v4.1.4 (2025-06-17)
 
 ### Refactor
