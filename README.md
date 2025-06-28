@@ -52,7 +52,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v4.1.5
+        uses: coatl-dev/actions/gpg-import@v5.0.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -69,44 +69,19 @@ jobs:
 
 ### pip-compile-upgrade
 
-Run `pip-compile upgrade` to upgrade your Python 2/3 requirements using
-[`coatldev/python`] Docker image.
-
-For Python 2:
+Run `pip-compile upgrade` to upgrade your Python 2.7.18 requirements using
+[`coatl-dev/python-tools:2.7-pip-tools`] Docker image.
 
 The `pip-compile` command lets you compile a `requirements.txt` file from your
 dependencies, specified in either `setup.py` or `requirements.in`.
 
-For Python 3:
-
-The `pip-compile` command lets you compile a `requirements.txt` file from your
-dependencies, specified in either `pyproject.toml`, `setup.cfg`, `setup.py`, or
-`requirements.in`.
-
 **Inputs**:
 
 - `path` (`string`): The location of the requirement file(s).
-- `python-version` (`string`): Python version to use for installing `pip-tools`.
-  You may use MAJOR.MINOR or exact version. Options: `'2.7'`, `'3.12'` and
-  `'3.13'`. Defaults to `'3.13'`. Optional.
-- `use-config` (`string`): Whether to read configuration from TOML file.
-  Options: `'yes'`, `'no'`. Defaults to `'no'`. Optional.
-- `config-file` (`string`): The location of the configuration file for
-  `pip-compile`. Optional. Defaults to `'.pip-tools.toml`.
 - `extra-args` (`string`): Extra arguments to pass to `pip-compile`. Optional.
   Defaults to `''`.
 - `working-directory` (`string`): The working directory to run the action in.
   Optional. Defaults to `'.'`.
-
-> [!NOTE]
-> This action will install the latest release for `pip-tools` supporting your
-> choice for `python-version`. E.g., for Python `'2.7'`, it will install
-> [`pip-tools==5.5.0`].
-
-> [!WARNING]
-> `use-config` and `config-file` should not be used with Python 2, as only
-> recent versions of `pip-tools` support them.
-> Ensure compatibility with your Python version before using these options.
 
 **Examples**:
 
@@ -129,53 +104,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile-upgrade@v4.1.5
+        uses: coatl-dev/actions/pip-compile-upgrade@v5.0.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
-          python-version: '2.7.18'
           extra-args: '--reuse-hashes'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.5
-        with:
-          path: "${{ env.REQUIREMENTS_PATH }}"
-
-      - name: Do something if changes were made
-        if: ${{ steps.git-diff.outputs.diff == 'true' }}
-        run: |
-          echo "Changes were detected."
-```
-
-```yml
-name: pip-compile-312-with-config
-
-on:
-  schedule:
-    # Monthly at 12:00 PST (00:00 UTC)
-    - cron: '0 20 1 * *'
-
-jobs:
-  pip-compile:
-    runs-on: ubuntu-latest
-    env:
-      REQUIREMENTS_PATH: 'path/to/requirements'
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: pip-compile-312-with-config
-        uses: coatl-dev/actions/pip-compile-upgrade@v4.1.5
-        with:
-          path: "${{ env.REQUIREMENTS_PATH }}"
-          python-version: '3.12'
-          use-config: 'yes'
-          config-file: 'pyproject.toml'
-
-      - name: Detect changes
-        id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.5
+        uses: coatl-dev/actions/simple-git-diff@v5.0.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -210,7 +146,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v4.1.5
+        uses: coatl-dev/actions/pr-create@v5.0.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -245,7 +181,7 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 
 ```yml
     - name: Set up Jython
-      uses: coatl-dev/actions/setup-jython@v4.1.5
+      uses: coatl-dev/actions/setup-jython@v5.0.0
       with:
         jython-version: '2.7.3'
     - run: jython my_script.py
@@ -288,7 +224,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.5
+        uses: coatl-dev/actions/simple-git-diff@v5.0.0
         with:
           path: 'README.md'
 
@@ -338,14 +274,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-312
-        uses: coatl-dev/actions/uv-pip-compile-upgrade@v4.1.5
+        uses: coatl-dev/actions/uv-pip-compile-upgrade@v5.0.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '3.12'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v4.1.5
+        uses: coatl-dev/actions/simple-git-diff@v5.0.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -356,7 +292,7 @@ jobs:
 ```
 
 <!-- Links -->
-[`coatldev/python`]: https://hub.docker.com/r/coatldev/python
+[`coatl-dev/python-tools:2.7-pip-tools`]: https://github.com/coatl-dev/docker-python-tools/blob/coatl/pip-tools/2.7/Dockerfile
 [`git diff`]: https://git-scm.com/docs/git-diff
 [`pip-tools==5.5.0`]: https://pypi.org/project/pip-tools/5.5.0/
 [supported Java distributions]: https://github.com/actions/setup-java#supported-distributions

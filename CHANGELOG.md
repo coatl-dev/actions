@@ -1,3 +1,13 @@
+## v5.0.0 (2025-06-28)
+
+### BREAKING CHANGE
+
+- pip-compile-upgrade will only suppport Python 2.7.18
+
+### Refactor
+
+- **pip-compile-upgrade**: use coatl-dev/python-tools (#103)
+
 ## v4.1.5 (2025-06-27)
 
 ### Refactor
