@@ -7,21 +7,6 @@ inputs:
     description: >-
       The location of the requirement file(s).
     required: true
-  python-version:
-    description: >-
-      Python version to use for installing pip-tools.
-    required: false
-    default: '3.13'
-  use-config:
-    description: >-
-      Whether to read configuration from TOML file.
-    required: false
-    default: 'no'
-  config-file:
-    description: >-
-      The location of the configuration file for pip-compile.
-    required: false
-    default: '.pip-tools.toml'
   extra-args:
     description: >-
       Extra arguments to pass to pip-compile.
@@ -41,7 +26,7 @@ runs:
         docker build \
           --build-arg VERSION=${{ inputs.python-version }} \
           --file ${{ github.action_path }}/Dockerfile \
-          --tag coatl-pip-compile:${{ inputs.python-version }} \
+          --tag coatl-dev-pip-compile-upgrade-action \
           ${{ github.action_path }}
 
     - shell: bash
@@ -53,4 +38,4 @@ runs:
           --env "INPUT_EXTRA_ARGS=${{ inputs.extra-args }}" \
           --env "INPUT_WORKING_DIRECTORY=${{ inputs.working-directory }}" \
           --volume ${{ github.workspace }}://github/workspace \
-          coatl-pip-compile:${{ inputs.python-version }}
+          coatl-dev-pip-compile-upgrade-action
