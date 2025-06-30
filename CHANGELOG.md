@@ -1,3 +1,9 @@
+## v5.0.1 (2025-06-30)
+
+### Refactor
+
+- **pip-compile-upgrade**: run using docker (#104)
+
 ## v5.0.0 (2025-06-28)
 
 ### BREAKING CHANGE
