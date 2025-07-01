@@ -1,3 +1,9 @@
+## v5.1.0 (2025-07-01)
+
+### Feat
+
+- add pypi-upload action (#105)
+
 ## v5.0.1 (2025-06-30)
 
 ### Refactor

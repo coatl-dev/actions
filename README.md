@@ -10,6 +10,7 @@ in projects to keep them DRY.
 - [gpg-import](#gpg-import)
 - [pip-compile-upgrade](#pip-compile-upgrade)
 - [pr-create](#pr-create)
+- [pypi-upload](#pypi-upload)
 - [setup-jython](#setup-jython)
 - [simple-git-diff](#simple-git-diff)
 - [uv-pip-compile-upgrade](#uv-pip-compile-upgrade)
@@ -52,7 +53,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v5.0.1
+        uses: coatl-dev/actions/gpg-import@v5.1.0
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -104,14 +105,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile-upgrade@v5.0.1
+        uses: coatl-dev/actions/pip-compile-upgrade@v5.1.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           extra-args: '--reuse-hashes'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v5.0.1
+        uses: coatl-dev/actions/simple-git-diff@v5.1.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -146,9 +147,46 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v5.0.1
+        uses: coatl-dev/actions/pr-create@v5.1.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
+```
+
+### pypi-upload
+
+GitHub action to build and upload your Python distribution packages to PyPI
+(or any other repository) using `build` and `twine`.
+
+> [!NOTE]
+> This action uses the [`ghcr.io/coatl-dev/python-tools`] Docker image, which
+> has tags for Python 2.7 and 3.12. E.g.,
+> `ghcr.io/coatl-dev/python-tools:2.7-build`.
+
+**Inputs**:
+
+- `python-version` (`string`): The Python version to use for building and
+  publishing the package. Options: `'2.7'` or `'3.12'`. Defaults to `'2.7'`.
+  Optional.
+- `check` (`boolean`): Check metadata with twine before uploading. Defaults to
+  `true`. Optional.
+- `url` (`string`): The repository (package index) URL to upload the package to.
+  Defaults to `'https://upload.pypi.org/legacy/'`. Optional.
+- `username` (`string`): The username to authenticate to the repository (package
+  index) as. Defaults to `'__token__'`. Optional.
+- `password` (`secret`): The password to authenticate to the repository (package
+  index) with. This can also be a token. Required.
+- `working-directory` (`string`): The directory to run the action in.
+  Optional. Defaults to `github.workspace`.
+
+**Example:**
+
+```yml
+    - name: Upload Python package to PyPI
+      uses: coatl-dev/actions/pypi-upload@v5.1.0
+      with:
+        python-version: '2.7'
+        check: 'false'
+        password: ${{ secrets.PYPI_API_TOKEN }}
 ```
 
 ### setup-jython
@@ -181,7 +219,7 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 
 ```yml
     - name: Set up Jython
-      uses: coatl-dev/actions/setup-jython@v5.0.1
+      uses: coatl-dev/actions/setup-jython@v5.1.0
       with:
         jython-version: '2.7.3'
     - run: jython my_script.py
@@ -224,7 +262,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v5.0.1
+        uses: coatl-dev/actions/simple-git-diff@v5.1.0
         with:
           path: 'README.md'
 
@@ -274,14 +312,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pip-compile-312
-        uses: coatl-dev/actions/uv-pip-compile-upgrade@v5.0.1
+        uses: coatl-dev/actions/uv-pip-compile-upgrade@v5.1.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '3.12'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v5.0.1
+        uses: coatl-dev/actions/simple-git-diff@v5.1.0
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
