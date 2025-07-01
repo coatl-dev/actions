@@ -1,0 +1,30 @@
+name: test-pypi-upload
+
+on:
+  pull_request:
+    branches:
+      - coatl
+    paths:
+      - .github/workflows/test-pypi-upload.yaml
+      - pypi-upload/**
+  workflow_dispatch:
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout coatl-dev/actions repo
+        uses: actions/checkout@v4
+
+
+      - name: Checkout test repository
+        uses: actions/checkout@v4
+        with:
+          repository: ignition-devs/incendium
+          path: test
+
+      - name: pypi-upload
+        uses: ./pypi-upload
+        with:
+          dry-run: true
+          working-directory: test/incendium
