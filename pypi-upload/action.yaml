@@ -1,6 +1,6 @@
 name: coatl-dev-pypi-upload
 description: >-
-  GitHub action to build and upload your Python distribution packages PyPI
+  GitHub action to build and upload your Python distribution packages to PyPI
   (or any other repository) using build and twine.
 author: cesarcoatl
 
@@ -45,7 +45,7 @@ runs:
     - shell: bash
       run: |
         docker build \
-          --build-arg VERSION=${{ inputs.python-version }} \
+          --build-arg PYTHON_VERSION=${{ inputs.python-version }} \
           --file ${{ github.action_path }}/Dockerfile \
           --tag coatl-dev-pypi-upload:${{ inputs.python-version }} \
           ${{ github.action_path }}

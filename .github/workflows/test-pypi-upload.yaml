@@ -23,8 +23,15 @@ jobs:
           repository: ignition-devs/incendium
           path: test
 
-      - name: pypi-upload
+      - name: pypi-upload-2.7
         uses: ./pypi-upload
         with:
           dry-run: true
-          working-directory: test/incendium
+          working-directory: test/incendium/incendium
+
+      - name: pypi-upload-3.12
+        uses: ./pypi-upload
+        with:
+          dry-run: true
+          working-directory: test/incendium/incendium-stubs
+          python-version: '3.12'
