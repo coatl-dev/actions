@@ -1,3 +1,9 @@
+## v5.1.1 (2025-07-30)
+
+### Fix
+
+- **pypi-upload**: set correct build-arg (#107)
+
 ## v5.1.0 (2025-07-01)
 
 ### Feat
