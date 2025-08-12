@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout coatl-dev/actions repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
 
       - name: Checkout test repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ignition-devs/incendium
           path: incendium
