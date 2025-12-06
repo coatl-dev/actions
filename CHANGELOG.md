@@ -1,3 +1,9 @@
+## v5.1.2 (2025-12-05)
+
+### Refactor
+
+- **pr-create**: add additional-args input (#116)
+
 ## v5.1.1 (2025-07-30)
 
 ### Fix
