@@ -27,11 +27,11 @@ jobs:
         uses: ./pypi-upload
         with:
           dry-run: true
-          working-directory: incendium/incendium
+          working-directory: incendium
 
       - name: pypi-upload-3.12
         uses: ./pypi-upload
         with:
           dry-run: true
-          working-directory: incendium/incendium-stubs
+          working-directory: incendium/stubs
           python-version: '3.12'
