@@ -11,7 +11,7 @@ inputs:
     description: >-
       The version of Python to set UV_PYTHON to.
     required: false
-    default: '3.13'
+    default: '3.14'
   uv-version:
     description: >-
       The version of uv to install.
