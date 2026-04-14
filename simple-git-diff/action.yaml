@@ -20,5 +20,7 @@ runs:
     - name: Detect changes
       id: git-diff
       shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
       run: |
-        git diff --quiet ${{ inputs.path }} && echo "diff=false" || echo "diff=true" >> "$GITHUB_OUTPUT"
+        git diff --quiet -- "${INPUT_PATH}" && echo "diff=false" || echo "diff=true" >> "$GITHUB_OUTPUT"

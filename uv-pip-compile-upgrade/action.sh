@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 # shellcheck source=/dev/null
 
 export PATH="/usr/bin:${PATH}"  # To find `id`
@@ -6,8 +8,22 @@ source /etc/profile  # Makes python and other executables findable
 
 function process_file() {
 	local file="$1"
-	command=$(grep -m 1 "#    uv pip compile" "$file" | sed "s/#    uv pip compile/uv pip compile --upgrade/")
-	eval "$command"
+	local raw_command
+	raw_command=$(grep -m 1 '^#[[:space:]]*uv pip compile' "$file" | sed 's/^#[[:space:]]*//') || true
+	if [ -z "$raw_command" ]; then
+		exit 1
+	fi
+
+	local -a command_parts
+	read -r -a command_parts <<< "$raw_command"
+	if [ "${command_parts[0]:-}" != "uv" ]; then
+		exit 1
+	fi
+
+	local -a command
+	command=("${command_parts[@]}" "--upgrade")
+
+	"${command[@]}"
 }
 
 cd "${INPUT_WORKING_DIRECTORY}" || exit 1

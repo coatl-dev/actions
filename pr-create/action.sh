@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 
 # Parse INPUT_ADDITIONAL_ARGS into an array so multiple args are preserved
 ADDITIONAL_ARGS_ARR=()
 if [ -n "${INPUT_ADDITIONAL_ARGS:-}" ]; then
-	# split into array on IFS (whitespace)
 	read -r -a ADDITIONAL_ARGS_ARR <<< "$INPUT_ADDITIONAL_ARGS"
 fi
 

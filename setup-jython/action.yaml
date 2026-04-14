@@ -45,10 +45,12 @@ runs:
   steps:
     - name: Set Jython installation path
       shell: bash
+      env:
+        JYTHON_VERSION: ${{ inputs.jython-version }}
       run: |
-        echo "JYTHON_PATH=/opt/jython/${{ inputs.jython-version }}" >> "$GITHUB_ENV"
+        echo "JYTHON_PATH=/opt/jython/${JYTHON_VERSION}" >> "$GITHUB_ENV"
 
-    - uses: actions/setup-java@v4
+    - uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4
       id: setup-java
       with:
         distribution: ${{ inputs.java-distribution }}
@@ -56,7 +58,7 @@ runs:
 
     - name: Cache Jython
       id: cache-jython
-      uses: actions/cache@v4
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v6
       with:
         path: ${{ env.JYTHON_PATH }}
         key: jython-${{ inputs.jython-version }}-${{ runner.os }}-${{ steps.setup-java.outputs.distribution }}-${{ steps.setup-java.outputs.version }}
@@ -64,13 +66,15 @@ runs:
     - name: Install Jython
       if: steps.cache-jython.outputs.cache-hit != 'true'
       shell: bash
+      env:
+        JYTHON_VERSION: ${{ inputs.jython-version }}
       run: |
-        wget -q "https://repo1.maven.org/maven2/org/python/jython-installer/${{ inputs.jython-version }}/jython-installer-${{ inputs.jython-version }}.jar"
-        java -jar "jython-installer-${{ inputs.jython-version }}.jar" \
+        wget -q "https://repo1.maven.org/maven2/org/python/jython-installer/${JYTHON_VERSION}/jython-installer-${JYTHON_VERSION}.jar"
+        java -jar "jython-installer-${JYTHON_VERSION}.jar" \
           --silent \
           --type standard \
           --directory "$JYTHON_PATH"
-        rm -f "jython-installer-${{ inputs.jython-version }}.jar"
+        rm -f "jython-installer-${JYTHON_VERSION}.jar"
 
     - name: Add Jython to PATH
       shell: bash
