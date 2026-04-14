@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Import GPG key
         id: gpg-import
@@ -102,7 +102,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: pip-compile-27
         uses: coatl-dev/actions/pip-compile-upgrade@v5.1.3
@@ -266,7 +266,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Modify file in repo
         run: |
@@ -321,7 +321,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: pip-compile-312
         uses: coatl-dev/actions/uv-pip-compile-upgrade@v5.1.3
@@ -344,6 +344,5 @@ jobs:
 <!-- Links -->
 [`coatl-dev/python-tools:2.7-pip-tools`]: https://github.com/coatl-dev/docker-python-tools/blob/coatl/pip-tools/2.7/Dockerfile
 [`git diff`]: https://git-scm.com/docs/git-diff
-[`pip-tools==5.5.0`]: https://pypi.org/project/pip-tools/5.5.0/
 [supported Java distributions]: https://github.com/actions/setup-java#supported-distributions
 [supported Jython versions]: https://repo1.maven.org/maven2/org/python/jython-installer/

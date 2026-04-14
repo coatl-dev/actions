@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# shellcheck source=/dev/null
+set -euo pipefail
+IFS=$'\n\t'
 
 export PATH="/usr/bin:${PATH}"  # To find `id`
+# shellcheck source=/dev/null
 source /etc/profile  # Makes python and other executables findable
 
 cd "${INPUT_WORKING_DIRECTORY}" || exit 1
@@ -15,9 +17,11 @@ fi
 if [[ "${INPUT_DRY_RUN}" == "true" ]]; then
 	echo "Dry run enabled, not uploading the package."
 	exit 0
-elif [[ -z "${TWINE_PASSWORD}" ]]; then
+fi
+
+if [[ -z "${TWINE_PASSWORD}" ]]; then
 	echo "TWINE_PASSWORD is not set."
 	exit 1
-else
-	python -m twine upload --verbose dist/*
 fi
+
+python -m twine upload --non-interactive --verbose dist/*

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck source=/dev/null
 
 export PATH="/usr/bin:${PATH}"  # To find `id`
+# shellcheck source=/dev/null
 source /etc/profile  # Makes python and other executables findable
 
 function process_file() {

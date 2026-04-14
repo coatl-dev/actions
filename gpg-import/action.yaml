@@ -34,11 +34,17 @@ runs:
   steps:
     - name: Import GPG key and prime passphrase
       shell: bash
+      env:
+        INPUT_PASSPHRASE: ${{ inputs.passphrase }}
+        INPUT_PRIVATE_KEY: ${{ inputs.private-key }}
       run: |
-        echo -e "${{ inputs.private-key }}" | gpg --import --batch --no-tty
-        echo "hello world" > temp.txt
-        gpg --detach-sig --yes -v --output=/dev/null --pinentry-mode loopback --passphrase "${{ inputs.passphrase }}" temp.txt
-        rm temp.txt
+        set -euo pipefail
+        tmpdir=$(mktemp -d)
+        trap 'rm -rf "$tmpdir"' EXIT
+
+        printf '%s\n' "${INPUT_PRIVATE_KEY}" | gpg --import --batch --no-tty
+        printf '%s\n' 'hello world' > "$tmpdir/temp.txt"
+        gpg --detach-sig --yes -v --output=/dev/null --pinentry-mode loopback --passphrase "${INPUT_PASSPHRASE}" "$tmpdir/temp.txt"
 
     - name: Get the key ID of your signing key
       id: gpg-key

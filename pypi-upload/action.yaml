@@ -43,21 +43,34 @@ runs:
   using: composite
   steps:
     - shell: bash
+      env:
+        INPUT_PYTHON_VERSION: ${{ inputs.python-version }}
       run: |
         docker build \
-          --build-arg PYTHON_VERSION=${{ inputs.python-version }} \
+          --build-arg PYTHON_VERSION=${INPUT_PYTHON_VERSION} \
           --file ${{ github.action_path }}/Dockerfile \
-          --tag coatl-dev-pypi-upload:${{ inputs.python-version }} \
+          --tag coatl-dev-pypi-upload:${INPUT_PYTHON_VERSION} \
           ${{ github.action_path }}
 
     - shell: bash
+      env:
+        WORKING_DIRECTORY: ${{ inputs.working-directory }}
+        TWINE_USERNAME: ${{ inputs.username }}
+        TWINE_PASSWORD: ${{ inputs.password }}
+        TWINE_REPOSITORY_URL: ${{ inputs.url }}
+        TWINE_CHECK: ${{ inputs.check }}
+        DRY_RUN: ${{ inputs.dry-run }}
+        JYTHON_VERSION: ${{ inputs.python-version }}
+        PYTHON_VERSION: ${{ inputs.python-version }}
       run: |
         docker run --rm \
-          --env "INPUT_WORKING_DIRECTORY=${{ inputs.working-directory }}" \
-          --env "TWINE_USERNAME=${{ inputs.username }}" \
-          --env "TWINE_PASSWORD=${{ inputs.password }}" \
-          --env "TWINE_REPOSITORY_URL=${{ inputs.url }}" \
-          --env "TWINE_CHECK=${{ inputs.check }}" \
-          --env "INPUT_DRY_RUN=${{ inputs.dry-run }}" \
+          --env "INPUT_WORKING_DIRECTORY=${WORKING_DIRECTORY}" \
+          --env "TWINE_USERNAME=${TWINE_USERNAME}" \
+          --env "TWINE_PASSWORD=${TWINE_PASSWORD}" \
+          --env "TWINE_REPOSITORY_URL=${TWINE_REPOSITORY_URL}" \
+          --env "TWINE_CHECK=${TWINE_CHECK}" \
+          --env "INPUT_DRY_RUN=${DRY_RUN}" \
+          --env "JYTHON_VERSION=${JYTHON_VERSION}" \
+          --env "PYTHON_VERSION=${PYTHON_VERSION}" \
           --volume ${{ github.workspace }}://github/workspace \
-          coatl-dev-pypi-upload:${{ inputs.python-version }}
+          coatl-dev-pypi-upload:${PYTHON_VERSION}
