@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
-# shellcheck source=/dev/null
 
 export PATH="/usr/bin:${PATH}"  # To find `id`
+# shellcheck source=/dev/null
 source /etc/profile  # Makes python and other executables findable
 
 cd "${INPUT_WORKING_DIRECTORY}" || exit 1
