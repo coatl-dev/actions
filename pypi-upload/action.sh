@@ -24,4 +24,4 @@ if [[ -z "${TWINE_PASSWORD}" ]]; then
 	exit 1
 fi
 
-python -m twine upload --non-interactive --verbose dist/*
+python -m twine upload --verbose dist/*
