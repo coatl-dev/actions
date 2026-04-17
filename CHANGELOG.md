@@ -1,3 +1,9 @@
+## v5.1.5 (2026-04-16)
+
+### Fix
+
+- **pypi-upload**: revert change on twin upload command (#125)
+
 ## v5.1.4 (2026-04-13)
 
 ### Refactor
