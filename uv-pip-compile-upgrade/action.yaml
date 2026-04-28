@@ -30,7 +30,6 @@ runs:
       shell: bash
 
     - uses: astral-sh/setup-uv@v8.1.0
-      id: setup_uv
       with:
         enable-cache: 'false'
         python-version: '${{ inputs.python-version }}'
@@ -38,19 +37,13 @@ runs:
 
     - name: Install Python ${{ inputs.python-version }}
       shell: bash
-      env:
-        INPUT_PYTHON_VERSION: ${{ inputs.python-version }}
       run: |
-        uv python install "${INPUT_PYTHON_VERSION}"
+        uv python install ${{ inputs.python-version }}
 
     - name: Create Pull Request
       shell: bash
       env:
-        UV_BIN_PATH: ${{ steps.setup_uv.outputs.uv-path }}
         INPUT_PATH: ${{ inputs.path }}
         INPUT_WORKING_DIRECTORY: ${{ inputs.working-directory }}
       run: |
-        if [ -n "${UV_BIN_PATH:-}" ]; then
-          export PATH="$(dirname "${UV_BIN_PATH}"):$PATH"
-        fi
         action.sh
