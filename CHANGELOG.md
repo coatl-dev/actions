@@ -1,3 +1,13 @@
+## v5.1.6 (2026-04-28)
+
+### Fix
+
+- **pr-create**: revert to previous functioning state (#127)
+
+### Refactor
+
+- **uv-pip-compile**: add path to uv before running action.sh (#126)
+
 ## v5.1.5 (2026-04-16)
 
 ### Fix
