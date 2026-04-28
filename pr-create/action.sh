@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-IFS=$'\n\t'
 
 # Parse INPUT_ADDITIONAL_ARGS into an array so multiple args are preserved
 ADDITIONAL_ARGS_ARR=()
