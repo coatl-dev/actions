@@ -1,3 +1,9 @@
+## v5.1.7 (2026-04-28)
+
+### Fix
+
+- **uv-pip-compile**: revert recent changes (#128)
+
 ## v5.1.6 (2026-04-28)
 
 ### Fix
