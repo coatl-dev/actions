@@ -1,3 +1,9 @@
+## v5.1.9 (2026-04-29)
+
+### Refactor
+
+- **setup-jython**: use tags (#132)
+
 ## v5.1.8 (2026-04-29)
 
 ### Refactor
