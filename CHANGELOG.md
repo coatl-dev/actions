@@ -1,3 +1,9 @@
+## v5.1.8 (2026-04-29)
+
+### Refactor
+
+- **setup-jython**: update actions/setup-java action to v5 (#130)
+
 ## v5.1.7 (2026-04-28)
 
 ### Fix
