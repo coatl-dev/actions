@@ -17,7 +17,9 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+        with:
+          persist-credentials: false
 
       - name: uv-pip-compile-upgrade
         uses: ./uv-pip-compile-upgrade
@@ -32,4 +34,6 @@ jobs:
 
       - name: Show output
         run: |
-          echo "Changes were detected: ${{ steps.git-diff.outputs.diff }}"
+          echo "Changes were detected: ${STEPS_GIT_DIFF_OUTPUTS_DIFF}"
+        env:
+          STEPS_GIT_DIFF_OUTPUTS_DIFF: ${{ steps.git-diff.outputs.diff }}

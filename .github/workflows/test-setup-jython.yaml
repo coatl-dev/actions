@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
           persist-credentials: false
 
@@ -24,11 +24,17 @@ jobs:
 
       - name: Test action output
         run: |
-          echo "JYTHON_VERSION=${{ steps.jy.outputs.jython-version }}"
-          echo "JYTHON_BINARY=${{ steps.jy.outputs.jython-path }}"
-          echo "JAVA_DISTRIBUTION=${{ steps.jy.outputs.java-distribution }}"
-          echo "JAVA_PATH=${{ steps.jy.outputs.java-path }}"
-          echo "JAVA_VERSION=${{ steps.jy.outputs.java-version }}"
+          echo "JYTHON_VERSION=${STEPS_JY_OUTPUTS_JYTHON_VERSION}"
+          echo "JYTHON_BINARY=${STEPS_JY_OUTPUTS_JYTHON_PATH}"
+          echo "JAVA_DISTRIBUTION=${STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION}"
+          echo "JAVA_PATH=${STEPS_JY_OUTPUTS_JAVA_PATH}"
+          echo "JAVA_VERSION=${STEPS_JY_OUTPUTS_JAVA_VERSION}"
+        env:
+          STEPS_JY_OUTPUTS_JYTHON_VERSION: ${{ steps.jy.outputs.jython-version }}
+          STEPS_JY_OUTPUTS_JYTHON_PATH: ${{ steps.jy.outputs.jython-path }}
+          STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION: ${{ steps.jy.outputs.java-distribution }}
+          STEPS_JY_OUTPUTS_JAVA_PATH: ${{ steps.jy.outputs.java-path }}
+          STEPS_JY_OUTPUTS_JAVA_VERSION: ${{ steps.jy.outputs.java-version }}
 
       - name: Test
         run: |

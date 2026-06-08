@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-slim
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
           persist-credentials: false
 
@@ -27,5 +27,8 @@ jobs:
 
       - name: Show Output
         run: |
-          echo "git user.email: ${{ steps.gpg-import.outputs.git-user-email }}"
-          echo "git user.name: ${{ steps.gpg-import.outputs.git-user-name }}"
+          echo "git user.email: ${STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_EMAIL}"
+          echo "git user.name: ${STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_NAME}"
+        env:
+          STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_EMAIL: ${{ steps.gpg-import.outputs.git-user-email }}
+          STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_NAME: ${{ steps.gpg-import.outputs.git-user-name }}
