@@ -1,3 +1,9 @@
+## v5.1.12 (2026-06-08)
+
+### Refactor
+
+- **deps**: update actions/cache action to v5.0.5 (#140)
+
 ## v5.1.11 (2026-06-08)
 
 ### Refactor
