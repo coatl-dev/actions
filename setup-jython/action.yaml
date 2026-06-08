@@ -58,7 +58,7 @@ runs:
 
     - name: Cache Jython
       id: cache-jython
-      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.2
+      uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
       with:
         path: ${{ env.JYTHON_PATH }}
         key: jython-${{ inputs.jython-version }}-${{ runner.os }}-${{ steps.setup-java.outputs.distribution }}-${{ steps.setup-java.outputs.version }}
