@@ -1,3 +1,13 @@
+## v7.0.0 (2026-06-09)
+
+### BREAKING CHANGE
+
+- replace additional-args input with base-branch
+
+### Refactor
+
+- **pr-create**: add base-branch input (#143)
+
 ## v6.0.0 (2026-06-09)
 
 ### BREAKING CHANGE
