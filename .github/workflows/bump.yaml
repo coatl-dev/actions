@@ -5,7 +5,6 @@ on:
     branches:
       - coatl
     paths:
-      - .github/workflows/bump.yml
       - gpg-import/**
       - pip-compile-upgrade/**
       - pr-create/**
