@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Parse INPUT_ADDITIONAL_ARGS into an array so multiple args are preserved
-ADDITIONAL_ARGS_ARR=()
-if [ -n "${INPUT_ADDITIONAL_ARGS:-}" ]; then
-	read -r -a ADDITIONAL_ARGS_ARR <<< "$INPUT_ADDITIONAL_ARGS"
+BASE_ARG=()
+if [ -n "${INPUT_BASE_BRANCH:-}" ]; then
+	BASE_ARG=(--base "$INPUT_BASE_BRANCH")
 fi
 
 if [ -n "$INPUT_TITLE" ] && [ -n "$INPUT_BODY_FILE" ]; then
@@ -12,16 +11,16 @@ if [ -n "$INPUT_TITLE" ] && [ -n "$INPUT_BODY_FILE" ]; then
 	gh pr create \
 		--title "$INPUT_TITLE" \
 		--body-file "$INPUT_BODY_FILE" \
-		"${ADDITIONAL_ARGS_ARR[@]}"
+		"${BASE_ARG[@]}"
 elif [ -n "$INPUT_TITLE" ] && [ -n "$INPUT_BODY" ]; then
 	# Use title and body (if provided)
 	gh pr create \
 		--title "$INPUT_TITLE" \
 		--body "$INPUT_BODY" \
-		"${ADDITIONAL_ARGS_ARR[@]}"
+		"${BASE_ARG[@]}"
 else
 	# Use commit info for title and body
-	gh pr create --fill "${ADDITIONAL_ARGS_ARR[@]}"
+	gh pr create --fill "${BASE_ARG[@]}"
 fi
 
 if [ "$INPUT_AUTO_MERGE" == "yes" ] && [ "$INPUT_DELETE_BRANCH" == "yes" ]; then

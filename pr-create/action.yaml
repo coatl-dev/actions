@@ -3,13 +3,14 @@ description: GitHub Action to create Pull Request using gh.
 author: cesarcoatl
 
 inputs:
-  gh-token:
+  auto-merge:
     description: >-
-      GitHub token.
-    required: true
-  title:
+      Automatically merge only after necessary requirements are met.
+    required: false
+    default: 'yes'
+  base-branch:
     description: >-
-      Title for the pull request.
+      Base branch for the pull request. Defaults to the repository default branch when omitted.
     required: false
     default: ''
   body:
@@ -22,19 +23,18 @@ inputs:
       Read body text from file.
     required: false
     default: ''
-  auto-merge:
-    description: >-
-      Automatically merge only after necessary requirements are met.
-    required: false
-    default: 'yes'
   delete-branch:
     description: >-
       Delete the local and remote branch after merge.
     required: false
     default: 'no'
-  additional-args:
+  gh-token:
     description: >-
-      Additional arguments to pass to the gh pr create command.
+      GitHub token.
+    required: true
+  title:
+    description: >-
+      Title for the pull request.
     required: false
     default: ''
 
@@ -48,11 +48,11 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.gh-token }}
-        INPUT_TITLE: ${{ inputs.title }}
+        INPUT_AUTO_MERGE: ${{ inputs.auto-merge }}
+        INPUT_BASE_BRANCH: ${{ inputs.base-branch }}
         INPUT_BODY: ${{ inputs.body }}
         INPUT_BODY_FILE: ${{ inputs.body-file }}
-        INPUT_AUTO_MERGE: ${{ inputs.auto-merge }}
         INPUT_DELETE_BRANCH: ${{ inputs.delete-branch }}
-        INPUT_ADDITIONAL_ARGS: ${{ inputs.additional-args }}
+        INPUT_TITLE: ${{ inputs.title }}
       run: |
         action.sh
