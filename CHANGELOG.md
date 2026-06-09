@@ -1,3 +1,13 @@
+## v6.0.0 (2026-06-09)
+
+### BREAKING CHANGE
+
+- enable immutable releases
+
+### Feat
+
+- enable immutable releases (#141)
+
 ## v5.1.12 (2026-06-08)
 
 ### Refactor
