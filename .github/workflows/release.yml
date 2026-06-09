@@ -1,0 +1,27 @@
+name: release
+
+on:
+  push:
+    branches:
+      - coatl
+
+jobs:
+  release:
+    if: ${{ startsWith(github.event.head_commit.message, 'bump:') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.COATL_BOT_GH_TOKEN }}
+
+      - id: tag
+        run: |
+          echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+
+      - run: |
+          gh release create "$TAG" \
+            --generate-notes
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+          GITHUB_TOKEN: ${{ secrets.COATL_BOT_GH_TOKEN }}
