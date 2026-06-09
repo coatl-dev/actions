@@ -3,12 +3,16 @@ name: bump
 on:
   push:
     branches:
-      - main
+      - coatl
     paths:
-      - ignition/**
-      - jython/**
-      - python/**
-      - copier.yml
+      - .github/workflows/bump.yaml
+      - gpg-import/**
+      - pip-compile-upgrade/**
+      - pr-create/**
+      - pypi-upload/**
+      - setup-jython/**
+      - simple-git-diff/**
+      - uv-pip-compile-upgrade/**
 
 jobs:
   bump:
