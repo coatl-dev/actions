@@ -128,16 +128,16 @@ GitHub Action to create Pull Request using gh.
 
 **Inputs**:
 
-- `gh-token` (`secret`): GitHub token. Required.
-- `title` (`string`): Title for the pull request. Optional.
-- `body` (`string`): Body for the pull request. Optional.
-- `body-file` (`string`): Read body text from file. Optional.
 - `auto-merge` (`string`): Automatically merge only after necessary requirements
   are met. Options: `'yes'`, `'no'`. Defaults to `'yes'`. Optional.
+- `base-branch` (`string`): Base branch for the pull request. Defaults to the
+  repository default branch when omitted. Optional.
+- `body` (`string`): Body for the pull request. Optional.
+- `body-file` (`string`): Read body text from file. Optional.
 - `delete-branch` (`string`): Delete the local and remote branch after merge.
   Options: `'yes'`, `'no'`. Defaults to `'no'`. Optional.
-- `additional-args` (`string`): Additional arguments to pass to the
-  `gh pr create` command. Optional.
+- `gh-token` (`secret`): GitHub token. Required.
+- `title` (`string`): Title for the pull request. Optional.
 
 > [!IMPORTANT]
 > If all optional inputs are missing, `gh` will use the commit message and body
@@ -161,7 +161,7 @@ Passing additional arguments:
         uses: coatl-dev/actions/pr-create@v6.0.0
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
-          additional-args: '--base develop'
+          base-branch: 'develop'
 ```
 
 ### pypi-upload
