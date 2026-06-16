@@ -1,3 +1,9 @@
+## v7.0.1 (2026-06-16)
+
+### Refactor
+
+- **deps**: update actions/setup-java action to v5.3.0 (#146)
+
 ## v7.0.0 (2026-06-09)
 
 ### BREAKING CHANGE
