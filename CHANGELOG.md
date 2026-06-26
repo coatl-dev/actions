@@ -1,3 +1,9 @@
+## v7.0.4 (2026-06-26)
+
+### Refactor
+
+- apply zizmor recommendations (#153)
+
 ## v7.0.3 (2026-06-25)
 
 ### Refactor
