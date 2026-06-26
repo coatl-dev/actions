@@ -67,12 +67,17 @@ runs:
       if: ${{ inputs.config-git == 'yes' }}
       shell: bash
       run: |
-        git config --local user.email "${{ steps.git-user.outputs.email }}"
-        git config --local user.name "${{ steps.git-user.outputs.name }}"
+        git config --local user.email "${STEPS_GIT_USER_OUTPUTS_EMAIL}"
+        git config --local user.name "${STEPS_GIT_USER_OUTPUTS_NAME}"
+      env:
+        STEPS_GIT_USER_OUTPUTS_EMAIL: ${{ steps.git-user.outputs.email }}
+        STEPS_GIT_USER_OUTPUTS_NAME: ${{ steps.git-user.outputs.name }}
 
     - name: Tell Git about your signing key
       if: ${{ inputs.config-git == 'yes' }}
       shell: bash
       run: |
-        git config --local user.signingkey "${{ steps.gpg-key.outputs.keyid }}"
+        git config --local user.signingkey "${STEPS_GPG_KEY_OUTPUTS_KEYID}"
         git config --local commit.gpgsign true
+      env:
+        STEPS_GPG_KEY_OUTPUTS_KEYID: ${{ steps.gpg-key.outputs.keyid }}

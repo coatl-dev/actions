@@ -5,6 +5,9 @@ on:
     branches:
       - coatl
 
+permissions:
+  contents: write
+
 jobs:
   release:
     if: ${{ startsWith(github.event.head_commit.message, 'bump:') }}
@@ -14,6 +17,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.COATL_BOT_GH_TOKEN }}
+          persist-credentials: true
 
       - id: tag
         run: |

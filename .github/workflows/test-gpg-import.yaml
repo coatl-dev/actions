@@ -9,6 +9,9 @@ on:
       - gpg-import/**
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   self-test:
     runs-on: ubuntu-slim

@@ -25,6 +25,10 @@ repos:
     rev: 2.14.0
     hooks:
       - id: hadolint
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.26.1
+    hooks:
+      - id: zizmor
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v4.16.4
     hooks:
