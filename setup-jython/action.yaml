@@ -47,7 +47,7 @@ runs:
       shell: bash
       env:
         JYTHON_VERSION: ${{ inputs.jython-version }}
-      run: |
+      run: | # zizmor: ignore[github-env]
         echo "JYTHON_PATH=/opt/jython/${JYTHON_VERSION}" >> "$GITHUB_ENV"
 
     - uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
@@ -78,7 +78,7 @@ runs:
 
     - name: Add Jython to PATH
       shell: bash
-      run: |
+      run: | # zizmor: ignore[github-env]
         echo "$JYTHON_PATH/bin" >> $GITHUB_PATH
 
     - name: Get Jython version
@@ -98,23 +98,29 @@ runs:
 
     - name: Set JYTHON_HOME
       shell: bash
-      run: |
+      run: | # zizmor: ignore[github-env]
         echo "JYTHON_HOME=$(dirname $(dirname $(which jython)))" >> "$GITHUB_ENV"
 
     - name: Get Java distribution
       id: get-java-distribution
       shell: bash
       run: |
-        echo "java-distribution=${{ steps.setup-java.outputs.distribution }}" >> "$GITHUB_OUTPUT"
+        echo "java-distribution=${STEPS_SETUP_JAVA_OUTPUTS_DISTRIBUTION}" >> "$GITHUB_OUTPUT"
+      env:
+        STEPS_SETUP_JAVA_OUTPUTS_DISTRIBUTION: ${{ steps.setup-java.outputs.distribution }}
 
     - name: Get Java path
       id: get-java-path
       shell: bash
       run: |
-        echo "java-path=${{ steps.setup-java.outputs.path }}" >> "$GITHUB_OUTPUT"
+        echo "java-path=${STEPS_SETUP_JAVA_OUTPUTS_PATH}" >> "$GITHUB_OUTPUT"
+      env:
+        STEPS_SETUP_JAVA_OUTPUTS_PATH: ${{ steps.setup-java.outputs.path }}
 
     - name: Get Java version
       id: get-java-version
       shell: bash
       run: |
-        echo "java-version=${{ steps.setup-java.outputs.version }}" >> "$GITHUB_OUTPUT"
+        echo "java-version=${STEPS_SETUP_JAVA_OUTPUTS_VERSION}" >> "$GITHUB_OUTPUT"
+      env:
+        STEPS_SETUP_JAVA_OUTPUTS_VERSION: ${{ steps.setup-java.outputs.version }}

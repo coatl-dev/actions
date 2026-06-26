@@ -9,6 +9,9 @@ on:
       - simple-git-diff/**
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test-true:
     runs-on: ubuntu-slim
