@@ -1,3 +1,9 @@
+## v7.0.5 (2026-06-27)
+
+### Refactor
+
+- **deps**: update actions/cache action to v6.1.0 (#154)
+
 ## v7.0.4 (2026-06-26)
 
 ### Refactor
