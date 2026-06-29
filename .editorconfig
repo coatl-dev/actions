@@ -14,5 +14,5 @@ indent_size = 2
 indent_style = space
 x-soft-wrap-text = true
 
-[{*.sh}]
+[*.sh]
 indent_style = tab
