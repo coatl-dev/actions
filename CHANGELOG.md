@@ -1,3 +1,9 @@
+## v7.0.6 (2026-07-05)
+
+### Refactor
+
+- **deps**: update astral-sh/setup-uv action to v8.3.0 (#157)
+
 ## v7.0.5 (2026-06-27)
 
 ### Refactor
