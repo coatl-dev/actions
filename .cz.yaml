@@ -6,7 +6,7 @@ commitizen:
   name: cz_conventional_commits
   tag_format: v$version
   update_changelog_on_bump: true
-  version: 7.0.6
+  version: 7.0.7
   version_files:
   - README.md
   version_scheme: semver
