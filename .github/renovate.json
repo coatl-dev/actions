@@ -10,5 +10,8 @@
   ],
   "ignorePaths": [
     ".github/workflows/**"
+  ],
+  "schedule": [
+    "* 8-17 1 * *"
   ]
 }
