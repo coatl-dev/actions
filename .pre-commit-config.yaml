@@ -19,7 +19,7 @@ repos:
         args: ["--builtin-schema", "vendor.github-actions"]
       - id: check-renovate
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.11.0.1
+    rev: v0.11.0.1-1
     hooks:
     -   id: shellcheck
   - repo: https://github.com/coatl-dev/hadolint-coatl
@@ -31,7 +31,7 @@ repos:
     hooks:
       - id: zizmor
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.17.1
+    rev: v4.18.0
     hooks:
       - id: commitizen
       - id: commitizen-branch
