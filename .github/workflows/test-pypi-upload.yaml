@@ -30,13 +30,13 @@ jobs:
           persist-credentials: false
 
       - name: pypi-upload-2.7
-        uses: ./pypi-upload
+        uses: $/pypi-upload
         with:
           dry-run: true
           working-directory: incendium
 
       - name: pypi-upload-3.12
-        uses: ./pypi-upload
+        uses: $/pypi-upload
         with:
           dry-run: true
           working-directory: incendium/stubs

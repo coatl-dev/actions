@@ -23,7 +23,7 @@ jobs:
 
       - name: Set up Jython
         id: jy
-        uses: ./setup-jython
+        uses: $/setup-jython
 
       - name: Test action output
         run: |

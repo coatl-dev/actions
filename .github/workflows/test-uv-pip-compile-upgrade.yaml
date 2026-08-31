@@ -25,13 +25,13 @@ jobs:
           persist-credentials: false
 
       - name: uv-pip-compile-upgrade
-        uses: ./uv-pip-compile-upgrade
+        uses: $/uv-pip-compile-upgrade
         with:
           path: ${{ env.REQUIREMENTS_PATH }}
 
       - name: Detect changes
         id: git-diff
-        uses: ./simple-git-diff
+        uses: $/simple-git-diff
         with:
           path: ${{ env.REQUIREMENTS_PATH }}
 

@@ -22,7 +22,7 @@ jobs:
           persist-credentials: false
 
       - name: Import GPG
-        uses: ./gpg-import
+        uses: $/gpg-import
         id: gpg-import
         with:
           passphrase: ${{ secrets.COATL_BOT_GPG_PASSPHRASE }}
