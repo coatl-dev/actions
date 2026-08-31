@@ -27,7 +27,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: ./simple-git-diff
+        uses: $/simple-git-diff
         with:
           path: 'README.md'
 
@@ -47,7 +47,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: ./simple-git-diff
+        uses: $/simple-git-diff
 
       - name: Test false
         if: ${{ steps.git-diff.outputs.diff != 'true' }}

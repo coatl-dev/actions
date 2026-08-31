@@ -30,7 +30,7 @@ jobs:
           persist-credentials: false
 
       - name: pip-compile-upgrade
-        uses: ./pip-compile-upgrade
+        uses: $/pip-compile-upgrade
         with:
           path: ${{ matrix.path }}
           extra-args: '--dry-run --reuse-hashes --verbose'
