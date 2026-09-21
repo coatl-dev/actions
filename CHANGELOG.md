@@ -1,3 +1,9 @@
+## v7.1.1 (2026-09-21)
+
+### Fix
+
+- **gpg-import**: resolve gpg-key-id output and passphrase priming (#180)
+
 ## v7.1.0 (2026-09-21)
 
 ### Feat

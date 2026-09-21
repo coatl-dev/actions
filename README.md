@@ -59,7 +59,7 @@ jobs:
 
       - name: Detect changes
         id: check-modified
-        uses: coatl-dev/actions/check-modified@v7.1.0
+        uses: coatl-dev/actions/check-modified@v7.1.1
         with:
           paths: |
             README.md
@@ -109,7 +109,7 @@ jobs:
 
       - name: Import GPG key
         id: gpg-import
-        uses: coatl-dev/actions/gpg-import@v7.1.0
+        uses: coatl-dev/actions/gpg-import@v7.1.1
         with:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -161,14 +161,14 @@ jobs:
         uses: actions/checkout@v7
 
       - name: pip-compile-27
-        uses: coatl-dev/actions/pip-compile-upgrade@v7.1.0
+        uses: coatl-dev/actions/pip-compile-upgrade@v7.1.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           extra-args: '--reuse-hashes'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v7.1.0
+        uses: coatl-dev/actions/simple-git-diff@v7.1.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
@@ -205,7 +205,7 @@ Add this step to your workflow:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v7.1.0
+        uses: coatl-dev/actions/pr-create@v7.1.1
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
 ```
@@ -214,7 +214,7 @@ Passing additional arguments:
 
 ```yml
       - name: Create Pull Request
-        uses: coatl-dev/actions/pr-create@v7.1.0
+        uses: coatl-dev/actions/pr-create@v7.1.1
         with:
           gh-token: ${{ secrets.GH_TOKEN }}
           base-branch: 'develop'
@@ -250,7 +250,7 @@ GitHub action to build and upload your Python distribution packages to PyPI
 
 ```yml
     - name: Upload Python package to PyPI
-      uses: coatl-dev/actions/pypi-upload@v7.1.0
+      uses: coatl-dev/actions/pypi-upload@v7.1.1
       with:
         python-version: '2.7'
         check: 'false'
@@ -287,7 +287,7 @@ Set up a specific version of Jython and add the command-line tools to the PATH.
 
 ```yml
     - name: Set up Jython
-      uses: coatl-dev/actions/setup-jython@v7.1.0
+      uses: coatl-dev/actions/setup-jython@v7.1.1
       with:
         jython-version: '2.7.3'
     - run: jython my_script.py
@@ -330,7 +330,7 @@ jobs:
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v7.1.0
+        uses: coatl-dev/actions/simple-git-diff@v7.1.1
         with:
           path: 'README.md'
 
@@ -380,14 +380,14 @@ jobs:
         uses: actions/checkout@v7
 
       - name: pip-compile-312
-        uses: coatl-dev/actions/uv-pip-compile-upgrade@v7.1.0
+        uses: coatl-dev/actions/uv-pip-compile-upgrade@v7.1.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
           python-version: '3.12'
 
       - name: Detect changes
         id: git-diff
-        uses: coatl-dev/actions/simple-git-diff@v7.1.0
+        uses: coatl-dev/actions/simple-git-diff@v7.1.1
         with:
           path: "${{ env.REQUIREMENTS_PATH }}"
 
