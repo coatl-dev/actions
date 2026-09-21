@@ -50,7 +50,7 @@ jobs:
   test-file-path:
     runs-on: ubuntu-latest
     env:
-      REQUIREMENTS_PATH: uv-pip-compile-upgrade/test/requirements/base.txt
+      REQUIREMENTS_DIRECTORY: uv-pip-compile-upgrade/test/requirements
 
     steps:
       - name: Checkout repo
@@ -61,13 +61,14 @@ jobs:
       - name: uv-pip-compile-upgrade
         uses: $/uv-pip-compile-upgrade
         with:
-          path: ${{ env.REQUIREMENTS_PATH }}
+          path: base.txt
+          working-directory: ${{ env.REQUIREMENTS_DIRECTORY }}
 
       - name: Detect changes
         id: git-diff
         uses: $/simple-git-diff
         with:
-          path: ${{ env.REQUIREMENTS_PATH }}
+          path: ${{ env.REQUIREMENTS_DIRECTORY }}
 
       - name: Show output
         run: |
