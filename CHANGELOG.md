@@ -1,3 +1,9 @@
+## v7.1.0 (2026-09-21)
+
+### Feat
+
+- add check-modified action (#178)
+
 ## v7.0.15 (2026-09-01)
 
 ### Refactor
