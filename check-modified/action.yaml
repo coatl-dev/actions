@@ -1,0 +1,67 @@
+name: coatl-dev-check-modified
+description: >-
+  Check whether one or more files, paths, or globs were modified.
+author: cesarcoatl
+
+inputs:
+  paths:
+    description: >-
+      Space, newline, or comma separated list of files, paths, or globs to
+      check for changes.
+    required: false
+    default: '.'
+  base-ref:
+    description: >-
+      Git ref to compare against. When omitting this input, uncommitted changes
+      in the working tree are checked.
+    required: false
+    default: ''
+outputs:
+  diff:
+    description: >-
+      Whether any of the given paths were modified. Returns 'true' or 'false'.
+    value: ${{ steps.check-modified.outputs.diff }}
+  changed-files:
+    description: >-
+      Newline separated list of files that were modified.
+    value: ${{ steps.check-modified.outputs.changed-files }}
+  changed-count:
+    description: >-
+      Number of files that were modified.
+    value: ${{ steps.check-modified.outputs.changed-count }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check modified files
+      id: check-modified
+      shell: bash
+      env:
+        INPUT_PATHS: ${{ inputs.paths }}
+        INPUT_BASE_REF: ${{ inputs.base-ref }}
+      run: |
+        # Normalize the paths input and split it into an array so globs are
+        # expanded by git (pathspec magic) instead of the shell.
+        paths_string=$(printf '%s' "${INPUT_PATHS}" | tr ',' ' ')
+        read -r -a paths <<< "${paths_string}"
+
+        if [ -n "${INPUT_BASE_REF}" ]; then
+          mapfile -d '' -t changed_files < <(
+            git diff --name-only -z "${INPUT_BASE_REF}" -- "${paths[@]}" || true
+          )
+        else
+          mapfile -d '' -t changed_files < <(
+            git diff --name-only -z -- "${paths[@]}" || true
+          )
+        fi
+
+        changed_count="${#changed_files[@]}"
+        if [ "${changed_count}" -gt 0 ]; then
+          echo "diff=true" >> "${GITHUB_OUTPUT}"
+          printf 'changed-files<<EOF\n' >> "${GITHUB_OUTPUT}"
+          printf '%s\n' "${changed_files[@]}" >> "${GITHUB_OUTPUT}"
+          printf 'EOF\n' >> "${GITHUB_OUTPUT}"
+        else
+          echo "diff=false" >> "${GITHUB_OUTPUT}"
+        fi
+        echo "changed-count=${changed_count}" >> "${GITHUB_OUTPUT}"

@@ -5,6 +5,7 @@ on:
     branches:
       - coatl
     paths:
+      - check-modified/**
       - gpg-import/**
       - pip-compile-upgrade/**
       - pr-create/**
