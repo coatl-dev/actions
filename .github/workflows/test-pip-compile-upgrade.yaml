@@ -20,8 +20,10 @@ jobs:
         include:
           - path: pip-compile-upgrade/test/2.7/requirements
             working-directory: ${{ github.workspace }}
+            diff-path: pip-compile-upgrade/test/2.7/requirements
           - path: tools.txt
             working-directory: pip-compile-upgrade/test/2.7/requirements/tools
+            diff-path: pip-compile-upgrade/test/2.7/requirements/tools/tools.txt
 
     steps:
       - name: Checkout repo
@@ -35,3 +37,62 @@ jobs:
           path: ${{ matrix.path }}
           extra-args: '--dry-run --reuse-hashes --verbose'
           working-directory: ${{ matrix.working-directory }}
+
+      - name: Detect changes
+        id: git-diff
+        uses: $/simple-git-diff
+        with:
+          path: ${{ matrix.diff-path }}
+
+      - name: Test dry run made no changes
+        run: |
+          test "${STEPS_GIT_DIFF_OUTPUTS_DIFF}" != "true"
+        env:
+          STEPS_GIT_DIFF_OUTPUTS_DIFF: ${{ steps.git-diff.outputs.diff }}
+
+  test-nonexistent-path:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Expect failure
+        id: expect-fail
+        uses: $/pip-compile-upgrade
+        with:
+          path: does-not-exist.txt
+        continue-on-error: true
+
+      - name: Test failure
+        if: ${{ steps.expect-fail.outcome == 'failure' }}
+        run: |
+          echo "Action failed as expected."
+
+  test-malformed-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Create malformed requirement file
+        run: |
+          printf '%s\n' \
+            '# This file has no pip-compile directive.' \
+            'some-package==1.0.0' \
+            > malformed.txt
+
+      - name: Expect failure
+        id: expect-fail
+        uses: $/pip-compile-upgrade
+        with:
+          path: malformed.txt
+        continue-on-error: true
+
+      - name: Test failure
+        if: ${{ steps.expect-fail.outcome == 'failure' }}
+        run: |
+          echo "Action failed as expected."
