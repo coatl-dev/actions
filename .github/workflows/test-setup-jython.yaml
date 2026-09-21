@@ -28,12 +28,10 @@ jobs:
       - name: Test action output
         run: |
           test "${STEPS_JY_OUTPUTS_JYTHON_VERSION}" = "2.7.4"
-          test "${STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION}" = "temurin"
           test -n "${STEPS_JY_OUTPUTS_JAVA_VERSION}"
           test -n "${STEPS_JY_OUTPUTS_JAVA_PATH}"
         env:
           STEPS_JY_OUTPUTS_JYTHON_VERSION: ${{ steps.jy.outputs.jython-version }}
-          STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION: ${{ steps.jy.outputs.java-distribution }}
           STEPS_JY_OUTPUTS_JAVA_VERSION: ${{ steps.jy.outputs.java-version }}
           STEPS_JY_OUTPUTS_JAVA_PATH: ${{ steps.jy.outputs.java-path }}
 
@@ -78,12 +76,10 @@ jobs:
       - name: Test action output
         run: |
           test "${STEPS_JY_OUTPUTS_JYTHON_VERSION}" = "2.7.4"
-          test "${STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION}" = "temurin"
           test -n "${STEPS_JY_OUTPUTS_JAVA_VERSION}"
           test -n "${STEPS_JY_OUTPUTS_JAVA_PATH}"
         env:
           STEPS_JY_OUTPUTS_JYTHON_VERSION: ${{ steps.jy.outputs.jython-version }}
-          STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION: ${{ steps.jy.outputs.java-distribution }}
           STEPS_JY_OUTPUTS_JAVA_VERSION: ${{ steps.jy.outputs.java-version }}
           STEPS_JY_OUTPUTS_JAVA_PATH: ${{ steps.jy.outputs.java-path }}
 
