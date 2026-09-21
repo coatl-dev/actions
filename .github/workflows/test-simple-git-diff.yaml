@@ -32,7 +32,30 @@ jobs:
           path: 'README.md'
 
       - name: Test true
-        if: ${{ steps.git-diff.outputs.diff == 'true' }}
+        if: ${{ steps.git-diff.outputs.diff != 'false' }}
+        run: |
+          echo "Changes were detected."
+
+  test-true-directory:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Modify file in repo
+        run: |
+          echo "New line" >> pip-compile-upgrade/test/2.7/requirements/base.txt
+
+      - name: Detect changes
+        id: git-diff
+        uses: $/simple-git-diff
+        with:
+          path: pip-compile-upgrade/test/2.7/requirements
+
+      - name: Test true
+        if: ${{ steps.git-diff.outputs.diff != 'false' }}
         run: |
           echo "Changes were detected."
 
@@ -48,6 +71,25 @@ jobs:
       - name: Detect changes
         id: git-diff
         uses: $/simple-git-diff
+
+      - name: Test false
+        if: ${{ steps.git-diff.outputs.diff != 'true' }}
+        run: |
+          echo "Changes were not detected."
+
+  test-false-file:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Detect changes
+        id: git-diff
+        uses: $/simple-git-diff
+        with:
+          path: README.md
 
       - name: Test false
         if: ${{ steps.git-diff.outputs.diff != 'true' }}

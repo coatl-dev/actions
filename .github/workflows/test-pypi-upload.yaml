@@ -41,3 +41,11 @@ jobs:
           dry-run: true
           working-directory: incendium/stubs
           python-version: '3.12'
+
+      - name: pypi-upload-3.12-check-off
+        uses: $/pypi-upload
+        with:
+          check: 'false'
+          dry-run: true
+          working-directory: incendium/stubs
+          python-version: '3.12'

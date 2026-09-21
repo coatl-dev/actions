@@ -32,6 +32,52 @@ jobs:
         run: |
           echo "git user.email: ${STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_EMAIL}"
           echo "git user.name: ${STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_NAME}"
+          echo "gpg key id: ${STEPS_GPG_IMPORT_OUTPUTS_GPG_KEY_ID}"
         env:
           STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_EMAIL: ${{ steps.gpg-import.outputs.git-user-email }}
           STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_NAME: ${{ steps.gpg-import.outputs.git-user-name }}
+          STEPS_GPG_IMPORT_OUTPUTS_GPG_KEY_ID: ${{ steps.gpg-import.outputs.gpg-key-id }}
+
+      - name: Test outputs
+        run: |
+          test -n "${STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_EMAIL}"
+          test -n "${STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_NAME}"
+          test -n "${STEPS_GPG_IMPORT_OUTPUTS_GPG_KEY_ID}"
+        env:
+          STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_EMAIL: ${{ steps.gpg-import.outputs.git-user-email }}
+          STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_NAME: ${{ steps.gpg-import.outputs.git-user-name }}
+          STEPS_GPG_IMPORT_OUTPUTS_GPG_KEY_ID: ${{ steps.gpg-import.outputs.gpg-key-id }}
+
+      - name: Test git config
+        run: |
+          test "$(git config user.email)" = "${STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_EMAIL}"
+          test "$(git config user.name)" = "${STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_NAME}"
+          test "$(git config user.signingkey)" = "${STEPS_GPG_IMPORT_OUTPUTS_GPG_KEY_ID}"
+          test "$(git config commit.gpgsign)" = "true"
+        env:
+          STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_EMAIL: ${{ steps.gpg-import.outputs.git-user-email }}
+          STEPS_GPG_IMPORT_OUTPUTS_GIT_USER_NAME: ${{ steps.gpg-import.outputs.git-user-name }}
+          STEPS_GPG_IMPORT_OUTPUTS_GPG_KEY_ID: ${{ steps.gpg-import.outputs.gpg-key-id }}
+
+  config-git-off:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Import GPG without configuring git
+        uses: $/gpg-import
+        id: gpg-import
+        with:
+          config-git: 'no'
+          passphrase: ${{ secrets.COATL_BOT_GPG_PASSPHRASE }}
+          private-key: ${{ secrets.COATL_BOT_GPG_PRIVATE_KEY }}
+
+      - name: Test git config is not set
+        run: |
+          ! git config --local user.email
+          ! git config --local user.name
+          ! git config --local user.signingkey
+          ! git config --local commit.gpgsign

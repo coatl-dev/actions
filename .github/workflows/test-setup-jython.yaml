@@ -27,17 +27,27 @@ jobs:
 
       - name: Test action output
         run: |
-          echo "JYTHON_VERSION=${STEPS_JY_OUTPUTS_JYTHON_VERSION}"
-          echo "JYTHON_BINARY=${STEPS_JY_OUTPUTS_JYTHON_PATH}"
-          echo "JAVA_DISTRIBUTION=${STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION}"
-          echo "JAVA_PATH=${STEPS_JY_OUTPUTS_JAVA_PATH}"
-          echo "JAVA_VERSION=${STEPS_JY_OUTPUTS_JAVA_VERSION}"
+          test "${STEPS_JY_OUTPUTS_JYTHON_VERSION}" = "2.7.4"
+          test "${STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION}" = "temurin"
+          test -n "${STEPS_JY_OUTPUTS_JAVA_VERSION}"
+          test -n "${STEPS_JY_OUTPUTS_JAVA_PATH}"
         env:
           STEPS_JY_OUTPUTS_JYTHON_VERSION: ${{ steps.jy.outputs.jython-version }}
-          STEPS_JY_OUTPUTS_JYTHON_PATH: ${{ steps.jy.outputs.jython-path }}
           STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION: ${{ steps.jy.outputs.java-distribution }}
-          STEPS_JY_OUTPUTS_JAVA_PATH: ${{ steps.jy.outputs.java-path }}
           STEPS_JY_OUTPUTS_JAVA_VERSION: ${{ steps.jy.outputs.java-version }}
+          STEPS_JY_OUTPUTS_JAVA_PATH: ${{ steps.jy.outputs.java-path }}
+
+      - name: Test Java version
+        if: ${{ contains(steps.jy.outputs.java-version, '17') }}
+        run: |
+          echo "Java 17 was installed."
+
+      - name: Test Jython binary
+        run: |
+          test "$(command -v jython)" = "${STEPS_JY_OUTPUTS_JYTHON_PATH}"
+          test -x "$(command -v jython)"
+        env:
+          STEPS_JY_OUTPUTS_JYTHON_PATH: ${{ steps.jy.outputs.jython-path }}
 
       - name: Test
         run: |
@@ -48,4 +58,43 @@ jobs:
             echo "Dates are equal"
           else
             echo "Dates are not equal"
+            exit 1
           fi
+
+  self-test-custom-java:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Jython
+        id: jy
+        uses: $/setup-jython
+        with:
+          java-version: '21'
+
+      - name: Test action output
+        run: |
+          test "${STEPS_JY_OUTPUTS_JYTHON_VERSION}" = "2.7.4"
+          test "${STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION}" = "temurin"
+          test -n "${STEPS_JY_OUTPUTS_JAVA_VERSION}"
+          test -n "${STEPS_JY_OUTPUTS_JAVA_PATH}"
+        env:
+          STEPS_JY_OUTPUTS_JYTHON_VERSION: ${{ steps.jy.outputs.jython-version }}
+          STEPS_JY_OUTPUTS_JAVA_DISTRIBUTION: ${{ steps.jy.outputs.java-distribution }}
+          STEPS_JY_OUTPUTS_JAVA_VERSION: ${{ steps.jy.outputs.java-version }}
+          STEPS_JY_OUTPUTS_JAVA_PATH: ${{ steps.jy.outputs.java-path }}
+
+      - name: Test Java version
+        if: ${{ contains(steps.jy.outputs.java-version, '21') }}
+        run: |
+          echo "Java 21 was installed."
+
+      - name: Test Jython binary
+        run: |
+          test "$(command -v jython)" = "${STEPS_JY_OUTPUTS_JYTHON_PATH}"
+          test -x "$(command -v jython)"
+        env:
+          STEPS_JY_OUTPUTS_JYTHON_PATH: ${{ steps.jy.outputs.jython-path }}

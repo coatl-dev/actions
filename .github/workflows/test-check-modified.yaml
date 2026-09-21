@@ -50,6 +50,16 @@ jobs:
         run: |
           echo "Only one file changed."
 
+      - name: Test unmodified path is excluded
+        if: ${{ ! contains(steps.check-modified.outputs.changed-files, '.gitignore') }}
+        run: |
+          echo ".gitignore was not changed."
+
+      - name: Test path not requested is excluded
+        if: ${{ ! contains(steps.check-modified.outputs.changed-files, '.cz.yaml') }}
+        run: |
+          echo ".cz.yaml was changed but not requested."
+
   test-false:
     runs-on: ubuntu-slim
     needs: test-true
@@ -67,9 +77,134 @@ jobs:
           paths: README.md
 
       - name: Test false
-        if: ${{ steps.check-modified.outputs.diff != 'true' }}
+        if: ${{ steps.check-modified.outputs.diff == 'false' }}
         run: |
           echo "Changes were not detected."
+
+      - name: Test changed count
+        if: ${{ steps.check-modified.outputs.changed-count == '0' }}
+        run: |
+          echo "Zero files changed."
+
+      - name: Test empty changed files
+        if: ${{ steps.check-modified.outputs.changed-files == '' }}
+        run: |
+          echo "No changed files were reported."
+
+  test-multiple-paths:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Modify files in repo
+        run: |
+          echo "New line" >> README.md
+          echo "New line" >> .cz.yaml
+
+      - name: Detect changes with comma and space separators
+        id: check-modified
+        uses: $/check-modified
+        with:
+          paths: README.md, .cz.yaml
+
+      - name: Test true
+        if: ${{ steps.check-modified.outputs.diff == 'true' }}
+        run: |
+          echo "Changes were detected."
+
+      - name: Test changed count
+        if: ${{ steps.check-modified.outputs.changed-count == '2' }}
+        run: |
+          echo "Two files changed."
+
+      - name: Test README.md changed
+        if: ${{ contains(steps.check-modified.outputs.changed-files, 'README.md') }}
+        run: |
+          echo "README.md was changed."
+
+      - name: Test .cz.yaml changed
+        if: ${{ contains(steps.check-modified.outputs.changed-files, '.cz.yaml') }}
+        run: |
+          echo ".cz.yaml was changed."
+
+  test-glob-and-directory:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Modify a file in a directory
+        run: |
+          echo "New line" >> pip-compile-upgrade/test/2.7/requirements/base.txt
+
+      - name: Detect changes with a glob
+        id: check-modified-glob
+        uses: $/check-modified
+        with:
+          paths: '**/*.txt'
+
+      - name: Test glob changed count
+        if: ${{ steps.check-modified-glob.outputs.changed-count == '1' }}
+        run: |
+          echo "The glob matched exactly one file."
+
+      - name: Test glob matched file
+        if: ${{ contains(steps.check-modified-glob.outputs.changed-files, 'pip-compile-upgrade/test/2.7/requirements/base.txt') }}
+        run: |
+          echo "The glob matched the txt file."
+
+      - name: Detect changes with a directory
+        id: check-modified-dir
+        uses: $/check-modified
+        with:
+          paths: pip-compile-upgrade/test/2.7/requirements
+
+      - name: Test directory path
+        if: ${{ steps.check-modified-dir.outputs.diff == 'true' }}
+        run: |
+          echo "The directory path was detected."
+
+      - name: Detect changes with a non-matching glob
+        id: check-modified-nomatch
+        uses: $/check-modified
+        with:
+          paths: '*.md'
+
+      - name: Test non-matching glob
+        if: ${{ steps.check-modified-nomatch.outputs.diff == 'false' }}
+        run: |
+          echo "The non-matching glob did not report changes."
+
+  test-default-path:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Modify file in repo
+        run: |
+          echo "New line" >> .cz.yaml
+
+      - name: Detect changes with default paths
+        id: check-modified
+        uses: $/check-modified
+
+      - name: Test true
+        if: ${{ steps.check-modified.outputs.diff == 'true' }}
+        run: |
+          echo "Changes were detected."
+
+      - name: Test changed count
+        if: ${{ steps.check-modified.outputs.changed-count == '1' }}
+        run: |
+          echo "One file changed."
 
   test-base-ref:
     runs-on: ubuntu-slim
