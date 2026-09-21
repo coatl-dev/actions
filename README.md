@@ -7,6 +7,7 @@ in projects to keep them DRY.
 
 ## Catalog
 
+- [check-modified](#check-modified)
 - [gpg-import](#gpg-import)
 - [pip-compile-upgrade](#pip-compile-upgrade)
 - [pr-create](#pr-create)
@@ -14,6 +15,61 @@ in projects to keep them DRY.
 - [setup-jython](#setup-jython)
 - [simple-git-diff](#simple-git-diff)
 - [uv-pip-compile-upgrade](#uv-pip-compile-upgrade)
+
+### check-modified
+
+Check whether one or more files, paths, or globs were modified.
+
+**Inputs**:
+
+- `paths` (`string`): Space, newline, or comma separated list of files, paths,
+  or globs to check for changes. Defaults to `'.'`. Optional.
+- `base-ref` (`string`): Git ref to compare against. When omitting this input,
+  uncommitted changes in the working tree are checked. Optional.
+
+**Outputs**:
+
+- `diff` (`string`): Whether any of the given paths were modified. Returns:
+  `'true'` or `'false'`.
+- `changed-files` (`string`): Newline separated list of files that were
+  modified.
+- `changed-count` (`string`): Number of files that were modified.
+
+**Example**:
+
+```yml
+name: git-diff
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sign-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
+      - name: Modify files in repo
+        run: |
+          echo "New line" >> README.md
+          echo "New line" >> requirements.txt
+
+      - name: Detect changes
+        id: check-modified
+        uses: coatl-dev/actions/check-modified@v7.1.0
+        with:
+          paths: |
+            README.md
+            requirements.txt
+
+      - name: Do something if changes were detected
+        if: ${{ steps.check-modified.outputs.diff == 'true' }}
+        run: |
+          echo "Changes were detected."
+```
 
 ### gpg-import
 
@@ -49,7 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Import GPG key
         id: gpg-import
@@ -102,7 +158,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: pip-compile-27
         uses: coatl-dev/actions/pip-compile-upgrade@v7.0.15
@@ -266,7 +322,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Modify file in repo
         run: |
@@ -321,7 +377,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: pip-compile-312
         uses: coatl-dev/actions/uv-pip-compile-upgrade@v7.0.15

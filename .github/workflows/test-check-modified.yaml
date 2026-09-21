@@ -1,0 +1,93 @@
+name: test-check-modified
+
+on:
+  pull_request:
+    branches:
+      - coatl
+    paths:
+      - .github/workflows/test-check-modified.yaml
+      - check-modified/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-true:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Modify files in repo
+        run: |
+          echo "New line" >> README.md
+          echo "New line" >> .cz.yaml
+
+      - name: Detect changes
+        id: check-modified
+        uses: $/check-modified
+        with:
+          paths: |
+            README.md
+            .gitignore
+
+      - name: Test true
+        if: ${{ steps.check-modified.outputs.diff == 'true' }}
+        run: |
+          echo "Changes were detected."
+
+      - name: Test changed files
+        if: ${{ contains(steps.check-modified.outputs.changed-files, 'README.md') }}
+        run: |
+          echo "README.md was changed."
+
+      - name: Test changed count
+        if: ${{ steps.check-modified.outputs.changed-count == '1' }}
+        run: |
+          echo "Only one file changed."
+
+  test-false:
+    runs-on: ubuntu-slim
+    needs: test-true
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Detect changes
+        id: check-modified
+        uses: $/check-modified
+        with:
+          paths: README.md
+
+      - name: Test false
+        if: ${{ steps.check-modified.outputs.diff != 'true' }}
+        run: |
+          echo "Changes were not detected."
+
+  test-base-ref:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Detect changes against previous commit
+        id: check-modified
+        uses: $/check-modified
+        with:
+          paths: check-modified/**
+          base-ref: HEAD~1
+
+      - name: Test base ref
+        if: ${{ steps.check-modified.outputs.diff == 'true' }}
+        run: |
+          echo "Action files changed in last commit."
