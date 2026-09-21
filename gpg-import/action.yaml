@@ -5,79 +5,127 @@ author: cesarcoatl
 inputs:
   config-git:
     description: >-
-      Whether to config Git to sign commits with the information obtained from GPG.
+      Whether to configure Git to sign commits with the information obtained
+      from GPG.
     required: false
     default: 'yes'
+
   passphrase:
-    description: >-
-      GPG private key passphrase.
+    description: GPG private key passphrase.
+    required: true
+
   private-key:
     description: >-
-      GPG private key exported as an ASCII armored version.
-    required: false
+      GPG private key exported as an ASCII-armored version.
+    required: true
+
 outputs:
   git-user-email:
-    description: >-
-      Email address used for setting up Git identity.
+    description: Email address used for setting up Git identity.
     value: ${{ steps.git-user.outputs.email }}
   git-user-name:
-    description: >-
-      Name used for setting up Git identity.
+    description: Name used for setting up Git identity.
     value: ${{ steps.git-user.outputs.name }}
   gpg-key-id:
-    description: >-
-      The long form of the GPG key ID.
-    value: ${{ steps.gpg.outputs.keyid }}
+    description: The long form of the GPG key ID.
+    value: ${{ steps.import-gpg.outputs.keyid }}
 
 runs:
   using: composite
   steps:
     - name: Import GPG key and prime passphrase
+      id: import-gpg
       shell: bash
       env:
         INPUT_PASSPHRASE: ${{ inputs.passphrase }}
         INPUT_PRIVATE_KEY: ${{ inputs.private-key }}
       run: |
         set -euo pipefail
-        tmpdir=$(mktemp -d)
+
+        tmpdir="$(mktemp -d)"
         trap 'rm -rf "$tmpdir"' EXIT
 
-        printf '%s\n' "${INPUT_PRIVATE_KEY}" | gpg --import --batch --no-tty
-        printf '%s\n' 'hello world' > "$tmpdir/temp.txt"
-        gpg --detach-sig --yes -v --output=/dev/null --pinentry-mode loopback --passphrase "${INPUT_PASSPHRASE}" "$tmpdir/temp.txt"
+        printf '%s\n' "$INPUT_PRIVATE_KEY" |
+          gpg --batch --no-tty --import
 
-    - name: Get the key ID of your signing key
-      id: gpg-key
-      shell: bash
-      run: |
-        keyid=$(gpg --with-colons --list-keys | awk -F: '/^pub/ { print $5 }')
+        keyid="$(
+          gpg --batch --with-colons --list-secret-keys |
+            awk -F: '$1 == "sec" && !found {
+              print $5
+              found = 1
+            }'
+        )"
+
+        if [[ -z "$keyid" ]]; then
+          echo "::error::No secret GPG key was found after importing the private key."
+          exit 1
+        fi
+
         echo "keyid=$keyid" >> "$GITHUB_OUTPUT"
+
+        printf '%s\n' 'hello world' > "$tmpdir/temp.txt"
+
+        gpg \
+          --batch \
+          --no-tty \
+          --yes \
+          --pinentry-mode loopback \
+          --passphrase "$INPUT_PASSPHRASE" \
+          --local-user "$keyid" \
+          --detach-sign \
+          --output /dev/null \
+          "$tmpdir/temp.txt"
 
     - name: Get real name and email address
       id: git-user
       shell: bash
       run: |
-        input=$(gpg --with-colons --list-keys | awk -F: '/^uid/ { print $10 }')
-        name=$(echo "$input" | awk -F'<' '{print $1}' | sed -e 's/[[:space:]]*$//')
-        email=$(echo "$input" | awk -F'<' '{print $2}' | tr -d '>')
+        set -euo pipefail
+
+        uid="$(
+          gpg --batch --with-colons --list-secret-keys |
+            awk -F: '$1 == "uid" && !found {
+              print $10
+              found = 1
+            }'
+        )"
+
+        if [[ -z "$uid" ]]; then
+          echo "::error::Unable to determine the GPG user identity."
+          exit 1
+        fi
+
+        name="${uid%% <*}"
+        email="${uid##*<}"
+        email="${email%>}"
+
+        if [[ -z "$name" || -z "$email" ]]; then
+          echo "::error::Unable to parse the GPG user identity."
+          exit 1
+        fi
+
         echo "name=$name" >> "$GITHUB_OUTPUT"
         echo "email=$email" >> "$GITHUB_OUTPUT"
 
     - name: Configure Git user
       if: ${{ inputs.config-git == 'yes' }}
       shell: bash
-      run: |
-        git config --local user.email "${STEPS_GIT_USER_OUTPUTS_EMAIL}"
-        git config --local user.name "${STEPS_GIT_USER_OUTPUTS_NAME}"
       env:
-        STEPS_GIT_USER_OUTPUTS_EMAIL: ${{ steps.git-user.outputs.email }}
-        STEPS_GIT_USER_OUTPUTS_NAME: ${{ steps.git-user.outputs.name }}
+        GIT_USER_EMAIL: ${{ steps.git-user.outputs.email }}
+        GIT_USER_NAME: ${{ steps.git-user.outputs.name }}
+      run: |
+        set -euo pipefail
 
-    - name: Tell Git about your signing key
+        git config --local user.email "$GIT_USER_EMAIL"
+        git config --local user.name "$GIT_USER_NAME"
+
+    - name: Tell Git about the signing key
       if: ${{ inputs.config-git == 'yes' }}
       shell: bash
-      run: |
-        git config --local user.signingkey "${STEPS_GPG_KEY_OUTPUTS_KEYID}"
-        git config --local commit.gpgsign true
       env:
-        STEPS_GPG_KEY_OUTPUTS_KEYID: ${{ steps.gpg-key.outputs.keyid }}
+        GPG_KEY_ID: ${{ steps.import-gpg.outputs.keyid }}
+      run: |
+        set -euo pipefail
+
+        git config --local user.signingkey "$GPG_KEY_ID"
+        git config --local commit.gpgsign true
