@@ -46,7 +46,7 @@ on:
       - main
 
 jobs:
-  sign-commit:
+  check-modified:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
