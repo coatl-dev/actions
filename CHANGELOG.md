@@ -1,3 +1,9 @@
+## v7.1.2 (2026-10-01)
+
+### Refactor
+
+- **deps**: update astral-sh/setup-uv action to v10.2.0 (#183)
+
 ## v7.1.1 (2026-09-21)
 
 ### Fix
