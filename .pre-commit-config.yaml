@@ -27,11 +27,11 @@ repos:
     hooks:
       - id: hadolint
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.32.0
+    rev: v1.33.1
     hooks:
       - id: zizmor
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.19.3
+    rev: v4.20.0
     hooks:
       - id: commitizen
       - id: commitizen-branch
